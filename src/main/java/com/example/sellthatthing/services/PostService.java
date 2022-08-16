@@ -5,6 +5,7 @@ import com.example.sellthatthing.DTOs.UpdatePostRequest;
 import com.example.sellthatthing.exceptions.EmptyResourceException;
 import com.example.sellthatthing.exceptions.ResourceNotFoundException;
 import com.example.sellthatthing.models.Account;
+import com.example.sellthatthing.models.Category;
 import com.example.sellthatthing.models.Post;
 import com.example.sellthatthing.repositories.PostRepository;
 import lombok.AllArgsConstructor;
@@ -67,4 +68,9 @@ public class PostService {
         Account account = accountService.findById(accountId);
         return postRepository.findPostsByPosterAccount(account);
     }
+    public List<Post> findByPostCategory(String categoryName) {
+        Category category = categoryService.findByCategoryName(categoryName);
+        return postRepository.findByPostCategory(category);
+    }
+
 }
