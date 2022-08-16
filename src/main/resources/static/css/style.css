@@ -1,0 +1,10 @@
+.box {
+    max-width: 600px;
+    min-height: 600px;
+}
+
+.btn-primary:hover {
+    color: #f9f7f4;
+    background-color: #04c3ee;
+    border-color: #5b288e;
+}
