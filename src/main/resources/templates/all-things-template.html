@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="https://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- css -->
+	<link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css">
+
+	<title>Welcome Page</title>
+</head>
+
+<body class="container bg-dark text-bg-dark">
+	<!-- Nav Bar -->
+	<nav class="navbar navbar-expand-lg mt-3">
+		<div class="container-fluid  d-flex flex-row">
+			<a class="navbar-brand text-bg-dark" th:href="@{/}">SellThatThing</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+					aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse  d-flex flex-row-reverse" id="navbarNavAltMarkup">
+				<div class="navbar-nav">
+					<a class="nav-link btn btn-warning me-5" th:href="@{/all}">All Things</a>
+					<a class="nav-link btn btn-warning me-5" th:href="@{/login}">Create A thing</a>
+					<a class="nav-link btn btn-warning me-5" th:href="@{/profile}">Register or Login</a>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<!-- End Nav Bar -->
+
+	<div class="row mt-4">
+		<div class="mx-auto" style="width: fit-content">
+			<h1 th:text="|VIEWING ALL THINGS|">VIEWING THINGS</h1>
+		</div>
+	</div>
+
+	<div th:each="posts : ${allPosts}">
+		<div>
+			<h3 th:text="${posts.title}">post title</h3>
+			<p th:text="${posts.body}">post body</p>
+		</div>
+	</div>
+
+
+
+	<!-- Scripts -->
+	<script src="/js/popper.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+</body>
+
+</html>
