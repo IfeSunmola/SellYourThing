@@ -1,6 +1,7 @@
 package com.example.sellthatthing.controllers;
 
 import com.example.sellthatthing.DTOs.NewPostRequest;
+import com.example.sellthatthing.services.CategoryService;
 import com.example.sellthatthing.services.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,10 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 @AllArgsConstructor
 public class NewPostController {
     private final PostService postService;
+    private final CategoryService categoryService;
 
     @GetMapping("/new-post")
     public String loadNewPostPage(Model model){
         model.addAttribute("newPostDto", new NewPostRequest());
+        model.addAttribute("categories", categoryService.findAll());
         return "new-post";
     }
 
