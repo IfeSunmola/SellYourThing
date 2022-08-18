@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Random;
 
 @AllArgsConstructor
 @Service
@@ -35,8 +34,8 @@ public class PostService {
         int randomYear = (int) Math.floor(Math.random() * (2022 - 2018 + 1) + 2018);
         int randomMonth = (int) Math.floor(Math.random() * (12 - 1 + 1) + 1);
         int randomDay = (int) Math.floor(Math.random() * (27 - 1 + 1) + 1);
-        int randomHour= (int) Math.floor(Math.random() * (23 - 1 + 1) + 1);
-        int randomMinute= (int) Math.floor(Math.random() * (59 - 1 + 1) + 1);
+        int randomHour = (int) Math.floor(Math.random() * (23 - 1 + 1) + 1);
+        int randomMinute = (int) Math.floor(Math.random() * (59 - 1 + 1) + 1);
         post.setCreatedAt(LocalDateTime.of(randomYear, randomMonth, randomDay, randomHour, randomMinute));
         postRepository.save(post);
     }
@@ -84,4 +83,8 @@ public class PostService {
         return postRepository.findByPostCategory(category);
     }
 
+    public Post findByPostId(Long postId) {
+        return postRepository.findById(postId).orElseThrow(()
+                -> new ResourceNotFoundException("Account id '" + postId + "' was not found"));
+    }
 }
