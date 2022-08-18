@@ -15,5 +15,6 @@ public class NewPostRequest {
     private String categoryName;
     private BigDecimal price;
     private String imageUrl;
+    private String location;
     private Long posterAccountId;
 }

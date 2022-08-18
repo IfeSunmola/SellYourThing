@@ -42,6 +42,7 @@ public class PostService {
                         LocalDateTime.now(),
                         newPostRequest.getPrice(),
                         newPostRequest.getImageUrl(),
+                        newPostRequest.getLocation(),
                         categoryService.findByCategoryName(newPostRequest.getCategoryName()),
                         accountService.findById(newPostRequest.getPosterAccountId())
                 )

@@ -15,10 +15,11 @@ import java.time.LocalDateTime;
 public class Post {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long postId;
     @NonNull private String title;
-    @NonNull private String body;
+    @NonNull @Column(length = 3000)private String body;
     @NonNull private LocalDateTime createdAt;
     @NonNull private BigDecimal price;
     @NonNull private String imageUrl;
+    @NonNull private String location;
 
     @JsonBackReference(value = "postsCategory")
     @ManyToOne(cascade = CascadeType.ALL)

@@ -13,4 +13,5 @@ public class UpdatePostRequest {
     private final String categoryName;
     private final BigDecimal price;
     private final String imageUrl;
+    private final String location;
 }
