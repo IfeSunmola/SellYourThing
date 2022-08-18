@@ -2,10 +2,12 @@ package com.example.sellthatthing.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
+import net.bytebuddy.asm.Advice;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -34,4 +36,9 @@ public class Post {
     private Account posterAccount;
 
     private LocalDateTime updatedAt;
+
+
+    public String getFormattedCreateAtDate() {
+        return DateTimeFormatter.ofPattern("dd/MM/yyyy").format(createdAt);
+    }
 }
