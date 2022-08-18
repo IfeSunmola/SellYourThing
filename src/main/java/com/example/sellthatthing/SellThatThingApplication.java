@@ -80,7 +80,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "janefoster@gmail.com",
                 "password"
         ));
-        post2.setPrice(new BigDecimal("42000.21"));
+        post2.setPrice(new BigDecimal("4200.21"));
         post2.setImageUrl("/assets/myImages/london.jpg");
         post2.setLocation("Edmonton");
 
