@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 @AllArgsConstructor
 @Service
@@ -24,13 +25,19 @@ public class PostService {
 
     public List<Post> findAll() {
         List<Post> listOfPosts = postRepository.findAll();
-        if (listOfPosts.isEmpty()){
+        if (listOfPosts.isEmpty()) {
             throw new EmptyResourceException("No posts found");
         }
         return listOfPosts;
     }
 
     public void savePost(Post post) {
+        int randomYear = (int) Math.floor(Math.random() * (2022 - 2018 + 1) + 2018);
+        int randomMonth = (int) Math.floor(Math.random() * (12 - 1 + 1) + 1);
+        int randomDay = (int) Math.floor(Math.random() * (27 - 1 + 1) + 1);
+        int randomHour= (int) Math.floor(Math.random() * (24 - 1 + 1) + 1);
+        int randomMinute= (int) Math.floor(Math.random() * (60 - 1 + 1) + 1);
+        post.setCreatedAt(LocalDateTime.of(randomYear, randomMonth, randomDay, randomHour, randomMinute));
         postRepository.save(post);
     }
 
@@ -71,6 +78,7 @@ public class PostService {
         Account account = accountService.findById(accountId);
         return postRepository.findPostsByPosterAccount(account);
     }
+
     public List<Post> findByPostCategory(String categoryName) {
         Category category = categoryService.findByCategoryName(categoryName);
         return postRepository.findByPostCategory(category);
