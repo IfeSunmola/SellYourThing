@@ -8,23 +8,25 @@
 	<meta property="og:image" content="">
 	<meta name="twitter:title" content="Home">
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-	<link rel="shortcut icon" th:href="@{/assets/images/logo.png}" type="image/x-icon">
+	<link rel="shortcut icon" href="/assets/images/logo.png" th:href="@{/assets/images/logo.png}" type="image/x-icon">
 	<meta name="description" content="">
 
 
 	<title>Home</title>
-	<link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
-	<link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap-grid.min.css}">
-	<link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap-reboot.min.css}">
-	<link rel="stylesheet" th:href="@{/assets/dropdown/css/style.css}">
-	<link rel="stylesheet" th:href="@{/assets/socicon/css/styles.css}">
-	<link rel="stylesheet" th:href="@{/assets/theme/css/style.css}">
+	<link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
+	<link rel="stylesheet" href="/assets/bootstrap/css/bootstrap-grid.min.css" th:href="@{/assets/bootstrap/css/bootstrap-grid.min.css}">
+	<link rel="stylesheet" href="/assets/bootstrap/css/bootstrap-reboot.min.css" th:href="@{/assets/bootstrap/css/bootstrap-reboot.min.css}">
+	<link rel="stylesheet" href="/assets/dropdown/css/style.css" th:href="@{/assets/dropdown/css/style.css}">
+	<link rel="stylesheet" href="/assets/socicon/css/styles.css" th:href="@{/assets/socicon/css/styles.css}">
+	<link rel="stylesheet" href="/assets/theme/css/style.css" th:href="@{/assets/theme/css/style.css}">
 	<link rel="preload"
 		  th:href="@{https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,700;1,400;1,700&display=swap&display=swap}"
+		  href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,700;1,400;1,700&display=swap&display=swap"
 		  as="style" onload="this.onload=null;this.rel='stylesheet'">
 	<noscript>
 		<link rel="stylesheet"
-			  th:href="@{https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,700;1,400;1,700&display=swap&display=swap}">
+			  th:href="@{https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,700;1,400;1,700&display=swap&display=swap}"
+			  href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,700;1,400;1,700&display=swap&display=swap">
 	</noscript>
 	<link rel="preload" as="style" th:href="@{/assets/mobirise/css/mbr-additional.css}">
 	<link rel="stylesheet" th:href="@{/assets/mobirise/css/mbr-additional.css}" type="text/css">
@@ -67,25 +69,49 @@
 	<div data-bs-version="5.1" class="features3 cid-teNQgzXdqo" id="features3-3">
 		<div class="container">
 			<div class="mbr-section-head">
-				<h4 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">
-					<strong>ALL POSTS</strong></h4>
-				<h5 class="mbr-section-subtitle mbr-fonts-style align-center mb-0 mt-2 display-5">Sorting Stuff
+				<!--				<h4 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">-->
+				<!--					<strong>ALL POSTS</strong></h4>-->
+				<h5 class="mbr-section-subtitle mbr-fonts-style align-center mb-5 mt-2 display-5">Sorting Stuff
 					Here</h5>
 			</div>
 			<!--All Posts-->
-			<div class="row mt-4">
-				<div class="сol-12 col-md-6 col-lg-6 mt-4" th:each="post: ${posts}">
-					<div class="card w-80">
-						<img th:src="@{${post.imageUrl}}" class="card-img-top" alt="..." width="400"
-							 height="400">
-						<div class="card-body">
-							<h5 class="card-title" th:text="${post.title}" style="font-weight: bold">Post title</h5>
-							<p class="card-text" th:text="${post.body.substring(0, 250) + '...'}">Some quick example text to build on the card title and make up the bulk of the
-								card's content.</p>
-							<a href="#" class="btn btn-primary">View Listing</a>
+			<div class="col-12" th:each="post: ${posts}">
+				<a href="" class="link-dark">
+					<div class="card mb-5">
+						<div class="row g-0">
+							<div class="col-md-4">
+								<img th:src="@{${post.imageUrl}}" class="card-img-top" alt="..." width="300"
+									 height="300">
+							</div>
+							<div class="col-md-8 m-0">
+								<div class="card-body p-0 ms-md-3 mt-sm-3 mt-3">
+									<!--Title and Price-->
+									<div class="row">
+										<div class="col-9 ps-2">
+											<p class="card-title fs-1 text-start" th:text="${post.title}"></p>
+										</div>
+										<div class="col-3">
+											<h5 class="card-title text-end" th:text="'$' + ${post.price}"></h5>
+										</div>
+									</div>
+									<!--Title and Price-->
+									<!--Location and Date-->
+									<div class="row">
+										<div>
+											<p th:text="${post.location}" class="text-start mt-2"></p>
+											<p th:text="${post.getFormattedCreateAtDate}" class="text-start"></p>
+										</div>
+									</div>
+									<!--Location and Date-->
+									<div class="card-text  mt-3 p-0">
+										<p class="fs-4 text-start" th:text="${post.body.substring(0, 250) + '...'}">Post Body</p>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
+				</a>
+				<hr>
 			</div>
 			<!--All Posts-->
 		</div>
