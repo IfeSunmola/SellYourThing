@@ -42,7 +42,7 @@ public class SellThatThingApplication implements CommandLineRunner {
         category3.setDateCreated(LocalDateTime.of(2019, 5, 21, 19, 22));
 
         Post post1 = new Post();
-        post1.setTitle("Selling my green from");
+        post1.setTitle("Selling my green frog");
         post1.setBody("I am selling my green frog because the frog is too green. Green frogs are great. I am selling my green frog because the frog is" +
                 " too green. Green frogs are great. I am selling my green frog because the frog is too green. Green frogs are great");
         post1.setPostCategory(category1);
@@ -56,8 +56,9 @@ public class SellThatThingApplication implements CommandLineRunner {
         post1.setImageUrl("/assets/myImages/green-frog.jpg");
 
         Post post2 = new Post();
-        post2.setTitle("Title of Post 2");
-        post2.setBody("Body of Post 2");
+        post2.setTitle("London building for sale");
+        post2.setBody("Was built in 1207 by Jesse Lingard. Comes furnished with all the shit you need. This building is made of smaller buildings. " +
+                "Was built in 1207 by Jesse Lingard. Comes furnished with all the shit you need. This building is made of smaller buildings");
         post2.setPostCategory(category2);
         post2.setPosterAccount(new Account(
                 "jane",
@@ -65,10 +66,13 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "janefoster@gmail.com",
                 "password"
         ));
+        post2.setPrice(new BigDecimal("42000.21"));
+        post2.setImageUrl("/assets/myImages/london.jpg");
 
         Post post3 = new Post();
-        post3.setTitle("Title of Post 3");
-        post3.setBody("Body of Post 3");
+        post3.setTitle("Unused strawberry for sale");
+        post3.setBody("Some conspiracy theorists believe strawberries were created by aliens because they are so damn good. I also think cats " +
+                "are created by aliens. Some conspiracy theorists believe strawberries were created by aliens because they are so damn good.");
         post3.setPostCategory(category3);
         post3.setPosterAccount(new Account(
                 "thor",
@@ -76,6 +80,8 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "thorragnarok@gmail.com",
                 "password"
         ));
+        post3.setPrice(new BigDecimal("30.21"));
+        post3.setImageUrl("/assets/myImages/strawberries.jpg");
 
         postService.savePost(post1);
         postService.savePost(post2);
