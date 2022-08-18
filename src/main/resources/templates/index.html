@@ -69,14 +69,12 @@
 	<div data-bs-version="5.1" class="features3 cid-teNQgzXdqo" id="features3-3">
 		<div class="container">
 			<div class="mbr-section-head">
-				<!--				<h4 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">-->
-				<!--					<strong>ALL POSTS</strong></h4>-->
 				<h5 class="mbr-section-subtitle mbr-fonts-style align-center mb-5 mt-2 display-5">Sorting Stuff
 					Here</h5>
 			</div>
 			<!--All Posts-->
 			<div class="col-12" th:each="post: ${posts}">
-				<a href="" class="link-dark">
+				<a href="#" th:href="@{/posts/{postId}(postId=${post.postId})}" class="link-dark">
 					<div class="card mb-5">
 						<div class="row g-0">
 							<div class="col-md-4">
