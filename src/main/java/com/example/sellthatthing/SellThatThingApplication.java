@@ -13,6 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @SpringBootApplication
@@ -41,8 +42,9 @@ public class SellThatThingApplication implements CommandLineRunner {
         category3.setDateCreated(LocalDateTime.of(2019, 5, 21, 19, 22));
 
         Post post1 = new Post();
-        post1.setTitle("Title of Post 1");
-        post1.setBody("Body of Post 1");
+        post1.setTitle("Selling my green from");
+        post1.setBody("I am selling my green frog because the frog is too green. Green frogs are great. I am selling my green frog because the frog is" +
+                " too green. Green frogs are great. I am selling my green frog because the frog is too green. Green frogs are great");
         post1.setPostCategory(category1);
         post1.setPosterAccount(new Account(
                 "Ife",
@@ -50,6 +52,8 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "sunmolaife@gmail.com",
                 "password"
         ));
+        post1.setPrice(new BigDecimal("69.12"));
+        post1.setImageUrl("/assets/myImages/green-frog.jpg");
 
         Post post2 = new Post();
         post2.setTitle("Title of Post 2");
