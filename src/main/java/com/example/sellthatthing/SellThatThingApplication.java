@@ -60,7 +60,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "password"
         ));
         post1.setPrice(new BigDecimal("69.12"));
-        post1.setImageUrl("/assets/myImages/green-frog.jpg");
+        post1.setImageUrl("/assets/myImages/frog/green-frog.jpg");
         post1.setLocation("Calgary");
 
         Post post2 = new Post();
@@ -81,7 +81,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "password"
         ));
         post2.setPrice(new BigDecimal("4200.21"));
-        post2.setImageUrl("/assets/myImages/london.jpg");
+        post2.setImageUrl("/assets/myImages/london/london.jpg");
         post2.setLocation("Edmonton");
 
         Post post3 = new Post();
@@ -102,7 +102,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "password"
         ));
         post3.setPrice(new BigDecimal("30.21"));
-        post3.setImageUrl("/assets/myImages/strawberries.jpg");
+        post3.setImageUrl("/assets/myImages/strawberry/strawberries.jpg");
         post3.setLocation("Winnipeg");
 
         postService.savePost(post1);
