@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,6 +17,8 @@ public class Post {
     @NonNull private String title;
     @NonNull private String body;
     @NonNull private LocalDateTime createdAt;
+    @NonNull private BigDecimal price;
+    @NonNull private String imageUrl;
 
     @JsonBackReference(value = "postsCategory")
     @ManyToOne(cascade = CascadeType.ALL)

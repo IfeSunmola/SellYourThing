@@ -40,6 +40,8 @@ public class PostService {
                         newPostRequest.getTitle(),
                         newPostRequest.getBody(),
                         LocalDateTime.now(),
+                        newPostRequest.getPrice(),
+                        newPostRequest.getImageUrl(),
                         categoryService.findByCategoryName(newPostRequest.getCategoryName()),
                         accountService.findById(newPostRequest.getPosterAccountId())
                 )
