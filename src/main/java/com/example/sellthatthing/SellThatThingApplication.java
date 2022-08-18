@@ -1,7 +1,5 @@
 package com.example.sellthatthing;
 
-import com.example.sellthatthing.DTOs.NewAccountRequest;
-import com.example.sellthatthing.DTOs.NewPostRequest;
 import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.models.Category;
 import com.example.sellthatthing.models.Post;
