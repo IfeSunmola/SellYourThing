@@ -35,7 +35,7 @@ public class PostService {
         int randomYear = (int) Math.floor(Math.random() * (2022 - 2018 + 1) + 2018);
         int randomMonth = (int) Math.floor(Math.random() * (12 - 1 + 1) + 1);
         int randomDay = (int) Math.floor(Math.random() * (27 - 1 + 1) + 1);
-        int randomHour= (int) Math.floor(Math.random() * (24 - 1 + 1) + 1);
+        int randomHour= (int) Math.floor(Math.random() * (23 - 1 + 1) + 1);
         int randomMinute= (int) Math.floor(Math.random() * (60 - 1 + 1) + 1);
         post.setCreatedAt(LocalDateTime.of(randomYear, randomMonth, randomDay, randomHour, randomMinute));
         postRepository.save(post);
