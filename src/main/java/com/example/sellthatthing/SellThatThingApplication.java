@@ -44,7 +44,14 @@ public class SellThatThingApplication implements CommandLineRunner {
         Post post1 = new Post();
         post1.setTitle("Selling my green frog");
         post1.setBody("I am selling my green frog because the frog is too green. Green frogs are great. I am selling my green frog because the frog is" +
-                " too green. Green frogs are great. I am selling my green frog because the frog is too green. Green frogs are great");
+                " too green. Green frogs are great. I am selling my green frog because the frog is too green. Green frogs are great. I am selling " +
+                "my green frog because the frog is too green. Green frogs are great. I am selling my green frog because the frog is too green. " +
+                "Green frogs are great. I am selling my green frog because the frog is too green. Green frogs are great. " +
+                "I am selling my green frog because the frog is too green. Green frogs are great. I am selling my green frog because the frog is too green." +
+                " Green frogs are great. I am selling my green frog because the frog is too green. Green frogs are great. I am selling my green frog " +
+                "because the frog is too green. Green frogs are great. I am selling my green frog because the frog is too green. Green frogs are great. " +
+                "I am selling my green frog because the frog is too green. Green frogs are great. I am selling my green frog because the frog is too green. " +
+                "Green frogs are great.");
         post1.setPostCategory(category1);
         post1.setPosterAccount(new Account(
                 "Ife",
@@ -54,10 +61,17 @@ public class SellThatThingApplication implements CommandLineRunner {
         ));
         post1.setPrice(new BigDecimal("69.12"));
         post1.setImageUrl("/assets/myImages/green-frog.jpg");
+        post1.setLocation("Calgary");
 
         Post post2 = new Post();
         post2.setTitle("London building for sale");
         post2.setBody("Was built in 1207 by Jesse Lingard. Comes furnished with all the shit you need. This building is made of smaller buildings. " +
+                "Was built in 1207 by Jesse Lingard. Comes furnished with all the shit you need. This building is made of smaller buildings. Was " +
+                "built in 1207 by Jesse Lingard. Comes furnished with all the shit you need. This building is made of smaller buildings. " +
+                "Was built in 1207 by Jesse Lingard. Comes furnished with all the shit you need. This building is made of smaller buildings. " +
+                "Was built in 1207 by Jesse Lingard. Comes furnished with all the shit you need. This building is made of smaller buildings. " +
+                "Was built in 1207 by Jesse Lingard. Comes furnished with all the shit you need. This building is made of smaller buildings. " +
+                "Was built in 1207 by Jesse Lingard. Comes furnished with all the shit you need. This building is made of smaller buildings. " +
                 "Was built in 1207 by Jesse Lingard. Comes furnished with all the shit you need. This building is made of smaller buildings");
         post2.setPostCategory(category2);
         post2.setPosterAccount(new Account(
@@ -68,11 +82,18 @@ public class SellThatThingApplication implements CommandLineRunner {
         ));
         post2.setPrice(new BigDecimal("42000.21"));
         post2.setImageUrl("/assets/myImages/london.jpg");
+        post2.setLocation("Edmonton");
 
         Post post3 = new Post();
         post3.setTitle("Unused strawberry for sale");
-        post3.setBody("Some conspiracy theorists believe strawberries were created by aliens because they are so damn good. I also think cats " +
-                "are created by aliens. Some conspiracy theorists believe strawberries were created by aliens because they are so damn good.");
+        post3.setBody("Some conspiracy theorists believe strawberries were created by aliens because they are so damn good. I also think cats are " +
+                "created by aliens. Some conspiracy theorists believe strawberries were created by aliens because they are so damn good. Some conspiracy " +
+                "theorists believe strawberries were created by aliens because they are so damn good. I also think cats are created by aliens. " +
+                "Some conspiracy theorists believe strawberries were created by aliens because they are so damn good. Some conspiracy theorists b" +
+                "elieve strawberries were created by aliens because they are so damn good. I also think cats are created by aliens. Some conspiracy " +
+                "theorists believe strawberries were created by aliens because they are so damn good. Some conspiracy theorists believe strawberries " +
+                "were created by aliens because they are so damn good. I also think cats are created by aliens. Some conspiracy theorists believe " +
+                "strawberries were created by aliens because they are so damn good.");
         post3.setPostCategory(category3);
         post3.setPosterAccount(new Account(
                 "thor",
@@ -82,6 +103,7 @@ public class SellThatThingApplication implements CommandLineRunner {
         ));
         post3.setPrice(new BigDecimal("30.21"));
         post3.setImageUrl("/assets/myImages/strawberries.jpg");
+        post3.setLocation("Winnipeg");
 
         postService.savePost(post1);
         postService.savePost(post2);
