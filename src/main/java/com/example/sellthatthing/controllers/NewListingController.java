@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @AllArgsConstructor
-public class NewPostController {
+public class NewListingController {
     private final PostService postService;
     private final CategoryService categoryService;
 
-    @GetMapping("/new-post")
+    @GetMapping("/new-listing")
     public String loadNewPostPage(Model model){
         model.addAttribute("newPostDto", new NewPostRequest());
         model.addAttribute("categories", categoryService.findAll());
-        return "new-post";
+        return "new-listing";
     }
 
     @PostMapping("/new-post")
