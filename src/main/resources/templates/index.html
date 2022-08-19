@@ -13,7 +13,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
 		  th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css}"
 		  rel="stylesheet">
-	<title>Hello, world!</title>
+	<title>Buy and Sell Your Thing</title>
 </head>
 
 <body style="background-color: #121212" class="text-white">
@@ -62,7 +62,7 @@
 				<div class="card bg-dark text-white mb-3">
 					<div class="row g-0">
 						<div class="col-md-4">
-							<img th:src="@{${post.imageUrl}}" class="card-img-top" alt="..." width="300"
+							<img  src="#" th:src="@{${post.imageUrl}}" class="card-img-top" alt="alt text" th:alt="${post.title} + 'image'" width="300"
 								 height="300">
 						</div>
 						<div class="col-md-8 m-0">
