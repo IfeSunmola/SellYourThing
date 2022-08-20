@@ -9,6 +9,8 @@ import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.repositories.AccountRepository;
 import com.example.sellthatthing.security.ConfirmationToken;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,11 +23,18 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class AccountService {
+public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
+    
     private final PasswordEncoder passwordEncoder;
     private final ConfirmationTokenService tokenService;
     private final EmailSenderService emailSenderService;
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return accountRepository.findByEmail(email).orElseThrow(()
+                -> new UsernameNotFoundException("Email '" + email + "' was not found"));
+    }
 
     public List<Account> findAll() {
         List<Account> listOfAccounts = accountRepository.findAll();
