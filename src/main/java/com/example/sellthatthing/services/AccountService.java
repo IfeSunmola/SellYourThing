@@ -7,6 +7,7 @@ import com.example.sellthatthing.exceptions.ResourceNotFoundException;
 import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.repositories.AccountRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AccountService {
     private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<Account> findAll() {
         List<Account> listOfAccounts = accountRepository.findAll();
@@ -36,7 +38,7 @@ public class AccountService {
                         newAccountRequest.getLastName(),
                         newAccountRequest.getEmail(),
                         newAccountRequest.getDateOfBirth(),
-                        newAccountRequest.getPassword()
+                        passwordEncoder.encode(newAccountRequest.getPassword())
                 )
         );
     }
