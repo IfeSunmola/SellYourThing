@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @Service
@@ -44,6 +45,7 @@ public class AccountService {
                 newAccountRequest.getLastName(),
                 newAccountRequest.getEmail(),
                 newAccountRequest.getDateOfBirth(),
+                newAccountRequest.getEmail().toLowerCase(Locale.ROOT).contains("@company.ca") ? "Admin" : "User",
                 passwordEncoder.encode(newAccountRequest.getPassword())
         );
         accountRepository.save(newAccount);
