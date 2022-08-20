@@ -21,14 +21,14 @@ public class PostController {
         Post currentPost = postService.findByPostId(postId);
         model.addAttribute("currentPost", currentPost);
         model.addAttribute("account", currentPost.getPosterAccount());
-        return "posts-id";
+        return "view-post";
     }
 
     @GetMapping("/create-new")
     public String loadNewPostPage(Model model) {
         model.addAttribute("newPostDto", new NewPostRequest());
         model.addAttribute("categories", categoryService.findAll());
-        return "new-listing";
+        return "create-new-post";
     }
 
     @PostMapping("/create-new")
