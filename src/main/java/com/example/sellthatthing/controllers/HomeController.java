@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @AllArgsConstructor
-public class AllThingsController {
+public class HomeController {
     private final PostService postService;
 
-    @GetMapping("/all")
-    public String showAllPosts(Model model){
-        model.addAttribute("allPosts", postService.findAll());
-        return "all-things-template";
+    @GetMapping
+    public String showIndexPage(Model model) {
+        model.addAttribute("posts", postService.findAll());
+        return "index";
     }
 }

@@ -5,16 +5,14 @@ import com.example.sellthatthing.services.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @AllArgsConstructor
-public class RegisterController {
+public class AccountController {
     private final AccountService accountService;
 
+    // Register Requests
     @GetMapping("/register")
     public String loadRegisterPage(final Model model) {
         model.addAttribute("registrationDto", new NewAccountRequest());
@@ -31,5 +29,11 @@ public class RegisterController {
     public String completeRegistration(@RequestParam final String token) {
         accountService.confirmToken(token);
         return "verify-success";
+    }
+
+    // Login Requests
+    @GetMapping("/login")
+    public String loadLoginPage() {
+        return "login";
     }
 }

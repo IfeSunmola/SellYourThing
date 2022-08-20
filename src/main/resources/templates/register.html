@@ -21,8 +21,8 @@
 	<div class="container">
 		<nav class="navbar navbar-dark navbar-expand-lg">
 			<!--Start Logo and Text-->
-			<div class="ms-5">
-				<a class="ms-5 navbar-brand fs-1 text-center " href="#" th:href="@{/}">
+			<div class="mss-5">
+				<a class="mss-5 navbar-brand fs-1 text-center " href="#" th:href="@{/}">
 					<i class="bi bi-shop me-1 text-center" style="font-size: 3rem;"></i>
 					SellThatThing
 				</a>
@@ -33,7 +33,7 @@
 			<div class="expand navbar-collapse justify-content-end" id="navbarNavAltMarkup">
 				<div class="navbar-nav">
 					<a class="nav-link me-5 text-center text-white" href="#">View By Category</a>
-					<a class="nav-link me-5 text-center text-white" href="#" th:href="@{/new-listing}">Create New Listing</a>
+					<a class="nav-link me-5 text-center text-white" href="#" th:href="@{/posts/create-new}">Create New Listing</a>
 					<a class="nav-link me-5 text-center text-white" href="#" th:href="@{/register}">Register</a>
 					<a class="nav-link me-5 text-center text-white" href="#" th:href="@{/login}">Login</a>
 				</div>
@@ -108,12 +108,10 @@
 	</div>
 	<!--End Registration Form-->
 	<div class="container d-flex justify-content-center align-items-center" th:if="${param.success}">
-		<form action="#" method="post" th:action="@{/register}">
-			<div class="alert bg-dark" role="alert">
-				<h4 class="alert-heading text-center">Registration Successful</h4>
-				<p class="text-center">Verification Email Sent</p>
-			</div>
-		</form>
+		<div class="alert bg-dark" role="alert">
+			<h4 class="alert-heading text-center">Registration Successful</h4>
+			<p class="text-center">Verification Email Sent</p>
+		</div>
 	</div>
 
 	<footer class="my-5 pt-5 text-muted text-center text-small">
