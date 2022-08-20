@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
     // links that does not need authentication
-    private static final String[] WHITELIST = {"/", "/index", "/register/**", "/email"};
+    private static final String[] WHITELIST = {"/", "/index", "/register/**", "/posts/**"};
     private static final String[] RESOURCES_WHITELIST = {"/images/**", "/h2-console/**"};
 
     @Bean
