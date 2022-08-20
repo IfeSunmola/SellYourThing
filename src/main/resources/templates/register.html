@@ -21,8 +21,8 @@
 	<div class="container">
 		<nav class="navbar navbar-dark navbar-expand-lg">
 			<!--Start Logo and Text-->
-			<div>
-				<a class="navbar-brand fs-1 text-center " href="#" th:href="@{/}">
+			<div class="ms-5">
+				<a class="ms-5 navbar-brand fs-1 text-center " href="#" th:href="@{/}">
 					<i class="bi bi-shop me-1 text-center" style="font-size: 3rem;"></i>
 					SellThatThing
 				</a>
@@ -34,11 +34,8 @@
 				<div class="navbar-nav">
 					<a class="nav-link me-5 text-center text-white" href="#">View By Category</a>
 					<a class="nav-link me-5 text-center text-white" href="#" th:href="@{/new-listing}">Create New Listing</a>
-					<div class=" me-5 d-flex justify-content-center">
-						<button type="button" class="btn col-lg-12" data-bs-toggle="modal" data-bs-target="#registerOrLoginModal"
-								style="background-color: #c38fff">Register or Login
-						</button>
-					</div>
+					<a class="nav-link me-5 text-center text-white" href="#" th:href="@{/register}">Register</a>
+					<a class="nav-link me-5 text-center text-white" href="#" th:href="@{/login}">Login</a>
 				</div>
 			</div>
 			<!--End Nav bar items-->
