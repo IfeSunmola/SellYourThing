@@ -3,8 +3,6 @@ package com.example.sellthatthing;
 import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.models.Category;
 import com.example.sellthatthing.models.Post;
-import com.example.sellthatthing.services.AccountService;
-import com.example.sellthatthing.services.CategoryService;
 import com.example.sellthatthing.services.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -18,16 +16,14 @@ import java.time.LocalDateTime;
 @SpringBootApplication
 @AllArgsConstructor
 public class SellThatThingApplication implements CommandLineRunner {
-    private final CategoryService categoryService;
     private final PostService postService;
-    private final AccountService accountService;
 
     public static void main(String[] args) {
         SpringApplication.run(SellThatThingApplication.class, args);
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         Category category1 = new Category();
         category1.setCategoryName("Books");
         category1.setDateCreated(LocalDateTime.of(2021, 11, 24, 12, 55));
@@ -57,6 +53,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "Sunmola",
                 "sunmolaife@gmail.com",
                 LocalDate.of(2000, 11, 24),
+                "User",
                 "password"
         ));
         post1.setPrice(new BigDecimal("69.12"));
@@ -79,6 +76,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "foster",
                 "janefoster@gmail.com",
                 LocalDate.of(1992, 9, 11),
+                "User",
                 "password"
         ));
         post2.setPrice(new BigDecimal("4200.21"));
@@ -101,6 +99,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "ragnarok",
                 "thorragnarok@gmail.com",
                 LocalDate.of(1758, 5, 17),
+                "User",
                 "password"
         ));
         post3.setPrice(new BigDecimal("30.21"));
