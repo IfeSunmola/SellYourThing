@@ -54,11 +54,12 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "sunmolaife@gmail.com",
                 LocalDate.of(2000, 11, 24),
                 "User",
-                "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS\t"
+                "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
         ));
         post1.setPrice(new BigDecimal("69.12"));
         post1.setImageUrl("images/frog/green-frog.jpg");
         post1.setLocation("Calgary");
+        post1.getPosterAccount().setEnabled(true);
 
         Post post2 = new Post();
         post2.setTitle("London building for sale");
@@ -77,11 +78,12 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "janefoster@gmail.com",
                 LocalDate.of(1992, 9, 11),
                 "User",
-                "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS\t"
+                "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
         ));
         post2.setPrice(new BigDecimal("4200.21"));
         post2.setImageUrl("images/london/london.jpg");
         post2.setLocation("Edmonton");
+        post2.getPosterAccount().setEnabled(true);
 
         Post post3 = new Post();
         post3.setTitle("Unused strawberry for sale");
@@ -100,11 +102,12 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "thorragnarok@gmail.com",
                 LocalDate.of(1758, 5, 17),
                 "User",
-                "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS\t"
+                "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
         ));
         post3.setPrice(new BigDecimal("30.21"));
         post3.setImageUrl("images/strawberry/strawberries.jpg");
         post3.setLocation("Winnipeg");
+        post3.getPosterAccount().setEnabled(true);
 
         postService.savePost(post1);
         postService.savePost(post2);
