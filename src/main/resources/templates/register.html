@@ -21,8 +21,8 @@
 	<div class="container">
 		<nav class="navbar navbar-dark navbar-expand-lg">
 			<!--Start Logo and Text-->
-			<div class="ms-5">
-				<a class="ms-5 navbar-brand fs-1 text-center " href="#" th:href="@{/}">
+			<div>
+				<a class="navbar-brand fs-1 text-center " href="#" th:href="@{/}">
 					<i class="bi bi-shop me-1 text-center" style="font-size: 3rem;"></i>
 					SellThatThing
 				</a>
@@ -46,8 +46,84 @@
 	</div>
 	<!--End Nav Bar-->
 
+	<!--Start Registration Form-->
+	<div class="container d-flex justify-content-center align-items-center" style="min-height: 700px">
+		<form method="post" action="#" th:action="@{/register}" th:object="${registrationDto}">
+			<!--Start First and Last name-->
+			<div class="row">
+				<div class="col-12">
+					<div class="form-floating text-dark text-muted mb-3">
+						<input autofocus id="firstname" class="form-control" type="text" th:field="*{firstName}" placeholder="First Name"/>
+						<label for="firstname">First Name</label>
+					</div>
+				</div>
+
+				<div class="col-12">
+					<div class="form-floating text-dark text-muted mb-3">
+						<input id="lastname" class="form-control" type="text" th:field="*{lastName}" placeholder="Last Name"/>
+						<label for="lastname">Last Name</label>
+					</div>
+				</div>
+			</div>
+			<!--EndFirst and Last name-->
+
+			<!--Start Email and DOB-->
+			<div class="row">
+				<div class="col-12">
+					<div class="form-floating text-dark text-muted mb-3">
+						<input id="registerEmail" class="form-control" type="text" th:field="*{email}" placeholder="email@address.com"/>
+						<label for="email">Email</label>
+					</div>
+				</div>
+
+				<div class="col-12">
+					<div class="form-floating text-dark text-muted mb-3">
+						<input id="dateOfBirth" class="form-control" type="date" th:field="*{email}" placeholder="email@address.com"/>
+						<label for="dateOfBirth">Date of Birth</label></div>
+				</div>
+			</div>
+			<!--End Email and DOB-->
+
+			<!--Start Password and Confirm Password-->
+			<div class="row">
+				<div class="col-12">
+					<div class="form-floating text-dark text-muted mb-3">
+						<input id="password" class="form-control" type="password" th:field="*{password}" placeholder="Password"/>
+						<label for="password" class="form-label">Password</label>
+
+					</div>
+				</div>
+
+				<div class="col-12">
+					<div class="form-floating text-dark text-muted mb-3">
+						<input id="confirmPassword" class="form-control" type="password" th:field="*{confirmPassword}" placeholder="Password, again"/>
+						<label for="confirmPassword" class="form-label">Confirm Password</label>
+
+					</div>
+				</div>
+			</div>
+			<!--End Password and Confirm Password-->
+
+			<div class="d-flex justify-content-center mt-4">
+				<button type="submit" class="btn" style="background-color: #c38fff">Create Account</button>
+			</div>
+
+		</form>
+	</div>
+	<!--End Registration Form-->
+
+
+	<footer class="my-5 pt-5 text-muted text-center text-small">
+		<p class="mb-1">&copy; 2017–2021 Company Name</p>
+		<ul class="list-inline">
+			<li class="list-inline-item"><a href="#">Privacy</a></li>
+			<li class="list-inline-item"><a href="#">Terms</a></li>
+			<li class="list-inline-item"><a href="#">Support</a></li>
+		</ul>
+	</footer>
+
 	<!--Start Registration and Login Modal-->
-	<div class="container">
+	<div class="container" aria-hidden="true">
 		<div class="modal fade" id="registerOrLoginModal" tabindex="-1" aria-labelledby="registerOrLoginModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content bg-dark">
