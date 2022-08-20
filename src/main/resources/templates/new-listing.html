@@ -128,13 +128,13 @@
 							<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<!--Start Form field-->
-						<form action="#" method="POST">
+						<form action="#" method="post" th:action="@{/email}" th:object="${email}">
 							<div class="mb-3">
-								<label for="exampleFormControlInput1" class="form-label">Email address</label>
-								<input type="email" class="form-control" id="exampleFormControlInput1" placeholder="email@address.com">
+								<label for="email" class="form-label">Email address</label>
+								<input type="email" name="emailDto" class="form-control" id="email" placeholder="email@address.com">
 							</div>
 							<div class="d-flex justify-content-center mb-2">
-								<button type="button" class="btn" style="background-color: #c38fff">Continue With Email</button>
+								<button type="submit" class="btn" style="background-color: #c38fff">Continue With Email</button>
 							</div>
 						</form>
 						<!--End Form field-->
