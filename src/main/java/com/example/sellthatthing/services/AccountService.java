@@ -35,6 +35,7 @@ public class AccountService {
                         newAccountRequest.getFirstName(),
                         newAccountRequest.getLastName(),
                         newAccountRequest.getEmail(),
+                        newAccountRequest.getDateOfBirth(),
                         newAccountRequest.getPassword()
                 )
         );

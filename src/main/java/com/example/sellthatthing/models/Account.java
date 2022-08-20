@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,7 @@ public class Account {
     @NonNull private String firstName;
     @NonNull private String lastName;
     @NonNull private String email;
+    @NonNull private LocalDate dateOfBirth;
     @NonNull private String password;
 
     @JsonManagedReference(value = "posterAccount")
