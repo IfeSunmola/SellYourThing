@@ -92,7 +92,8 @@
 
 				<div class="col-12">
 					<div class="form-floating text-dark text-muted mb-3">
-						<input id="confirmPassword" class="form-control" type="password" th:field="*{confirmPassword}" placeholder="Password, again"/>
+						<input id="confirmPassword" class="form-control" type="password" th:field="*{confirmPassword}"
+							   placeholder="Password, again"/>
 						<label for="confirmPassword" class="form-label">Confirm Password</label>
 
 					</div>
@@ -103,11 +104,17 @@
 			<div class="d-flex justify-content-center mt-4">
 				<button type="submit" class="btn" style="background-color: #c38fff">Create Account</button>
 			</div>
-
 		</form>
 	</div>
 	<!--End Registration Form-->
-
+	<div class="container d-flex justify-content-center align-items-center" th:if="${param.success}">
+		<form action="#" method="post" th:action="@{/register}">
+			<div class="alert bg-dark" role="alert">
+				<h4 class="alert-heading text-center">Registration Successful</h4>
+				<p class="text-center">Verification Email Sent</p>
+			</div>
+		</form>
+	</div>
 
 	<footer class="my-5 pt-5 text-muted text-center text-small">
 		<p class="mb-1">&copy; 2017–2021 Company Name</p>
