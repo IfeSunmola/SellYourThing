@@ -19,6 +19,7 @@ public class Account {
     @NonNull private String email;
     @NonNull private LocalDate dateOfBirth;
     @NonNull private String password;
+    @NonNull private boolean enabled = false;
 
     @JsonManagedReference(value = "posterAccount")
     @OneToMany(mappedBy = "posterAccount", cascade = CascadeType.ALL)
