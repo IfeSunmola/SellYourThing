@@ -12,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @SpringBootApplication
@@ -55,6 +56,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "Ife",
                 "Sunmola",
                 "sunmolaife@gmail.com",
+                LocalDate.of(2000, 11, 24),
                 "password"
         ));
         post1.setPrice(new BigDecimal("69.12"));
@@ -76,6 +78,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "jane",
                 "foster",
                 "janefoster@gmail.com",
+                LocalDate.of(1992, 9, 11),
                 "password"
         ));
         post2.setPrice(new BigDecimal("4200.21"));
@@ -97,6 +100,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "thor",
                 "ragnarok",
                 "thorragnarok@gmail.com",
+                LocalDate.of(1758, 5, 17),
                 "password"
         ));
         post3.setPrice(new BigDecimal("30.21"));
