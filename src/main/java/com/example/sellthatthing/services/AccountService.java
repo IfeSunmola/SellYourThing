@@ -39,6 +39,11 @@ public class AccountService {
                 -> new ResourceNotFoundException("Account id '" + accountId + "' was not found"));
     }
 
+    public Account findByEmail(String email) {
+        return accountRepository.findByEmail(email).orElseThrow(()
+                -> new ResourceNotFoundException("Email '" + email + "' was not found"));
+    }
+
     public Account createAccount(NewAccountRequest newAccountRequest) {
         Account newAccount = new Account(
                 newAccountRequest.getFirstName(),
