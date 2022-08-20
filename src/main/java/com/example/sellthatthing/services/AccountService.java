@@ -54,4 +54,8 @@ public class AccountService {
         findById(accountId);// throws exception if not found
         accountRepository.deleteById(accountId);
     }
+
+    public boolean existsByEmail(String email) {
+        return accountRepository.existsByEmail(email);
+    }
 }

@@ -11,4 +11,5 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface AccountRepository extends JpaRepository<Account, Long> {
     List<Account> findPostsByAccountId(Long accountId);
+    boolean existsByEmail(String email);
 }
