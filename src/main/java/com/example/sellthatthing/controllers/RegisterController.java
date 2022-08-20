@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @AllArgsConstructor
@@ -15,14 +16,26 @@ public class RegisterController {
     private final AccountService accountService;
 
     @GetMapping("/register")
-    public String loadRegisterPage(Model model){
+    public String loadRegisterPage(final Model model) {
         model.addAttribute("registrationDto", new NewAccountRequest());
         return "register";
     }
 
-    @PostMapping("/registration")
-    public String processRegisterForm(@ModelAttribute NewAccountRequest newAccountRequest){
+    @PostMapping("/register")
+    public String processRegisterForm(@ModelAttribute final NewAccountRequest newAccountRequest) {
         accountService.createAccount(newAccountRequest);
-        return "redirect:/login"; // redirect user to login page after registration
+        return "redirect:/register/success"; // redirect user to login page after registration
     }
+
+    @GetMapping("/register/verify")
+    public String completeRegistration(@RequestParam final String token) {
+        return accountService.confirmToken(token);
+    }
+
+    @GetMapping("/register/success")
+    public String registrationSuccessForm(final Model model){
+        model.addAttribute("userEmail");
+        return "register-success";
+    }
+
 }
