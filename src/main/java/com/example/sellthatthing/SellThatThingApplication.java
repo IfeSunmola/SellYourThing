@@ -1,9 +1,9 @@
 package com.example.sellthatthing;
 
-import com.example.sellthatthing.models.Account;
-import com.example.sellthatthing.models.Category;
-import com.example.sellthatthing.models.Post;
-import com.example.sellthatthing.services.PostService;
+import com.example.sellthatthing.Account.Account;
+import com.example.sellthatthing.Category.Category;
+import com.example.sellthatthing.Post.Post;
+import com.example.sellthatthing.Post.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
