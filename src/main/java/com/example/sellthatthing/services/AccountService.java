@@ -9,6 +9,7 @@ import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.repositories.AccountRepository;
 import com.example.sellthatthing.security.ConfirmationToken;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,8 +41,9 @@ public class AccountService {
     }
 
     public Account findByEmail(String email) {
+        // throwing UsernameNotFound because of spring security
         return accountRepository.findByEmail(email).orElseThrow(()
-                -> new ResourceNotFoundException("Email '" + email + "' was not found"));
+                -> new UsernameNotFoundException("Email '" + email + "' was not found"));
     }
 
     public Account createAccount(NewAccountRequest newAccountRequest) {
