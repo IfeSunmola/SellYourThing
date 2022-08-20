@@ -24,18 +24,12 @@ public class RegisterController {
     @PostMapping("/register")
     public String processRegisterForm(@ModelAttribute final NewAccountRequest newAccountRequest) {
         accountService.createAccount(newAccountRequest);
-        return "redirect:/register/success"; // redirect user to login page after registration
+        return "redirect:/register?success"; // redirect user to login page after registration
     }
 
     @GetMapping("/register/verify")
     public String completeRegistration(@RequestParam final String token) {
-        return accountService.confirmToken(token);
+        accountService.confirmToken(token);
+        return "verify-success";
     }
-
-    @GetMapping("/register/success")
-    public String registrationSuccessForm(final Model model){
-        model.addAttribute("userEmail");
-        return "register-success";
-    }
-
 }
