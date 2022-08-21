@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,8 +45,13 @@
 				<div class="navbar-nav">
 					<a class="nav-link me-5 text-center text-white" href="#">View By Category</a>
 					<a class="nav-link me-5 text-center text-white" href="#" th:href="@{/posts/create-new}">Create New Listing</a>
-					<a class="nav-link me-5 text-center text-white" href="#" th:href="@{/register}">Register</a>
-					<a class="nav-link me-5 text-center text-white" href="#" th:href="@{/login}">Login</a>
+
+					<a class="nav-link me-5 text-center text-white" sec:authorize="!isAuthenticated()" href="#" th:href="@{/register}">Register</a>
+					<a class="nav-link me-5 text-center text-white" sec:authorize="!isAuthenticated()" href="#" th:href="@{/login}">Login</a>
+
+					<a class="nav-link me-5 text-center text-dark btn btn-default"
+					   sec:authorize="isAuthenticated()" href="#" th:href="@{/register}" th:text="'Hello, ' + ${accountInfo.firstName}">
+					</a>
 				</div>
 			</div>
 			<!--End Nav bar items-->
@@ -117,11 +122,9 @@
 		<div class="row">
 			<div class="col d-flex justify-content-center">
 				<form class="d-grid w-50 w-cus-50" action="#" th:method="delete" th:action="@{'/users/' + ${accountInfo.accountId} + '/delete'}">
-					<input type="submit" value="View All Posts" class="btn btn-default" th:formaction="@{/users/accountId/posts}">
+					<input type="submit" value="View All Posts" class="btn btn-default">
 				</form>
 			</div>
-		</div>
-
 		</div>
 		<!--End Buttons-->
 	</div>
