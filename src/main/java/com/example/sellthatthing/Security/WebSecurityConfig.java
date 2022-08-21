@@ -41,7 +41,7 @@ public class WebSecurityConfig {
                 .and()
                 //logout
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout")
-                .invalidateHttpSession(true);
+                .invalidateHttpSession(true).permitAll();
         return http.build();
     }
 
