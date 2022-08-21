@@ -18,6 +18,7 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Account implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long accountId;
     @NonNull private String firstName;
