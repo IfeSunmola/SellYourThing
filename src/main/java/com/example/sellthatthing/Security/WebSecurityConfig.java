@@ -24,7 +24,7 @@ public class WebSecurityConfig {
     private static final String[] RESOURCES_WHITELIST = {"/images/**", "/h2-console/**"};
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         // .anyRequest().authenticated() -> require authentication for any path that was not ant matched
         http
                 // h2 console
@@ -35,7 +35,8 @@ public class WebSecurityConfig {
                 .antMatchers("/admin/**").hasRole("Admin").anyRequest().authenticated()
                 .and()
                 //login
-                .formLogin().loginPage("/login").permitAll().loginProcessingUrl("/login")
+                .formLogin().loginPage("/login").permitAll()
+                .loginProcessingUrl("/login").defaultSuccessUrl("/", false)
                 .usernameParameter("email").passwordParameter("password");
         return http.build();
     }
