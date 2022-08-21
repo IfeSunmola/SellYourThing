@@ -33,7 +33,7 @@ public class Account implements UserDetails {
     private boolean credentialsNonExpired = true;
 
     @JsonManagedReference(value = "posterAccount")
-    @OneToMany(mappedBy = "posterAccount", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "posterAccount", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Post> posts;
 
     @Override

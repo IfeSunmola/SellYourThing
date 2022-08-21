@@ -31,7 +31,7 @@ public class Post {
     private Category postCategory;
 
     @JsonBackReference(value = "posterAccount")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "accountId", referencedColumnName = "accountId")
     @NonNull
     private Account posterAccount;
