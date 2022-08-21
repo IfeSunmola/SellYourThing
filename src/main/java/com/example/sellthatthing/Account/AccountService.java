@@ -179,4 +179,8 @@ public class AccountService implements UserDetailsService {
     public boolean existsByEmail(String email) {
         return accountRepository.existsByEmail(email);
     }
+
+    public List<Account> findPostsByAccountId(Long accountId) {
+        return accountRepository.findPostsByAccountId(accountId);
+    }
 }
