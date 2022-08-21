@@ -20,7 +20,7 @@ public class WebSecurityConfig {
     private final BCryptPasswordEncoder passwordEncoder;
 
     // links that does not need authentication
-    private static final String[] WHITELIST = {"/", "/index", "/register/**", "/posts/**"};
+    private static final String[] WHITELIST = {"/", "/index", "/register/**", "/posts/**", "/users/**"};
     private static final String[] RESOURCES_WHITELIST = {"/images/**", "/h2-console/**"};
 
     @Bean
