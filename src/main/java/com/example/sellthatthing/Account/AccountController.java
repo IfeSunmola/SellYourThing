@@ -34,4 +34,30 @@ public class AccountController {
     public String loadLoginPage() {
         return "login";
     }
+
+    // Profile Requests
+    @GetMapping("/users/{accountId}")
+    public String loadProfilePage(@PathVariable Long accountId, Model model) {
+        Account account = accountService.findById(accountId);
+        model.addAttribute("accountInfo", account);
+        return "profile";
+    }
+
+    @DeleteMapping("/users/{accountId}/delete")
+    public String deleteAccount(@PathVariable Long accountId){
+        accountService.delete(accountId);;
+        return "redirect:/";
+    }
+
+    @PatchMapping ("/users/{accountId}/update")
+    public String updateAccount(@PathVariable Long accountId){
+        accountService.update(null, accountId);
+        return "redirect:/";
+    }
+
+    @GetMapping("/users/{accountId}/posts")
+    public String getAllUserPosts(@PathVariable Long accountId, Model model){
+        model.addAttribute("allUserPosts", accountService.findPostsByAccountId(accountId));
+        return "view-post";
+    }
 }
