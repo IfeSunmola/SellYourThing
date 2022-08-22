@@ -23,12 +23,10 @@
 		<!--Start Nav Bar-->
 		<nav class="navbar navbar-dark navbar-expand-lg">
 			<!--Start Logo and Text-->
-			<div class="mss-5">
-				<a class="mss-5 navbar-brand fs-1 text-center " href="#" th:href="@{/}">
-					<i class="bi bi-shop me-1 text-center" style="font-size: 3rem;"></i>
-					SellThatThing
-				</a>
-			</div>
+			<a class="navbar-brand fs-1 text-center " href="#" th:href="@{/}">
+				<i class="bi bi-shop me-1 text-center" style="font-size: 3rem;"></i>
+				SellThatThing
+			</a>
 			<!--End Logo and Text-->
 
 			<!--Start Nav bar items-->
@@ -36,8 +34,29 @@
 				<div class="navbar-nav">
 					<a class="nav-link me-5 text-center text-white" href="#">View By Category</a>
 					<a class="nav-link me-5 text-center text-white" href="#" th:href="@{/posts/create-new}">Create New Listing</a>
-					<a class="nav-link me-5 text-center text-white" href="#" th:href="@{/register}">Register</a>
-					<a class="nav-link me-5 text-center text-white" href="#" th:href="@{/login}">Login</a>
+
+					<a class="nav-link me-5 text-center text-white" sec:authorize="!isAuthenticated()" href="#" th:href="@{/register}">Register</a>
+					<a class="nav-link me-5 text-center text-white" sec:authorize="!isAuthenticated()" href="#" th:href="@{/login}">Login</a>
+
+					<!--Start Drop Down-->
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle me-5 text-center text-white btn btn-primary" id="navDropDown" role="button"
+						   data-bs-toggle="dropdown" aria-expanded="false"
+						   sec:authorize="isAuthenticated()"
+						   th:text="|Hello, ${#authentication.principal.firstName}|">
+						</a>
+						<!--Start Drop Down Options-->
+						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navDropDown">
+							<li><a class="dropdown-item" href="#" th:href="@{${profileLink}}">Your
+								Account</a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item" href="#" th:href="@{/logout}">Log out</a></li>
+						</ul>
+						<!--End Drop Down Options-->
+					</li>
+					<!--Start Drop Down-->
 				</div>
 			</div>
 			<!--End Nav bar items-->
