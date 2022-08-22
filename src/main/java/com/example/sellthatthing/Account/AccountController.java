@@ -1,6 +1,9 @@
 package com.example.sellthatthing.Account;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +17,15 @@ public class AccountController {
     @GetMapping("/register")
     public String loadRegisterPage(final Model model) {
         model.addAttribute("registrationDto", new NewAccountRequest());
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) { // user is authenticated
+            // for some reason, I can't construct the link in thymeleaf with th:href="|@{/users/${#authentication.principal.accountId}}|",
+            // so I have to do it here
+            String email = auth.getName();
+            String profileLink = "/users/" + accountService.findByEmail(email).getAccountId();
+            model.addAttribute("profileLink", profileLink);
+        }
         return "register";
     }
 
@@ -44,19 +56,20 @@ public class AccountController {
     }
 
     @DeleteMapping("/users/{accountId}/delete")
-    public String deleteAccount(@PathVariable Long accountId){
-        accountService.delete(accountId);;
+    public String deleteAccount(@PathVariable Long accountId) {
+        accountService.delete(accountId);
+        ;
         return "redirect:/";
     }
 
-    @PatchMapping ("/users/{accountId}/update")
-    public String updateAccount(@PathVariable Long accountId){
+    @PatchMapping("/users/{accountId}/update")
+    public String updateAccount(@PathVariable Long accountId) {
         accountService.update(null, accountId);
         return "redirect:/";
     }
 
     @GetMapping("/users/{accountId}/posts")
-    public String getAllUserPosts(@PathVariable Long accountId, Model model){
+    public String getAllUserPosts(@PathVariable Long accountId, Model model) {
         model.addAttribute("allUserPosts", accountService.findPostsByAccountId(accountId));
         return "view-post";
     }
