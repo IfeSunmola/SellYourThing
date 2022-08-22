@@ -101,7 +101,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "ragnarok",
                 "thorragnarok@company.ca",
                 LocalDate.of(1758, 5, 17),
-                "User",
+                "Admin",
                 "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
         ));
         post3.setPrice(new BigDecimal("30.21"));
