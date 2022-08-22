@@ -66,7 +66,8 @@
 		<!--Start Form-->
 		<div class="row justify-content-center mt-5">
 			<div class="col-lg-8 mx-auto mbr-form">
-				<form action="#" method="post" enctype="multipart/form-data" class="mx-auto" th:action="@{/posts/create-new}" th:object="${newPostDto}">
+				<form action="#" method="post" enctype="multipart/form-data" class="mx-auto" th:action="@{/posts/create-new}"
+					  th:object="${newPostDto}">
 					<!--Start Title-->
 					<div class="mb-3">
 						<label for="title" class="form-label fs-6">Title</label>
@@ -108,7 +109,8 @@
 						<div class="col-12 col-sm-6">
 							<div class="input-group mb-3">
 								<span class="input-group-text">$</span>
-								<input th:field="*{price}" type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="20.00">
+								<input th:field="*{price}" type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
+									   placeholder="20.00">
 							</div>
 						</div>
 						<!--End Price-->
@@ -118,7 +120,7 @@
 					<!--Start Files Upload-->
 					<div class="mb-3">
 						<label for="formFileMultiple" class="form-label">Media</label>
-						<input class="form-control" type="file" id="formFileMultiple" multiple>
+						<input class="form-control" name="fileUpload" multiple type="file" id="formFileMultiple">
 					</div>
 					<!--End Files Upload-->
 
