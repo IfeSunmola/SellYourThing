@@ -66,16 +66,16 @@
 		<!--Start Form-->
 		<div class="row justify-content-center mt-5">
 			<div class="col-lg-8 mx-auto mbr-form">
-				<form action="#" method="POST" class="mx-auto" th:action="@{/posts/create-new}">
+				<form action="#" method="post" class="mx-auto" th:action="@{/posts/create-new}" th:object="${newPostDto}">
 					<!--Start Title-->
 					<div class="mb-3">
 						<label for="title" class="form-label fs-6">Title</label>
-						<input type="text" class="form-control" id="title">
+						<input type="text" th:field="*{title}" class="form-control" id="title">
 					</div>
 					<!--End Title-->
 
 					<!--Start Category Select-->
-					<select class="form-select mb-3" aria-label="Select Category">
+					<select class="form-select mb-3" aria-label="Select Category" th:field="*{categoryId}">
 						<option value="0" selected>Choose a Category</option>
 						<option value="1" th:each="category: ${categories}" th:value="${category.categoryId}"
 								th:text="${category.categoryName}"></option>
@@ -86,7 +86,7 @@
 					<div class="mb-3">
 						<label for="message" class="form-label fs-6">Description</label>
 						<textarea class="form-control" id="message"
-								  rows="5" placeholder="A detailed description of the item"></textarea>
+								  rows="5" placeholder="A detailed description of the item" th:field="*{body}"></textarea>
 					</div>
 					<!--End Description-->
 
@@ -94,7 +94,7 @@
 					<div class="row">
 						<!--Start Location-->
 						<div class="col-12 col-sm-6">
-							<select class="form-select mb-3" aria-label="Location Selector">
+							<select class="form-select mb-3" aria-label="Location Selector" th:field="*{location}">
 								<option value="0" selected>Select your Location</option>
 								<option value="1">Edmonton</option>
 								<option value="2">Calgary</option>
@@ -108,7 +108,7 @@
 						<div class="col-12 col-sm-6">
 							<div class="input-group mb-3">
 								<span class="input-group-text">$</span>
-								<input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="20.00">
+								<input th:field="*{price}" type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="20.00">
 							</div>
 						</div>
 						<!--End Price-->
