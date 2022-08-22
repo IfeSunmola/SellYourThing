@@ -99,7 +99,7 @@ public class SellThatThingApplication implements CommandLineRunner {
         post3.setPosterAccount(new Account(
                 "thor",
                 "ragnarok",
-                "thorragnarok@gmail.com",
+                "thorragnarok@company.ca",
                 LocalDate.of(1758, 5, 17),
                 "User",
                 "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
