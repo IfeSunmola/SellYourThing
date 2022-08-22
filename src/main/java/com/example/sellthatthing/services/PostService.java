@@ -9,6 +9,8 @@ import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.models.Category;
 import com.example.sellthatthing.repositories.PostRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -40,7 +42,10 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public Post createNewPost(NewPostRequest newPostRequest) {
+    public Post createNewPost(NewPostRequest newPostRequest, Authentication auth) {
+        Account account = accountService.findByEmail(auth.getName());
+        newPostRequest.setPosterAccountId(account.getAccountId());
+
         return postRepository.save(
                 new Post(
                         newPostRequest.getTitle(),
@@ -49,7 +54,7 @@ public class PostService {
                         newPostRequest.getPrice(),
                         newPostRequest.getImageUrl(),
                         newPostRequest.getLocation(),
-                        categoryService.findByCategoryName(newPostRequest.getCategoryName()),
+                        categoryService.findByCategoryId(newPostRequest.getCategoryId()),
                         accountService.findById(newPostRequest.getPosterAccountId())
                 )
         );
