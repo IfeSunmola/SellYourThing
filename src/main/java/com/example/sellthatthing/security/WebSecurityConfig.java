@@ -22,26 +22,31 @@ public class WebSecurityConfig {
     private final BCryptPasswordEncoder passwordEncoder;
 
     // links that does not need authentication
-    private static final String[] WHITELIST = {"/", "/index", "/register/**", "/posts/**", "/users/**"};
+    private static final String[] ANT_WHITELIST = {"/", "/index", "/register/**", "/users/**"};
+    private static final String[] REGEX_WHITELIST = {"/posts/(\\d+)"};
     private static final String[] RESOURCES_WHITELIST = {"/images/**", "/h2-console/**"};
 
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
-        // .anyRequest().authenticated() -> require authentication for any path that was not ant matched
         http
                 // h2 console
                 .csrf().disable().headers().frameOptions().disable()
                 .and()
+                // views security
                 .authorizeRequests()
-                .antMatchers(WHITELIST).permitAll()
-                .antMatchers("/admin/**").hasRole("Admin").anyRequest().authenticated()
+                .antMatchers(ANT_WHITELIST).permitAll()
+                .regexMatchers(REGEX_WHITELIST).permitAll()
+                // roles security
+                .antMatchers("/admin/**").hasRole("Admin")
+                // any other endpoint not specified should require authentication
+                .anyRequest().authenticated()
                 .and()
-                //login
+                // login
                 .formLogin().loginPage("/login").permitAll()
                 .loginProcessingUrl("/login").defaultSuccessUrl("/", false)
                 .usernameParameter("email").passwordParameter("password")
                 .and()
-                //logout
+                // logout
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout")
                 .invalidateHttpSession(true).permitAll();
         return http.build();
