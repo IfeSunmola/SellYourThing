@@ -1,24 +1,25 @@
 package com.example.sellthatthing.controllers;
 
+import com.example.sellthatthing.datatransferobjects.NewAccountRequest;
 import com.example.sellthatthing.services.AccountService;
-import com.example.sellthatthing.services.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @AllArgsConstructor
-public class HomeController {
-    private final PostService postService;
+@RequestMapping("/register")
+public class RegisterController {
     private final AccountService accountService;
 
     @GetMapping
-    public String showIndexPage(final Model model) {
-        model.addAttribute("posts", postService.findAll());
+    public String loadRegisterPage(final Model model) {
+        model.addAttribute("registrationDto", new NewAccountRequest());
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) { // user is authenticated
             // for some reason, I can't construct the link in thymeleaf with th:href="|@{/users/${#authentication.principal.accountId}}|",
@@ -27,11 +28,18 @@ public class HomeController {
             String profileLink = "/profile/" + accountService.findByEmail(email).getAccountId();
             model.addAttribute("profileLink", profileLink);
         }
-        return "index";
+        return "register";
     }
 
-    @GetMapping("/css/style.css")
-    public String temp() {
-        return "redirect:/";
+    @PostMapping
+    public String processRegisterForm(@ModelAttribute final NewAccountRequest newAccountRequest) {
+        accountService.createAccount(newAccountRequest);
+        return "redirect:/register?success"; // redirect user to login page after registration
+    }
+
+    @GetMapping("/verify")
+    public String completeRegistration(@RequestParam final String token) {
+        accountService.confirmToken(token);
+        return "verify-success";
     }
 }
