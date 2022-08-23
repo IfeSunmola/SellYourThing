@@ -47,7 +47,7 @@
 						</a>
 						<!--Start Drop Down Options-->
 						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navDropDown">
-							<li><a class="dropdown-item" href="#" th:href="@{${profileLink}}">Your
+							<li><a class="dropdown-item" href="#" th:href="@{/profile/{accountId}(accountId=${#authentication.principal.accountId})}">Your
 								Account</a></li>
 							<li>
 								<hr class="dropdown-divider">
