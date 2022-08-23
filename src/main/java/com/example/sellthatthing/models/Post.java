@@ -1,6 +1,5 @@
 package com.example.sellthatthing.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,26 +20,22 @@ public class Post {
     @NonNull private BigDecimal price;
     private String imageUrl;
 
-    @JsonBackReference(value = "postsLocation")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "locationId", referencedColumnName = "locationId")
     @NonNull
     private Location postLocation;
 
-    @JsonBackReference(value = "postsCategory")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "categoryId", referencedColumnName = "categoryId")
     @NonNull
     private Category postCategory;
 
-    @JsonBackReference(value = "posterAccount")
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "accountId", referencedColumnName = "accountId")
     @NonNull
     private Account posterAccount;
 
     private LocalDateTime updatedAt;
-
 
     public String getFormattedCreateAtDate() {
         return DateTimeFormatter.ofPattern("dd/MM/yyyy").format(createdAt);

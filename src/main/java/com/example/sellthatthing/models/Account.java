@@ -1,6 +1,5 @@
 package com.example.sellthatthing.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,8 +30,7 @@ public class Account implements UserDetails {
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
 
-    @JsonManagedReference(value = "posterAccount")
-    @OneToMany(mappedBy = "posterAccount", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "posterAccount")
     private List<Post> posts;
 
     @Override
