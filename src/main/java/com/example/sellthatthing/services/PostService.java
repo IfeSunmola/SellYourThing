@@ -11,6 +11,7 @@ import com.example.sellthatthing.repositories.PostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,6 +43,7 @@ public class PostService {
         postRepository.save(post);
     }
 
+    @Transactional
     public void createNewPost(NewPostRequest newPostRequest, Authentication auth) {
         Account account = accountService.findByEmail(auth.getName());
         newPostRequest.setPosterAccountId(account.getAccountId());
