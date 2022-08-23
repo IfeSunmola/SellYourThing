@@ -10,7 +10,6 @@ import com.example.sellthatthing.models.Category;
 import com.example.sellthatthing.repositories.PostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,6 +22,7 @@ public class PostService {
 
     private final CategoryService categoryService;
     private final AccountService accountService;
+    private final LocationService locationService;
 
     public List<Post> findAll() {
         List<Post> listOfPosts = postRepository.findAll();
@@ -42,20 +42,20 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public Post createNewPost(NewPostRequest newPostRequest, Authentication auth) {
+    public void createNewPost(NewPostRequest newPostRequest, Authentication auth) {
         Account account = accountService.findByEmail(auth.getName());
         newPostRequest.setPosterAccountId(account.getAccountId());
 
-        return postRepository.save(
+        postRepository.save(
                 new Post(
                         newPostRequest.getTitle(),
                         newPostRequest.getBody(),
                         LocalDateTime.now(),
                         newPostRequest.getPrice(),
                         newPostRequest.getImageUrl(),
-                        newPostRequest.getLocation(),
+                        locationService.findByLocationId(newPostRequest.getLocationId()),
                         categoryService.findByCategoryId(newPostRequest.getCategoryId()),
-                        accountService.findById(newPostRequest.getPosterAccountId())
+                        accountService.findByAccountId(newPostRequest.getPosterAccountId())
                 )
         );
     }
@@ -79,7 +79,7 @@ public class PostService {
     }
 
     public List<Post> findAllAccountPosts(Long accountId) {
-        Account account = accountService.findById(accountId);
+        Account account = accountService.findByAccountId(accountId);
         return postRepository.findPostsByPosterAccount(account);
     }
 

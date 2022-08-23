@@ -62,7 +62,7 @@ public class CategoryService {
     }
 
     public Category findByCategoryId(Long categoryId) {
-        return categoryRepository.findByCategoryId(categoryId).orElseThrow(()
-                -> new ResourceNotFoundException("Category '" + categoryId + "' was not found"));
+        return categoryRepository.findById(categoryId).orElseThrow(()
+                -> new ResourceNotFoundException("Category id: '" + categoryId + "' was not found"));
     }
 }

@@ -7,13 +7,13 @@ import java.math.BigDecimal;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter // No setter == null
+@Setter // No setter == null from thymeleaf.
 public class NewPostRequest {
     private String title;
     private String body;
-    private Long categoryId;
     private BigDecimal price;
     private String imageUrl;
-    private String location;
+    private Long categoryId;
+    private Long locationId;
     private Long posterAccountId;
 }

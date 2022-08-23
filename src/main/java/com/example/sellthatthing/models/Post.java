@@ -1,7 +1,5 @@
 package com.example.sellthatthing.models;
 
-import com.example.sellthatthing.models.Account;
-import com.example.sellthatthing.models.Category;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
@@ -18,11 +16,16 @@ import java.time.format.DateTimeFormatter;
 public class Post {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long postId;
     @NonNull private String title;
-    @NonNull @Column(length = 3000)private String body;
+    @NonNull @Column(length = 3000) private String body;
     @NonNull private LocalDateTime createdAt;
     @NonNull private BigDecimal price;
     @NonNull private String imageUrl;
-    @NonNull private String location;
+
+    @JsonBackReference(value = "postsLocation")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "locationId", referencedColumnName = "locationId")
+    @NonNull
+    private Location postLocation;
 
     @JsonBackReference(value = "postsCategory")
     @ManyToOne(cascade = CascadeType.ALL)

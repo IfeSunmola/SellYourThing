@@ -44,7 +44,7 @@ public class AccountService implements UserDetailsService {
         return listOfAccounts;
     }
 
-    public Account findById(Long accountId) {
+    public Account findByAccountId(Long accountId) {
         return accountRepository.findById(accountId).orElseThrow(()
                 -> new ResourceNotFoundException("Account id '" + accountId + "' was not found"));
     }
@@ -165,7 +165,7 @@ public class AccountService implements UserDetailsService {
     }
 
     public Account update(UpdateAccountRequest updateInfo, Long accountId) {
-        Account accountToUpdate = findById(accountId);
+        Account accountToUpdate = findByAccountId(accountId);
 
         accountToUpdate.setFirstName(updateInfo.getFirstName());
         accountToUpdate.setLastName(updateInfo.getLastName());
@@ -175,7 +175,7 @@ public class AccountService implements UserDetailsService {
     }
 
     public void delete(Long accountId) {
-        findById(accountId);// throws exception if not found
+        findByAccountId(accountId);// throws exception if not found
         accountRepository.deleteById(accountId);
     }
 

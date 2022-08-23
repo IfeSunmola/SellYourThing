@@ -2,6 +2,7 @@ package com.example.sellthatthing;
 
 import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.models.Category;
+import com.example.sellthatthing.models.Location;
 import com.example.sellthatthing.models.Post;
 import com.example.sellthatthing.services.PostService;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,18 @@ public class SellThatThingApplication implements CommandLineRunner {
         Category category3 = new Category();
         category3.setCategoryName("Computers");
         category3.setDateCreated(LocalDateTime.of(2019, 5, 21, 19, 22));
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        Location location1 = new Location();
+        location1.setLocationName("Winnipeg");
+        location1.setDateCreated(LocalDateTime.of(2021, 11, 24, 12, 55));
+
+        Location location2 = new Location();
+        location2.setLocationName("Edmonton");
+        location2.setDateCreated(LocalDateTime.of(2022, 1, 11, 20, 3));
+
+        Location location3 = new Location();
+        location3.setLocationName("Calgary");
+        location3.setDateCreated(LocalDateTime.of(2019, 5, 21, 19, 22));
 
         Post post1 = new Post();
         post1.setTitle("Selling my green frog");
@@ -57,8 +70,8 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
         ));
         post1.setPrice(new BigDecimal("69.12"));
-        post1.setImageUrl("/images/frog/green-frog.jpg");
-        post1.setLocation("Calgary");
+        post1.setImageUrl("images/frog/green-frog.jpg");
+        post1.setPostLocation(location1);
         post1.getPosterAccount().setEnabled(true);
 
         Post post2 = new Post();
@@ -81,8 +94,8 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
         ));
         post2.setPrice(new BigDecimal("4200.21"));
-        post2.setImageUrl("/images/london/london.jpg");
-        post2.setLocation("Edmonton");
+        post2.setImageUrl("images/london/london.jpg");
+        post2.setPostLocation(location2);
         post2.getPosterAccount().setEnabled(true);
 
         Post post3 = new Post();
@@ -105,8 +118,8 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
         ));
         post3.setPrice(new BigDecimal("30.21"));
-        post3.setImageUrl("/images/strawberry/strawberries.jpg");
-        post3.setLocation("Winnipeg");
+        post3.setImageUrl("images/strawberry/strawberries.jpg");
+        post3.setPostLocation(location3);
         post3.getPosterAccount().setEnabled(true);
 
         postService.savePost(post1);
