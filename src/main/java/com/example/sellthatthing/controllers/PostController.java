@@ -1,10 +1,12 @@
 package com.example.sellthatthing.controllers;
 
+import antlr.ASTNULLType;
 import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.services.AccountService;
 import com.example.sellthatthing.services.CategoryService;
 import com.example.sellthatthing.datatransferobjects.NewPostRequest;
 import com.example.sellthatthing.models.Post;
+import com.example.sellthatthing.services.LocationService;
 import com.example.sellthatthing.services.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -21,6 +23,7 @@ public class PostController {
     private final PostService postService;
     private final AccountService accountService;
     private final CategoryService categoryService;
+    private final LocationService locationService;
 
     @GetMapping("/{postId}")
     public String loadPostPageById(@PathVariable Long postId, Model model) {
@@ -34,6 +37,8 @@ public class PostController {
     public String loadNewPostPage(Model model) {
         model.addAttribute("newPostDto", new NewPostRequest());
         model.addAttribute("categories", categoryService.findAll());
+
+        model.addAttribute("locations", locationService.findAll());
         return "create-new-post";
     }
 
