@@ -19,7 +19,7 @@ public class Post {
     @NonNull @Column(length = 3000) private String body;
     @NonNull private LocalDateTime createdAt;
     @NonNull private BigDecimal price;
-    @NonNull private String imageUrl;
+    private String imageUrl;
 
     @JsonBackReference(value = "postsLocation")
     @ManyToOne(cascade = CascadeType.ALL)

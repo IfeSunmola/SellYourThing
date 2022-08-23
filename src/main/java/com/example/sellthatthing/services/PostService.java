@@ -52,7 +52,7 @@ public class PostService {
                         newPostRequest.getBody(),
                         LocalDateTime.now(),
                         newPostRequest.getPrice(),
-                        newPostRequest.getImageUrl(),
+                        //newPostRequest.getImageUrl(),
                         locationService.findByLocationId(newPostRequest.getLocationId()),
                         categoryService.findByCategoryId(newPostRequest.getCategoryId()),
                         accountService.findByAccountId(newPostRequest.getPosterAccountId())
