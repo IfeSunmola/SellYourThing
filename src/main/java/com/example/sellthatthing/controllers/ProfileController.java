@@ -15,7 +15,7 @@ public class ProfileController {
 
     @GetMapping("/{accountId}")
     public String loadProfilePage(@PathVariable Long accountId, Model model) {
-        Account account = accountService.findById(accountId);
+        Account account = accountService.findByAccountId(accountId);
         model.addAttribute("accountInfo", account);
         return "profile";
     }
