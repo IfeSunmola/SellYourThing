@@ -47,7 +47,7 @@
 						</a>
 						<!--Start Drop Down Options-->
 						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navDropDown" sec:authorize="isAuthenticated()">
-							<li><a class="dropdown-item" href="#" th:href="@{|/profile/${#authentication.principal.accountId}|}">Your
+							<li><a class="dropdown-item" href="#" th:href="@{|/users/${#authentication.principal.accountId}|}">Your
 								Account</a></li>
 							<li>
 								<hr class="dropdown-divider">
