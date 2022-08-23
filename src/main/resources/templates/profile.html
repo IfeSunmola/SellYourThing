@@ -48,8 +48,9 @@
 						</a>
 						<!--Start Drop Down Options-->
 						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navDropDown">
-							<li><a class="dropdown-item" href="#" th:href="@{${profileLink}}">Your
-								Account</a></li>
+							<li><a class="dropdown-item" href="#" th:href="@{|/profile/${#authentication.principal.accountId}|}">
+								Your Account</a>
+							</li>
 							<li>
 								<hr class="dropdown-divider">
 							</li>
@@ -127,9 +128,9 @@
 
 		<div class="row">
 			<div class="col d-flex justify-content-center">
-				<form class="d-grid w-50 w-cus-50" action="#" th:method="delete" th:action="@{'/users/' + ${accountInfo.accountId} + '/delete'}">
-					<input type="submit" value="View All Posts" class="btn btn-light">
-				</form>
+				<div class="d-grid w-50 w-cus-50">
+					<a class="btn btn-light" href="#" th:href="@{/profile/{accountId}/posts(accountId=${accountInfo.accountId})}">View All Posts</a>
+				</div>
 			</div>
 		</div>
 		<!--End Buttons-->
