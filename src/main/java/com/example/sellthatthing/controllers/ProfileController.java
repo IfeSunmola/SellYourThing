@@ -18,6 +18,7 @@ public class ProfileController {
     private final AccountService accountService;
     private final PostService postService;
 
+
     @GetMapping("/{accountId}")
     public String loadProfilePage(@PathVariable Long accountId, Model model) {
         Account currentAccount = accountService.findByAccountId(accountId);
@@ -46,6 +47,12 @@ public class ProfileController {
     @GetMapping("/{accountId}/posts")
     public String getAllUserPosts(@PathVariable Long accountId, Model model) {
         model.addAttribute("userPosts", postService.findAllAccountPosts(accountId));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) { // user is authenticated
+            Account authAccount = (Account) auth.getPrincipal();
+            model.addAttribute("authAccount", authAccount);
+            // model.addAttribute("isSameUser", authAccount.getAccountId().equals(currentAccount.getAccountId()));
+        }
         return "view-user-posts";
     }
 }
