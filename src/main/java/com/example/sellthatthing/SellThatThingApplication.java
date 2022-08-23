@@ -57,7 +57,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
         ));
         post1.setPrice(new BigDecimal("69.12"));
-        post1.setImageUrl("images/frog/green-frog.jpg");
+        post1.setImageUrl("/images/frog/green-frog.jpg");
         post1.setLocation("Calgary");
         post1.getPosterAccount().setEnabled(true);
 
@@ -81,7 +81,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
         ));
         post2.setPrice(new BigDecimal("4200.21"));
-        post2.setImageUrl("images/london/london.jpg");
+        post2.setImageUrl("/images/london/london.jpg");
         post2.setLocation("Edmonton");
         post2.getPosterAccount().setEnabled(true);
 
@@ -105,7 +105,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
         ));
         post3.setPrice(new BigDecimal("30.21"));
-        post3.setImageUrl("images/strawberry/strawberries.jpg");
+        post3.setImageUrl("/images/strawberry/strawberries.jpg");
         post3.setLocation("Winnipeg");
         post3.getPosterAccount().setEnabled(true);
 
