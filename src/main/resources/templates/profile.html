@@ -44,11 +44,11 @@
 						<a class="nav-link dropdown-toggle me-5 text-center text-white btn btn-primary" id="navDropDown" role="button"
 						   data-bs-toggle="dropdown" aria-expanded="false"
 						   sec:authorize="isAuthenticated()"
-						   th:text="|Hello, ${#authentication.principal.firstName}|">
+						   th:text="|Hello, ${authAccount.firstName}|">
 						</a>
 						<!--Start Drop Down Options-->
-						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navDropDown">
-							<li><a class="dropdown-item" href="#" th:href="@{|/profile/${#authentication.principal.accountId}|}">
+						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navDropDown" sec:authorize="isAuthenticated()">
+							<li><a class="dropdown-item" href="#" th:href="@{|/users/${authAccount.accountId}|}">
 								Your Account</a>
 							</li>
 							<li>
@@ -72,7 +72,7 @@
 				<div class="row">
 					<div class="col-12 ">
 						<div class="form-floating text-dark text-muted mb-3">
-							<input readonly autofocus id="firstname" class="form-control" type="text" th:value="${accountInfo.firstName}"
+							<input readonly autofocus id="firstname" class="form-control" type="text" th:value="${currentAccount.firstName}"
 								   placeholder="First Name"/>
 							<label for="firstname">First Name</label>
 						</div>
@@ -80,7 +80,7 @@
 
 					<div class="col-12 ">
 						<div class="form-floating text-dark text-muted mb-3">
-							<input readonly id="lastname" class="form-control" type="text" th:value="${accountInfo.lastName}"
+							<input readonly id="lastname" class="form-control" type="text" th:value="${currentAccount.lastName}"
 								   placeholder="Last Name"/>
 							<label for="lastname">Last Name</label>
 						</div>
@@ -92,7 +92,7 @@
 				<div class="row">
 					<div class="col-12">
 						<div class="form-floating text-dark text-muted mb-3">
-							<input readonly id="email" class="form-control" type="text" th:value="${accountInfo.email}"
+							<input readonly id="email" class="form-control" type="text" th:value="${currentAccount.email}"
 								   placeholder="email@address.com"/>
 							<label for="email">Email</label>
 						</div>
@@ -100,7 +100,7 @@
 
 					<div class="col-12">
 						<div class="form-floating text-dark text-muted">
-							<input readonly id="dateOfBirth" class="form-control" type="date" th:value="${accountInfo.dateOfBirth}"/>
+							<input readonly id="dateOfBirth" class="form-control" type="date" th:value="${currentAccount.dateOfBirth}"/>
 							<label for="dateOfBirth">Date of Birth</label></div>
 					</div>
 				</div>
@@ -110,17 +110,17 @@
 		<!--End Profile Form-->
 
 		<!--Start Buttons-->
-		<div class="row mb-3">
+		<div class="row mb-3" th:if="${isSameUser}">
 			<div class="col d-flex justify-content-center">
-				<form class="d-grid w-50 w-cus-50" action="#" th:method="delete" th:action="@{'/users/' + ${accountInfo.accountId} + '/delete'}">
+				<form class="d-grid w-50 w-cus-50" action="#" th:method="delete" tsh:action="@{'/users/' + ${accountInfo.accountId} + '/delete'}">
 					<input type="submit" value="Update Account" class="btn btn-warning">
 				</form>
 			</div>
 		</div>
 
-		<div class="row mb-3">
+		<div class="row mb-3" th:if="${isSameUser}">
 			<div class="col d-flex justify-content-center">
-				<form class="d-grid w-50 w-cus-50" action="#" th:method="delete" th:action="@{'/users/' + ${accountInfo.accountId} + '/delete'}">
+				<form class="d-grid w-50 w-cus-50" action="#" th:method="delete" tsh:action="@{'/users/' + ${accountInfo.accountId} + '/delete'}">
 					<input type="submit" value="Delete Account" class="btn btn-danger">
 				</form>
 			</div>
@@ -129,7 +129,7 @@
 		<div class="row">
 			<div class="col d-flex justify-content-center">
 				<div class="d-grid w-50 w-cus-50">
-					<a class="btn btn-light" href="#" th:href="@{/profile/{accountId}/posts(accountId=${accountInfo.accountId})}">View All Posts</a>
+					<a class="btn btn-light" href="#" th:href="@{|/users/${currentAccount.accountId}/posts|}">View All Posts</a>
 				</div>
 			</div>
 		</div>
