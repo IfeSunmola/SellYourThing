@@ -9,7 +9,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -35,6 +34,7 @@ public class WebSecurityConfig {
                 // views security
                 .authorizeRequests()
                 .antMatchers(ANT_WHITELIST).permitAll()
+                .antMatchers(RESOURCES_WHITELIST).permitAll()
                 .regexMatchers(REGEX_WHITELIST).permitAll()
                 // roles security
                 .antMatchers("/admin/**").hasRole("Admin")
@@ -50,12 +50,6 @@ public class WebSecurityConfig {
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout")
                 .invalidateHttpSession(true).permitAll();
         return http.build();
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        // RESOURCES_WHITELIST shouldn't be checked in security
-        return (web -> web.ignoring().antMatchers(RESOURCES_WHITELIST));
     }
 
     @Bean
