@@ -13,5 +13,6 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findPostsByPosterAccount(Account account);
+
     List<Post> findByPostCategory(Category category);
 }
