@@ -28,7 +28,7 @@ public class PostController {
         Post currentPost = postService.findByPostId(postId);
         model.addAttribute("currentPost", currentPost);
         model.addAttribute("account", currentPost.getPosterAccount());
-        return "view-post";
+        return "view-post-description";
     }
 
     @GetMapping("/create-new")
