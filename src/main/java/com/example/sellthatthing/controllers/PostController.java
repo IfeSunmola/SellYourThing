@@ -1,11 +1,9 @@
 package com.example.sellthatthing.controllers;
 
-import antlr.ASTNULLType;
-import com.example.sellthatthing.models.Account;
-import com.example.sellthatthing.services.AccountService;
-import com.example.sellthatthing.services.CategoryService;
 import com.example.sellthatthing.datatransferobjects.NewPostRequest;
 import com.example.sellthatthing.models.Post;
+import com.example.sellthatthing.services.AccountService;
+import com.example.sellthatthing.services.CategoryService;
 import com.example.sellthatthing.services.LocationService;
 import com.example.sellthatthing.services.PostService;
 import lombok.AllArgsConstructor;
@@ -50,6 +48,6 @@ public class PostController {
             return "redirect:/login";
         }
         postService.createNewPost(newPostRequest, auth);
-        return "redirect:/all";
+        return "redirect:/";
     }
 }
