@@ -20,104 +20,11 @@
 
 <body style="background-color: #121212" class="text-white">
 	<div class="container" style="height: 99vh">
-		<!--Start Nav Bar-->
-		<nav class="navbar navbar-dark navbar-expand-lg">
-			<!--Start Logo and Text-->
-			<a class="navbar-brand fs-1 text-center " href="#" th:href="@{/}">
-				<i class="bi bi-shop me-1 text-center" style="font-size: 3rem;"></i>
-				SellThatThing
-			</a>
-			<!--End Logo and Text-->
+		<div th:replace="fragments :: navbarAndHeader"></div>
 
-			<!--Start Nav bar items-->
-			<div class="expand navbar-collapse justify-content-end" id="navbarNavAltMarkup">
-				<div class="navbar-nav">
-					<a class="nav-link me-5 text-center text-white" href="#">View By Category</a>
-					<a class="nav-link me-5 text-center text-white" href="#" th:href="@{/posts/create-new}">Create New Listing</a>
+		<div th:replace="fragments :: sortParameters"></div>
 
-					<a class="nav-link me-5 text-center text-white" sec:authorize="!isAuthenticated()" href="#" th:href="@{/register}">Register</a>
-					<a class="nav-link me-5 text-center text-white" sec:authorize="!isAuthenticated()" href="#" th:href="@{/login}">Login</a>
-
-					<!--Start Drop Down-->
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle me-5 text-center text-white btn btn-primary" id="navDropDown" role="button"
-						   data-bs-toggle="dropdown" aria-expanded="false"
-						   sec:authorize="isAuthenticated()"
-						   th:text="|Hello, ${authAccount.firstName}|">
-						</a>
-						<!--Start Drop Down Options-->
-						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navDropDown" sec:authorize="isAuthenticated()">
-							<li><a class="dropdown-item" href="#" th:href="@{|/users/${authAccount.accountId}|}">
-								Your Account</a>
-							</li>
-							<li>
-								<hr class="dropdown-divider">
-							</li>
-							<li><a class="dropdown-item" href="#" th:href="@{/logout}">Log out</a></li>
-						</ul>
-						<!--End Drop Down Options-->
-					</li>
-					<!--Start Drop Down-->
-				</div>
-			</div>
-			<!--End Nav bar items-->
-		</nav>
-		<!--End Nav Bar-->
-
-		<!--Start Sort Parameters-->
-		<div class="d-flex justify-content-center mb-3 mt-3">
-			<h3>Sorting Parameters Stuff Here</h3>
-		</div>
-		<!--End Sort Parameters-->
-
-		<!--Start All Posts-->
-		<div class="col-12" th:each="post: ${userPosts}">
-			<a href="#" th:href="@{/posts/{postId}(postId=${post.postId})}" class="link-dark">
-				<div class="card bg-dark text-white mb-3">
-					<div class="row g-0">
-						<!--Start Display Image-->
-						<div class="col-md-4">
-							<img src="#" th:src="@{${post.imageUrl}}" class="card-img-top" alt="alt text" th:alt="${post.title} + ' image'"
-								 width="300"
-								 height="300">
-						</div>
-						<!--End Display Image-->
-
-						<!--Start Post Body-->
-						<div class="col-md-8 m-0">
-							<div class="card-body p-0 ms-md-3 mt-sm-3 mt-3">
-								<!--Start Title and Price-->
-								<div class="row">
-									<div class="col-9 ps-2">
-										<p class="card-title fs-1 text-start" th:text="${post.title}"></p>
-									</div>
-									<div class="col-3">
-										<h5 class="card-title text-end" th:text="'$' + ${post.price}"></h5>
-									</div>
-								</div>
-								<!--End Title and Price-->
-
-								<!--Start Location and Date-->
-								<div class="row">
-									<div>
-										<p th:text="${post.postLocation.locationName}" class="text-start mt-2"></p>
-										<p th:text="${post.getFormattedCreateAtDate}" class="text-start"></p>
-									</div>
-								</div>
-								<!--End Location and Date-->
-
-								<div class="card-text  mt-3 p-0">
-									<p class="fs-4 text-start" th:text="${post.body.substring(0, 250) + '...'}">Post Body</p>
-								</div>
-							</div>
-						</div>
-						<!--End Post Body-->
-					</div>
-				</div>
-			</a>
-			<hr>
-		</div>
-		<!--End All Posts-->
+		<div th:replace="fragments :: showAllPosts (posts=${userPosts})"></div>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 			th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js}"
