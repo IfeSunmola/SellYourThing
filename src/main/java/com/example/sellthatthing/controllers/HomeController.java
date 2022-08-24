@@ -29,9 +29,4 @@ public class HomeController {
         }
         return "index";
     }
-
-    @GetMapping("/css/style.css")
-    public String temp() {
-        return "redirect:/";
-    }
 }
