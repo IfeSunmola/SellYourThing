@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-<head th:replace="fragments :: htmlHead (pageTitle='View Post Description')">
+<head th:replace="fragments :: htmlHead (pageTitle='Post Description')">
 
 <body style="background-color: #121212" class="text-white">
 	<div class="container" style="height: 99vh">
@@ -73,8 +73,11 @@
 					<!--Start Card-->
 					<div class="card text-white bg-dark sticky-lg-top">
 						<!--Start Card Header-->
-						<div class="card-header text-center fs-5"
-							 th:text="'Contact ' + ${account.firstName} + ' ' + ${account.lastName} + ' about this listing'">
+						<div class="card-header text-center fs-5">
+							<p>
+								Contact <a th:href="@{|/users/${account.accountId}}" th:text="${account.firstName} + ' ' + ${account.lastName}"></a>
+								about this listing
+							</p>
 						</div>
 						<!--End Card Header-->
 
