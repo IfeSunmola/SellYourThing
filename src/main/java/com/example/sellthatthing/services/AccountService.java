@@ -74,7 +74,7 @@ public class AccountService implements UserDetailsService {
         tokenService.saveToken(token);
 
         String confirmAccountLink = "http://localhost:8080/register/verify?token=" + token.getToken();
-        emailSenderService.send(newAccountRequest.getEmail(), buildEmail(newAccountRequest.getFirstName(), confirmAccountLink));
+        emailSenderService.sendMail(newAccountRequest.getEmail(), buildEmail(newAccountRequest.getFirstName(), confirmAccountLink));
         return newAccount;
     }
 
