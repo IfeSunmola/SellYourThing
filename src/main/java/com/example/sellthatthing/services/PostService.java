@@ -1,6 +1,8 @@
 package com.example.sellthatthing.services;
 
 import com.example.sellthatthing.datatransferobjects.NewPostRequest;
+import com.example.sellthatthing.datatransferobjects.PostReply;
+import com.example.sellthatthing.emailsender.EmailSenderService;
 import com.example.sellthatthing.models.Post;
 import com.example.sellthatthing.datatransferobjects.UpdatePostRequest;
 import com.example.sellthatthing.exceptions.EmptyResourceException;
@@ -16,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.example.sellthatthing.emailsender.MailBody.POST_REPLY_HTML;
+
 @AllArgsConstructor
 @Service
 public class PostService {
@@ -24,6 +28,7 @@ public class PostService {
     private final CategoryService categoryService;
     private final AccountService accountService;
     private final LocationService locationService;
+    private final EmailSenderService emailSenderService;
 
     public List<Post> findAll() {
         List<Post> listOfPosts = postRepository.findAll();
@@ -93,5 +98,25 @@ public class PostService {
     public Post findByPostId(Long postId) {
         return postRepository.findById(postId).orElseThrow(()
                 -> new ResourceNotFoundException("Account id '" + postId + "' was not found"));
+    }
+
+    public void sendPostReply(PostReply postReply) {
+        Account posterAccount = findByPostId(postReply.getPostId()).getPosterAccount();
+        emailSenderService.sendMail(
+                "SellThatThing: Someone is interested in your listing",
+                "donotreply@sellthatthing.com",
+                posterAccount.getEmail(),
+                postReply.getReplyEmail(),
+                generatePostReplyBody(postReply)
+        );
+    }
+
+    private String generatePostReplyBody(PostReply postReply) {
+        Post post = findByPostId(postReply.getPostId());
+        Account posterAccount = post.getPosterAccount();
+        return POST_REPLY_HTML.replace("$listingTitle", post.getTitle())
+                .replace("$firstName", posterAccount.getFirstName())
+                .replace("$messageFrom", postReply.getReplyEmail())
+                .replace("$messageBody", postReply.getMessage());
     }
 }
