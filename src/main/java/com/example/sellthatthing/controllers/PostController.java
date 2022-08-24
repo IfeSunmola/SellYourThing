@@ -1,6 +1,9 @@
 package com.example.sellthatthing.controllers;
 
 import com.example.sellthatthing.datatransferobjects.NewPostRequest;
+import com.example.sellthatthing.datatransferobjects.PostReply;
+import com.example.sellthatthing.emailsender.EmailSenderService;
+import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.models.Post;
 import com.example.sellthatthing.services.AccountService;
 import com.example.sellthatthing.services.CategoryService;
@@ -19,20 +22,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/posts")
 public class PostController {
     private final PostService postService;
-    private final AccountService accountService;
     private final CategoryService categoryService;
     private final LocationService locationService;
 
     @GetMapping("/{postId}")
-    public String loadPostPageById(@PathVariable Long postId, Model model) {
+    public String loadPostPageById(@PathVariable final Long postId, final Model model) {
         Post currentPost = postService.findByPostId(postId);
         model.addAttribute("currentPost", currentPost);
         model.addAttribute("account", currentPost.getPosterAccount());
+        model.addAttribute("replyToPostDto", new PostReply());
         return "view-post-description";
     }
 
     @GetMapping("/create-new")
-    public String loadNewPostPage(Model model) {
+    public String loadNewPostPage(final Model model) {
         model.addAttribute("newPostDto", new NewPostRequest());
         model.addAttribute("categories", categoryService.findAll());
 
@@ -41,13 +44,19 @@ public class PostController {
     }
 
     @PostMapping("/create-new")
-    public String processNewPostForm(@ModelAttribute NewPostRequest newPostRequest) {
+    public String processNewPostForm(@ModelAttribute final NewPostRequest newPostRequest) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if ((auth instanceof AnonymousAuthenticationToken)) {
             // user is not authenticated, shouldn't happen since only authenticated users can view the page
             return "redirect:/login";
         }
         postService.createNewPost(newPostRequest, auth);
+        return "redirect:/";
+    }
+
+    @PostMapping("/reply")
+    public String replyToPost(@ModelAttribute final PostReply postReply) {
+        postService.sendPostReply(postReply);
         return "redirect:/";
     }
 }
