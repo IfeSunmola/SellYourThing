@@ -15,14 +15,15 @@ public class EmailSenderService {
     private final JavaMailSender mailSender;
 
     @Async
-    public void send(String to, String email) {
+    public void sendMail(String subject, String fromEmail, String toEmail, String replyTo, String mailContent) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-            helper.setText(email, true);
-            helper.setTo(to);
-            helper.setSubject("Activate your account");
-            helper.setFrom("donnotreply@sellyourthing.com");
+            helper.setSubject(subject);
+            helper.setFrom(fromEmail);
+            helper.setTo(toEmail);
+            helper.setReplyTo(replyTo);
+            helper.setText(mailContent, true);
             mailSender.send(mimeMessage);
         }
         catch (MessagingException e) {
