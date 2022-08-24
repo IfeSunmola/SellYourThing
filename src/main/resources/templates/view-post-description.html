@@ -69,7 +69,7 @@
 				<!--End Post Info-->
 
 				<!--Start Contact Account Info-->
-				<div class="col-lg-3 col-12">
+				<div class="col-lg-3 col-12 mt-lg-4">
 					<!--Start Card-->
 					<div class="card text-white bg-dark sticky-lg-top">
 						<!--Start Card Header-->
@@ -92,15 +92,18 @@
 								</div>
 								<!--End Your Message-->
 
-								<!--Start Phone Number-->
+								<!--Start Email-->
 								<div class="mb-3">
-									<label for="phoneNumber" class="form-label fs-6">Phone Number (optional)</label>
-									<input type="text" class="form-control" id="phoneNumber" placeholder="123-456-7890">
+									<label th:for="email" class="form-label fs-6">Email they will reply to:</label>
+									<input type="email" class="form-control" sec:authorize="!isAuthenticated()" th:id="email"
+										   placeholder="email@address.com">
+									<input type="email" class="form-control" sec:authorize="isAuthenticated()" th:id="email"
+										   th:value="${#authentication.principal.email}">
 								</div>
 								<!--End Phone Number-->
 
 								<!--Start Switch Button-->
-								<div class="mb-3 form-check form-switch">
+								<div hidden class="mb-3 form-check form-switch">
 									<input class="form-check-input" type="checkbox" id="sendMessageCopy" checked>
 									<label class="form-check-label" for="sendMessageCopy">Send me a copy of this message</label>
 								</div>
