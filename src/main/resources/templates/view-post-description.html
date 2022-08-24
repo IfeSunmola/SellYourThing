@@ -83,11 +83,11 @@
 
 						<!--Start Card Body-->
 						<div class="card-body">
-							<form>
+							<form method="post" th:object="${replyToPostDto}" th:action="@{/posts/reply}">
 								<!--Start Your Message-->
 								<div class="mb-3">
 									<label for="message" class="form-label fs-6">Your Message</label>
-									<textarea class="form-control" id="message"
+									<textarea class="form-control" id="message" th:field="*{message}"
 											  rows="5">Hi, I am interested in this item. Is it still available?</textarea>
 								</div>
 								<!--End Your Message-->
@@ -95,12 +95,13 @@
 								<!--Start Email-->
 								<div class="mb-3">
 									<label th:for="email" class="form-label fs-6">Email they will reply to:</label>
-									<input type="email" class="form-control" sec:authorize="!isAuthenticated()" th:id="email"
+									<input type="email" class="form-control" sec:authorize="!isAuthenticated()" th:id="replyEmail"
+										   th:name="replyEmail"
 										   placeholder="email@address.com">
-									<input type="email" class="form-control" sec:authorize="isAuthenticated()" th:id="email"
+									<input type="email" class="form-control" sec:authorize="isAuthenticated()" th:id="replyEmail" th:name="replyEmail"
 										   th:value="${#authentication.principal.email}">
 								</div>
-								<!--End Phone Number-->
+								<!--End Email-->
 
 								<!--Start Switch Button-->
 								<div hidden class="mb-3 form-check form-switch">
