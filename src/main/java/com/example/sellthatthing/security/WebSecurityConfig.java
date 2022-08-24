@@ -23,7 +23,7 @@ public class WebSecurityConfig {
     // links that does not need authentication
     private static final String[] ANT_WHITELIST = {"/", "/index", "/register/**", "/users/**"};
     private static final String[] REGEX_WHITELIST = {"/posts/(\\d+)"};
-    private static final String[] RESOURCES_WHITELIST = {"/images/**", "/h2-console/**"};
+    private static final String[] RESOURCES_WHITELIST = {"/css/**", "/images/**", "/h2-console/**"};
 
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
