@@ -1,5 +1,6 @@
 package com.example.sellthatthing.services;
 
+import com.example.sellthatthing.datatransferobjects.PostReply;
 import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.datatransferobjects.NewAccountRequest;
 import com.example.sellthatthing.datatransferobjects.UpdateAccountRequest;
@@ -7,6 +8,7 @@ import com.example.sellthatthing.emailsender.EmailSenderService;
 import com.example.sellthatthing.exceptions.EmptyResourceException;
 import com.example.sellthatthing.exceptions.ResourceNotFoundException;
 import com.example.sellthatthing.models.ConfirmationToken;
+import com.example.sellthatthing.models.Post;
 import com.example.sellthatthing.repositories.AccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +22,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+
+import static com.example.sellthatthing.emailsender.MailBody.POST_REPLY_HTML;
 
 @Service
 @AllArgsConstructor
@@ -74,7 +78,13 @@ public class AccountService implements UserDetailsService {
         tokenService.saveToken(token);
 
         String confirmAccountLink = "http://localhost:8080/register/verify?token=" + token.getToken();
-        emailSenderService.sendMail(newAccountRequest.getEmail(), buildEmail(newAccountRequest.getFirstName(), confirmAccountLink));
+        emailSenderService.sendMail(
+                "SellThatThing: Activate your account",
+                "donnotreply@sellyourthing.com",
+                newAccountRequest.getEmail(),
+                "donotreply@sellyourthing.com",
+                buildEmail(newAccountRequest.getFirstName(), confirmAccountLink)
+        );
         return newAccount;
     }
 
