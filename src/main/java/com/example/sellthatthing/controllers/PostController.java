@@ -57,6 +57,6 @@ public class PostController {
     @PostMapping("/reply")
     public String replyToPost(@ModelAttribute final PostReply postReply) {
         postService.sendPostReply(postReply);
-        return "redirect:/";
+        return "redirect:/posts/" + postReply.getPostId() + "?replySuccess";
     }
 }

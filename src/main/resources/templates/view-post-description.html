@@ -6,6 +6,14 @@
 	<div class="container" style="height: 99vh">
 		<div th:replace="fragments :: navbarAndHeader"></div>
 
+		<!--Start Success Message-->
+		<div class="d-flex justify-content-center align-items-center" th:if="${param.replySuccess}">
+			<div class="alert alert-success">
+				Your message has been sent.
+			</div>
+		</div>
+		<!--End Success Message-->
+
 		<!--Start Post/Contact form-->
 		<div class="mt-5">
 			<div class="row">
