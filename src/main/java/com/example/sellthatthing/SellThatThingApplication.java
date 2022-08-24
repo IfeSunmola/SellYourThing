@@ -25,6 +25,9 @@ public class SellThatThingApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        if (postService.findAll().size() >= 0) {
+            return;
+        }
         Category category1 = new Category();
         category1.setCategoryName("Books");
         category1.setDateCreated(LocalDateTime.of(2021, 11, 24, 12, 55));
