@@ -31,4 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
-/src/main/resources/templates/old nav bar
+
+### Personal ###
+/src/Todo-Notes.md
