@@ -30,7 +30,7 @@ public class SellThatThingApplication implements CommandLineRunner {
             postService.findAll();
         }
         catch (EmptyResourceException ignored) {
-
+            return;
         }
         Category category1 = new Category();
         category1.setCategoryName("Books");
