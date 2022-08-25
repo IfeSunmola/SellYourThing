@@ -1,3 +1,34 @@
+# Todo:
+1. Compress images before upload
+2. Change from SellThatThing to SellYourThing
+3. Consider firebase
+4. Show custom message for users that have not verified their account
+5. Verification code should be asked for immediately after registering
+6. Implement "send a copy of this to my email"
+7. Accept images
+8. Add search parameters
+
+
+---
+
+
+# Thymeleaf Notes:
+1. Show content to users that are authenticated/logged-in: `sec:authorize="isAuthenticated()"`. Add `!` to reverse
+
+2. Show content to users that have the role of `ADMIN`: `sec:authorize="hasRole('ROLE_ADMIN')"`
+
+3. Use `${#authentication.principal.firstName}` to get the firstName of the currently logged-in user. 
+Make sure to use `sec:authorize="isAuthenticated()` to make sure the person seeing it is actually logged. Intellij will complain about `firstName` not found
+
+4. To construct texts: `th:text="|Hello, ${#authentication.principal.firstName}|"`
+
+5. To construct links: `th:href="@{|/profile/${#authentication.principal.accountId}|}"`
+
+6. `th:field` overrides `th:id`, `th:name`, and `th:value`
+
+
+---
+
 # Connect MySql to Heroku
 ### Phase 1
 1. Run `heroku create <websiteName>`
@@ -43,3 +74,7 @@
 5. To use `application-dev.properties` file in `localhost`, top kinda right of screen -> edit configurations -> modify options ->  make sire Add VM options is checked -> in space for VM Options: `-Dspring.profiles.active=dev`
 
 6. To set localhost environment variable: same as above, just make sure Environment Variables is checked
+
+
+### Notes
+1. Environment variables from heroku have a higher priority that .`properties` file, so no need to update `username` and `password` in .`properties` file
