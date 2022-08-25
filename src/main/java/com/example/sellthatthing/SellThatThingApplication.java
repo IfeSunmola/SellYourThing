@@ -29,9 +29,13 @@ public class SellThatThingApplication implements CommandLineRunner {
         try {
             postService.findAll();
         }
-        catch (EmptyResourceException ignored) {
-            return;
+        catch (EmptyResourceException e) {
+            // no posts , add temporary data
+            addSeedData();
         }
+    }
+
+    private void addSeedData() {
         Category category1 = new Category();
         category1.setCategoryName("Books");
         category1.setDateCreated(LocalDateTime.of(2021, 11, 24, 12, 55));
