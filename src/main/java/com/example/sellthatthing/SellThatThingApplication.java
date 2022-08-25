@@ -1,5 +1,6 @@
 package com.example.sellthatthing;
 
+import com.example.sellthatthing.exceptions.EmptyResourceException;
 import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.models.Category;
 import com.example.sellthatthing.models.Location;
@@ -25,8 +26,11 @@ public class SellThatThingApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (postService.findAll().size() != 0) {
-            return;
+        try {
+            postService.findAll();
+        }
+        catch (EmptyResourceException ignored) {
+
         }
         Category category1 = new Category();
         category1.setCategoryName("Books");
