@@ -25,7 +25,7 @@ public class SellThatThingApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (postService.findAll().size() >= 0) {
+        if (postService.findAll().size() != 0) {
             return;
         }
         Category category1 = new Category();
