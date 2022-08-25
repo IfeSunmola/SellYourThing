@@ -1,6 +1,5 @@
 package com.example.sellthatthing.services;
 
-import com.example.sellthatthing.datatransferobjects.PostReply;
 import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.datatransferobjects.NewAccountRequest;
 import com.example.sellthatthing.datatransferobjects.UpdateAccountRequest;
@@ -8,7 +7,6 @@ import com.example.sellthatthing.emailsender.EmailSenderService;
 import com.example.sellthatthing.exceptions.EmptyResourceException;
 import com.example.sellthatthing.exceptions.ResourceNotFoundException;
 import com.example.sellthatthing.models.ConfirmationToken;
-import com.example.sellthatthing.models.Post;
 import com.example.sellthatthing.repositories.AccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,13 +15,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-
-import static com.example.sellthatthing.emailsender.MailBody.POST_REPLY_HTML;
 
 @Service
 @AllArgsConstructor
@@ -35,7 +33,7 @@ public class AccountService implements UserDetailsService {
     private final EmailSenderService emailSenderService;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
         return accountRepository.findByEmail(email).orElseThrow(()
                 -> new UsernameNotFoundException("Email '" + email + "' was not found"));
     }
@@ -48,18 +46,18 @@ public class AccountService implements UserDetailsService {
         return listOfAccounts;
     }
 
-    public Account findByAccountId(Long accountId) {
+    public Account findByAccountId(final Long accountId) {
         return accountRepository.findById(accountId).orElseThrow(()
                 -> new ResourceNotFoundException("Account id '" + accountId + "' was not found"));
     }
 
-    public Account findByEmail(String email) {
+    public Account findByEmail(final String email) {
         // throwing UsernameNotFound because of spring security
         return accountRepository.findByEmail(email).orElseThrow(()
                 -> new UsernameNotFoundException("Email '" + email + "' was not found"));
     }
 
-    public Account createAccount(NewAccountRequest newAccountRequest) {
+    public void createAccount(final NewAccountRequest newAccountRequest, final HttpServletRequest request) {
         Account newAccount = new Account(
                 newAccountRequest.getFirstName(),
                 newAccountRequest.getLastName(),
@@ -77,7 +75,11 @@ public class AccountService implements UserDetailsService {
         );
         tokenService.saveToken(token);
 
-        String confirmAccountLink = "http://localhost:8080/register/verify?token=" + token.getToken();
+        String websiteUrl = ServletUriComponentsBuilder.fromRequestUri(request)
+                .replacePath(null)
+                .build()
+                .toUriString();
+        String confirmAccountLink = websiteUrl + "/register/verify?token=" + token.getToken();
         emailSenderService.sendMail(
                 "SellThatThing: Activate your account",
                 "donnotreply@sellyourthing.com",
@@ -85,11 +87,10 @@ public class AccountService implements UserDetailsService {
                 "donotreply@sellyourthing.com",
                 buildEmail(newAccountRequest.getFirstName(), confirmAccountLink)
         );
-        return newAccount;
     }
 
     @Transactional
-    public String confirmToken(String token) {
+    public void confirmToken(final String token) {
         ConfirmationToken confirmationToken = tokenService.findByToken(token);
 
         if (confirmationToken.getConfirmedAt() != null) {
@@ -102,10 +103,9 @@ public class AccountService implements UserDetailsService {
 
         tokenService.updateConfirmedAt(token);
         accountRepository.enableAppUser(confirmationToken.getAccount().getEmail());
-        return "confirmed";
     }
 
-    private String buildEmail(String name, String link) {
+    private String buildEmail(final String name, final String link) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                 "\n" +
                 "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
@@ -174,7 +174,7 @@ public class AccountService implements UserDetailsService {
                 "</div></div>";
     }
 
-    public Account update(UpdateAccountRequest updateInfo, Long accountId) {
+    public Account update(final UpdateAccountRequest updateInfo, final Long accountId) {
         Account accountToUpdate = findByAccountId(accountId);
 
         accountToUpdate.setFirstName(updateInfo.getFirstName());
@@ -184,16 +184,16 @@ public class AccountService implements UserDetailsService {
         return accountRepository.save(accountToUpdate);
     }
 
-    public void delete(Long accountId) {
+    public void delete(final Long accountId) {
         findByAccountId(accountId);// throws exception if not found
         accountRepository.deleteById(accountId);
     }
 
-    public boolean existsByEmail(String email) {
+    public boolean existsByEmail(final String email) {
         return accountRepository.existsByEmail(email);
     }
 
-    public List<Account> findPostsByAccountId(Long accountId) {
+    public List<Account> findPostsByAccountId(final Long accountId) {
         return accountRepository.findPostsByAccountId(accountId);
     }
 }

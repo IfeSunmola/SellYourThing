@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @AllArgsConstructor
 @RequestMapping("/register")
@@ -32,8 +34,8 @@ public class RegisterController {
     }
 
     @PostMapping
-    public String processRegisterForm(@ModelAttribute final NewAccountRequest newAccountRequest) {
-        accountService.createAccount(newAccountRequest);
+    public String processRegisterForm(@ModelAttribute final NewAccountRequest newAccountRequest, final HttpServletRequest request) {
+        accountService.createAccount(newAccountRequest, request);
         return "redirect:/register?success"; // redirect user to login page after registration
     }
 
