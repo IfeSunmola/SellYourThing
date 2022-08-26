@@ -22,7 +22,8 @@
 						<label for="verifyCode" class="col-form-label">Verification Code</label>
 					</div>
 					<div class="col-auto">
-						<input type="text" id="verifyCode" name="verificationCode" class="form-control" aria-describedby="verifyCode">
+						<input type="text" id="verifyCode" name="enteredVerificationCode" class="form-control" aria-describedby="verifyCode">
+						<input type="hidden" name="verificationCodeId" th:value="${verifyCodeId}">
 					</div>
 				</div>
 				<!--End Code-->

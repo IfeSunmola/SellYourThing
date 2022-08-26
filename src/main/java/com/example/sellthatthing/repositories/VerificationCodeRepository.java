@@ -8,17 +8,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Repository
 @Transactional(readOnly = true)
 public interface VerificationCodeRepository extends JpaRepository<VerificationCode, Long> {
-    Optional<VerificationCode> findByCode(String token);
-
     @Transactional
     @Modifying
-    @Query("UPDATE VerificationCode c " +
-            "SET c.confirmedAt = ?2 " +
-            "WHERE c.code = ?1")
-    int updateConfirmedAt(String token, LocalDateTime confirmedAt);
+    @Query("UPDATE VerificationCode c SET c.confirmedAt = ?2 WHERE c.codeId = ?1")
+    int updateConfirmedAtById(Long codeId, LocalDateTime now);
 }

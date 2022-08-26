@@ -13,16 +13,16 @@ import java.time.LocalDateTime;
 public class VerificationCodeService {
     private final VerificationCodeRepository verificationCodeRepository;
 
-    public void saveCode(VerificationCode code) {
+    public void updateConfirmedAtById(Long codeId) {
+        verificationCodeRepository.updateConfirmedAtById(codeId, LocalDateTime.now());
+    }
+
+    public VerificationCode findByCodeId(Long codeId) {
+        return verificationCodeRepository.findById(codeId).orElseThrow(()
+                -> new ResourceNotFoundException("Code id '" + codeId + "' was not found"));
+    }
+
+    public void save(VerificationCode code) {
         verificationCodeRepository.save(code);
-    }
-
-    public VerificationCode findByCode(String token) {
-        return verificationCodeRepository.findByCode(token).orElseThrow(()
-                -> new ResourceNotFoundException("Invalid Code"));
-    }
-
-    public int updateConfirmedAt(String code){
-        return verificationCodeRepository.updateConfirmedAt(code, LocalDateTime.now());
     }
 }
