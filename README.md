@@ -65,6 +65,8 @@
            userFirstName = authAccount.getFirstName();
        }
 
+3. Flash Attributes will be removed immediately the redirected page has been rendered
+
 ---
 
 # Connect MySql to Heroku
