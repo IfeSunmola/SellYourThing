@@ -9,7 +9,7 @@
 7. Accept images
 8. Add search parameters
 9. Verified/expired codes should be deleted from the database.
-10. Log in should not be requrired to reply to a message
+10. Log in should not be required to reply to a message
 
 ---
 
