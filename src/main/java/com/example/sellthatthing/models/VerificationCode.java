@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.UUID;
 
 @Getter
@@ -14,7 +15,7 @@ import java.util.UUID;
 @Entity
 public class VerificationCode {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long codeId;
-    @NonNull private final String code = UUID.randomUUID().toString();
+    @NonNull private final String code = UUID.randomUUID().toString().toUpperCase(Locale.ROOT).substring(0, 6);
     @NonNull private final LocalDateTime createdAt = LocalDateTime.now();
     @NonNull private final LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(30);
     private LocalDateTime confirmedAt;
