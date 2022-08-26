@@ -90,7 +90,7 @@ public class MailBody {
                                                                       </tbody>
                                                                     </table>
                                                                     <div class="space-y-3">
-                                                                      <p class="" style="line-height: 24px; font-size: 16px; width: 100%; margin: 0;" align="left">Message from: $messageFrom</p>
+                                                                      <p class="" style="line-height: 24px; font-size: 16px; width: 100%; margin: 0;" align="left">Message from $messageFrom:</p>
                                                                       <table class="s-3 w-full" role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%;" width="100%">
                                                                         <tbody>
                                                                           <tr>
