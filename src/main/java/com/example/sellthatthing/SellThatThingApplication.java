@@ -77,7 +77,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "Sunmola",
                 "sunmolaife@gmail.com",
                 LocalDate.of(2000, 11, 24),
-                "User",
+                "USER",
                 "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
         ));
         post1.setPrice(new BigDecimal("69.12"));
@@ -101,7 +101,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "foster",
                 "janefoster@gmail.com",
                 LocalDate.of(1992, 9, 11),
-                "User",
+                "USER",
                 "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
         ));
         post2.setPrice(new BigDecimal("4200.21"));
@@ -125,7 +125,7 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "ragnarok",
                 "thorragnarok@company.ca",
                 LocalDate.of(1758, 5, 17),
-                "Admin",
+                "ADMIN",
                 "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
         ));
         post3.setPrice(new BigDecimal("30.21"));
