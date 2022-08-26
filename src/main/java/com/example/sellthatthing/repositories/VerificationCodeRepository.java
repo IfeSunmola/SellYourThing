@@ -1,6 +1,6 @@
 package com.example.sellthatthing.repositories;
 
-import com.example.sellthatthing.models.ConfirmationToken;
+import com.example.sellthatthing.models.VerificationCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,13 +12,13 @@ import java.util.Optional;
 
 @Repository
 @Transactional(readOnly = true)
-public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationToken, Long> {
-    Optional<ConfirmationToken> findByToken(String token);
+public interface VerificationCodeRepository extends JpaRepository<VerificationCode, Long> {
+    Optional<VerificationCode> findByCode(String token);
 
     @Transactional
     @Modifying
-    @Query("UPDATE ConfirmationToken c " +
+    @Query("UPDATE VerificationCode c " +
             "SET c.confirmedAt = ?2 " +
-            "WHERE c.token = ?1")
+            "WHERE c.code = ?1")
     int updateConfirmedAt(String token, LocalDateTime confirmedAt);
 }

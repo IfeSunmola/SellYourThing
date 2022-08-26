@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: htmlHead (pageTitle='Verify Account')">
+</head>
+
+<body style="background-color: #121212" class="text-white">
+	<div class="container" style="height: 99vh">
+		<div th:replace="fragments :: navbarAndHeader"></div>
+
+
+		<div class="container d-flex justify-content-center align-items-center" style="min-height: 200px">
+			<div class="alert bg-dark" role="alert">
+				<h4 class="alert-heading text-center">Account Created Successfully. Enter the verification code sent to your email</h4>
+			</div>
+		</div>
+		<!--Start Verify Code Form-->
+		<div class="d-flex justify-content-center align-items-center" style="min-height: 200px" sec:authorize="isAnonymous()">
+			<form action="#" th:action="@{/register/verify-account}" method="post">
+				<!--Start Code-->
+				<div class="row g-3 align-items-center">
+					<div class="col-auto">
+						<label for="verifyCode" class="col-form-label">Verification Code</label>
+					</div>
+					<div class="col-auto">
+						<input type="text" id="verifyCode" name="verificationCode" class="form-control" aria-describedby="verifyCode">
+					</div>
+				</div>
+				<!--End Code-->
+
+				<!--Start Register Button-->
+				<div class="row mt-5">
+					<div class="col d-flex justify-content-center">
+						<div class="d-grid w-100">
+							<button type="submit" class="btn btn-primary">Verify Your Account</button>
+						</div>
+					</div>
+				</div>
+				<!--End Register Button-->
+			</form>
+		</div>
+		<!--End Verify Code Form-->
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+			th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js}"
+			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+			crossorigin="anonymous"></script>
+</body>
+</html>
