@@ -1,12 +1,12 @@
 package com.example.sellthatthing.services;
 
-import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.datatransferobjects.NewAccountRequest;
 import com.example.sellthatthing.datatransferobjects.UpdateAccountRequest;
 import com.example.sellthatthing.emailsender.EmailSenderService;
 import com.example.sellthatthing.exceptions.EmptyResourceException;
 import com.example.sellthatthing.exceptions.ResourceNotFoundException;
-import com.example.sellthatthing.models.ConfirmationToken;
+import com.example.sellthatthing.models.Account;
+import com.example.sellthatthing.models.VerificationCode;
 import com.example.sellthatthing.repositories.AccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,13 +15,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+
+import static com.example.sellthatthing.emailsender.MailBody.VERIFY_CODE_HTML;
 
 @Service
 @AllArgsConstructor
@@ -29,8 +28,8 @@ public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
 
     private final BCryptPasswordEncoder passwordEncoder;
-    private final ConfirmationTokenService tokenService;
     private final EmailSenderService emailSenderService;
+    private final VerificationCodeService codeService;
 
     @Override
     public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
@@ -57,52 +56,44 @@ public class AccountService implements UserDetailsService {
                 -> new UsernameNotFoundException("Email '" + email + "' was not found"));
     }
 
+    @Transactional
     public void createAccount(final NewAccountRequest newAccountRequest, final HttpServletRequest request) {
-        Account newAccount = new Account(
-                newAccountRequest.getFirstName(),
-                newAccountRequest.getLastName(),
-                newAccountRequest.getEmail(),
-                newAccountRequest.getDateOfBirth(),
-                newAccountRequest.getEmail().toLowerCase(Locale.ROOT).contains("@company.ca") ? "Admin" : "User",
-                passwordEncoder.encode(newAccountRequest.getPassword())
-        );
+        Account newAccount = new Account(newAccountRequest, passwordEncoder);
         accountRepository.save(newAccount);
-        ConfirmationToken token = new ConfirmationToken(
-                UUID.randomUUID().toString(),
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(30),
-                newAccount
-        );
-        tokenService.saveToken(token);
+        sendVerificationCode(newAccount);
+    }
 
-        String websiteUrl = ServletUriComponentsBuilder.fromRequestUri(request)
-                .replacePath(null)
-                .build()
-                .toUriString();
-        String confirmAccountLink = websiteUrl + "/register/verify?token=" + token.getToken();
+    private void sendVerificationCode(Account newAccount) {
+        VerificationCode code = new VerificationCode(newAccount);
+        codeService.saveCode(code);
         emailSenderService.sendMail(
                 "SellThatThing: Activate your account",
                 "donnotreply@sellyourthing.com",
-                newAccountRequest.getEmail(),
+                newAccount.getEmail(),
                 "donotreply@sellyourthing.com",
-                buildEmail(newAccountRequest.getFirstName(), confirmAccountLink)
+                generateVerifyCodeBody(newAccount.getFirstName(), code.getCode())
         );
+    }
+
+    private String generateVerifyCodeBody(String firstName, String verificationCode) {
+        return VERIFY_CODE_HTML.replace("$firstName", firstName)
+                .replace("$verificationCode", verificationCode);
     }
 
     @Transactional
     public void confirmToken(final String token) {
-        ConfirmationToken confirmationToken = tokenService.findByToken(token);
+        VerificationCode verificationCode = codeService.findByCode(token);
 
-        if (confirmationToken.getConfirmedAt() != null) {
+        if (verificationCode.getConfirmedAt() != null) {
             throw new IllegalStateException("Email already confirmed");
         }
 
-        if (confirmationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
+        if (verificationCode.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new IllegalStateException("token expired");
         }
 
-        tokenService.updateConfirmedAt(token);
-        accountRepository.enableAppUser(confirmationToken.getAccount().getEmail());
+        codeService.updateConfirmedAt(token);
+        accountRepository.enableAppUser(verificationCode.getAccount().getEmail());
     }
 
     private String buildEmail(final String name, final String link) {
@@ -195,5 +186,9 @@ public class AccountService implements UserDetailsService {
 
     public List<Account> findPostsByAccountId(final Long accountId) {
         return accountRepository.findPostsByAccountId(accountId);
+    }
+
+    public void confirmVerificationCode(String verificationCode) {
+
     }
 }
