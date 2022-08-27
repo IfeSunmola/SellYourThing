@@ -75,7 +75,7 @@ public class AccountService implements UserDetailsService {
     }
 
     @Transactional
-    public Account confirmVerificationCode(String enteredVerificationCode, String verificationCodeId) {
+    public void confirmVerificationCode(String enteredVerificationCode, String verificationCodeId) {
         VerificationCode code = codeService.findByCodeId(Long.valueOf(verificationCodeId));
 
         if (code.getConfirmedAt() != null) {
@@ -87,9 +87,10 @@ public class AccountService implements UserDetailsService {
         if (!code.getCode().equals(enteredVerificationCode)) {
             throw new IllegalStateException("Incorrect Verification Code");
         }
+        // update the confirmed at time, enable the users account, and delete the code
         codeService.updateConfirmedAtById(code.getCodeId());
         accountRepository.enableAppUserById(code.getAccount().getAccountId());
-        return code.getAccount();
+        codeService.deleteById(code.getCodeId());
     }
 
     public void manualAccountLogin(Account account, HttpServletRequest request) {
