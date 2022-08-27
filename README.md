@@ -4,12 +4,13 @@
 2. Change from SellThatThing to SellYourThing
 3. Consider firebase
 4. Show custom message for users that have not verified their account
-5. Verification code should be asked for immediately after registering
-6. Implement "send a copy of this to my email"
-7. Accept images
-8. Add search parameters
-9. Verified/expired codes should be deleted from the database.
-10. Log in should not be required to reply to a message
+5. Implement "send a copy of this to my email"
+6. Accept images
+7. Add search parameters
+8. Verified/expired codes should be deleted from the database.
+9. Log in should not be required to reply to a message
+10. Facebook/google login
+11. Admin tools in navbar
 
 ---
 
