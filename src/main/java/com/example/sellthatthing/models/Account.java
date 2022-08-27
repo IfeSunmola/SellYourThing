@@ -33,7 +33,7 @@ public class Account implements UserDetails {
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
 
-    @OneToMany(mappedBy = "posterAccount")
+    @OneToMany(mappedBy = "posterAccount", fetch = FetchType.EAGER)
     private List<Post> posts;
 
     @Override
