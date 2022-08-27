@@ -9,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @AllArgsConstructor
 @RequestMapping("/register")
@@ -26,14 +29,19 @@ public class RegisterController {
     public String processRegisterForm(@ModelAttribute NewAccountRequest newAccountRequest, RedirectAttributes redirectAttributes) {
         Long verifyCodeId = accountService.createAccount(newAccountRequest);
         redirectAttributes.addFlashAttribute("verifyCodeId", verifyCodeId);
-        return "redirect:/register/verify-account"; // redirect user to login page after registration
+        redirectAttributes.addFlashAttribute("userEmail", newAccountRequest.getEmail());
+        redirectAttributes.addFlashAttribute("rawPassword", newAccountRequest.getPassword());
+        return "redirect:/register/verify-account";
     }
 
     @GetMapping("/verify-account")
-    public String loadVerificationPage(@ModelAttribute("verifyCodeId") String verifyCodeId, Model model) {
+    public String loadVerificationPage(@ModelAttribute("verifyCodeId") String verifyCodeId, @ModelAttribute("userEmail") String userEmail,
+                                       @ModelAttribute("rawPassword") String rawPassword, Model model) {
         // I didn't need to add a model to the get mapping. The flash attribute can directly be used from thymeleaf but intellij likes being a bitch
         // and complains about everything
         model.addAttribute("verifyCodeId", verifyCodeId);
+        model.addAttribute("userEmail", userEmail);
+        model.addAttribute("rawPassword", rawPassword);
         return "verify-account";
     }
 
@@ -47,10 +55,11 @@ public class RegisterController {
      * really matter?
      */
     @PostMapping("/verify-account")
-    public String confirmVerifyCode(@RequestParam String enteredVerificationCode, @RequestParam String verificationCodeId) {
-        System.out.println("Entered Code: " + enteredVerificationCode);
-        System.out.println("Code in Db: " + codeService.findByCodeId(Long.valueOf(verificationCodeId)).getCode());
+    public String confirmVerifyCode(@RequestParam String enteredVerificationCode, @RequestParam String verificationCodeId,
+                                    @RequestParam String userEmail, @RequestParam String rawPassword, HttpServletRequest request) {
         accountService.confirmVerificationCode(enteredVerificationCode, verificationCodeId);
-        return "verify-account";
+        accountService.doManualLogin(userEmail, rawPassword, request);
+        //accountService.manualAccountLogin(account, request);
+        return "redirect:/?loginSuccess";
     }
 }

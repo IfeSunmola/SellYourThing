@@ -8,13 +8,19 @@ import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.models.VerificationCode;
 import com.example.sellthatthing.repositories.AccountRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
 import static com.example.sellthatthing.emailsender.MailBody.VERIFY_CODE_HTML;
@@ -69,7 +75,7 @@ public class AccountService implements UserDetailsService {
     }
 
     @Transactional
-    public void confirmVerificationCode(String enteredVerificationCode, String verificationCodeId) {
+    public Account confirmVerificationCode(String enteredVerificationCode, String verificationCodeId) {
         VerificationCode code = codeService.findByCodeId(Long.valueOf(verificationCodeId));
 
         if (code.getConfirmedAt() != null) {
@@ -83,6 +89,13 @@ public class AccountService implements UserDetailsService {
         }
         codeService.updateConfirmedAtById(code.getCodeId());
         accountRepository.enableAppUserById(code.getAccount().getAccountId());
+        return code.getAccount();
+    }
+
+    public void manualAccountLogin(Account account, HttpServletRequest request) {
+        Authentication authentication = new UsernamePasswordAuthenticationToken(account, 23, account.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
     }
 
     public Account update(UpdateAccountRequest updateInfo, Long accountId) {
@@ -100,4 +113,12 @@ public class AccountService implements UserDetailsService {
         accountRepository.deleteById(accountId);
     }
 
+    public void doManualLogin(String userEmail, String rawPassword, HttpServletRequest request) {
+        try {
+            request.login(userEmail, rawPassword);
+        }
+        catch (ServletException e) {
+            System.out.println("Login error: " + e);
+        }
+    }
 }

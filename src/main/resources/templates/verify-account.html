@@ -24,6 +24,8 @@
 					<div class="col-auto">
 						<input type="text" id="verifyCode" name="enteredVerificationCode" class="form-control" aria-describedby="verifyCode">
 						<input type="hidden" name="verificationCodeId" th:value="${verifyCodeId}">
+						<input type="hidden" name="userEmail", th:value="${userEmail}">
+						<input type="hidden" name="rawPassword" th:value="${rawPassword}">
 					</div>
 				</div>
 				<!--End Code-->
