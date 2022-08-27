@@ -25,4 +25,8 @@ public class VerificationCodeService {
     public void save(VerificationCode code) {
         verificationCodeRepository.save(code);
     }
+
+    public void deleteById(Long codeId) {
+        verificationCodeRepository.deleteById(codeId);
+    }
 }
