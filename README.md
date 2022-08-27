@@ -7,10 +7,10 @@
 5. Implement "send a copy of this to my email"
 6. Accept images
 7. Add search parameters
-8. Verified/expired codes should be deleted from the database.
-9. Log in should not be required to reply to a message
-10. Facebook/google login
-11. Admin tools in navbar
+8. Log in should not be required to reply to a message
+9. Facebook/google login
+10. Admin tools in navbar
+11. Remove request params, find way to show messages without it
 
 ---
 
