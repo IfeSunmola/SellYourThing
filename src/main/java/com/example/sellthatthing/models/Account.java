@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,11 +14,9 @@ import java.util.List;
 import java.util.Locale;
 
 @Entity
-@Getter
-@Setter
-@RequiredArgsConstructor
+@Data // toString, equalsAndHashCode, Getter, Setter, RequiredArgsConstructor
+@RequiredArgsConstructor // for some reason, seed data won't work if I don't add this, again
 @NoArgsConstructor
-@ToString
 public class Account implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long accountId;
     @NonNull private String firstName;
@@ -28,7 +25,7 @@ public class Account implements UserDetails {
     @NonNull private LocalDate dateOfBirth;
     @NonNull private String role;
     @NonNull private String password;
-    @NonNull private boolean enabled = false;
+    @NonNull private boolean enabled;
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
@@ -46,12 +43,12 @@ public class Account implements UserDetails {
         return this.email;
     }
 
-    public Account(final NewAccountRequest newAccountRequest, final BCryptPasswordEncoder passwordEncoder) {
+    public Account(final NewAccountRequest newAccountRequest) {
         firstName = newAccountRequest.getFirstName();
         lastName = newAccountRequest.getLastName();
         email = newAccountRequest.getEmail();
         dateOfBirth = newAccountRequest.getDateOfBirth();
-        role = newAccountRequest.getEmail().toLowerCase(Locale.ROOT).contains("@company.ca") ? "ADMIN" : "USER";
-        password = passwordEncoder.encode(newAccountRequest.getPassword());
+        role = newAccountRequest.getEmail().toLowerCase(Locale.ROOT).contains("+admin") ? "ADMIN" : "USER";
+        password = newAccountRequest.getPassword();
     }
 }
