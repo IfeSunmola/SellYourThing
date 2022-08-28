@@ -9,7 +9,6 @@ import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.models.VerificationCode;
 import com.example.sellthatthing.repositories.AccountRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +27,6 @@ public class AccountService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final EmailSenderService emailSenderService;
     private final VerificationCodeService codeService;
-
 
     public Account findByAccountId(Long accountId) {
         return accountRepository.findById(accountId).orElseThrow(()
