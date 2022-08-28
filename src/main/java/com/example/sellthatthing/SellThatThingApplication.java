@@ -78,12 +78,12 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "sunmolaife@gmail.com",
                 LocalDate.of(2000, 11, 24),
                 "USER",
-                "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
+                "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS",
+                true
         ));
         post1.setPrice(new BigDecimal("69.12"));
         post1.setImageUrl("images/frog/green-frog.jpg");
         post1.setPostLocation(location1);
-        post1.getPosterAccount().setEnabled(true);
 
         Post post2 = new Post();
         post2.setTitle("London building for sale");
@@ -102,12 +102,12 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "janefoster@gmail.com",
                 LocalDate.of(1992, 9, 11),
                 "USER",
-                "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
+                "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS",
+                true
         ));
         post2.setPrice(new BigDecimal("4200.21"));
         post2.setImageUrl("images/london/london.jpg");
         post2.setPostLocation(location2);
-        post2.getPosterAccount().setEnabled(true);
 
         Post post3 = new Post();
         post3.setTitle("Unused strawberry for sale");
@@ -126,12 +126,12 @@ public class SellThatThingApplication implements CommandLineRunner {
                 "thorragnarok+admin@gmail.com",
                 LocalDate.of(1758, 5, 17),
                 "ADMIN",
-                "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS"
+                "$2a$10$eiJzFSAUeDX2Xo29rPAs0.1ho4i0LyjItvbczuliI8mrSF6sBEWBS",
+                true
         ));
         post3.setPrice(new BigDecimal("30.21"));
         post3.setImageUrl("images/strawberry/strawberries.jpg");
         post3.setPostLocation(location3);
-        post3.getPosterAccount().setEnabled(true);
 
         postService.savePost(post1);
         postService.savePost(post2);
