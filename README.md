@@ -13,6 +13,7 @@
 11. Remove request params, find way to show messages without it
 12. .and().requiresChannel().anyRequest().requiresSecure();
 13. Use a content security policy for Spring Boot XSS protection
+14. After login, always redirect to previous page
 
 ---
 
