@@ -22,8 +22,8 @@ public class VerificationCodeService {
                 -> new ResourceNotFoundException("Code id '" + codeId + "' was not found"));
     }
 
-    public void save(VerificationCode code) {
-        verificationCodeRepository.save(code);
+    public VerificationCode save(VerificationCode code) {
+        return verificationCodeRepository.save(code);
     }
 
     public void deleteById(Long codeId) {
