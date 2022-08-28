@@ -9,8 +9,6 @@ import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.models.VerificationCode;
 import com.example.sellthatthing.repositories.AccountRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,7 +22,7 @@ import static com.example.sellthatthing.emailsender.MailBody.VERIFY_CODE_HTML;
 
 @Service
 @AllArgsConstructor
-public class AccountService implements UserDetailsService {
+public class AccountService {
     private final AccountRepository accountRepository;
 
     private final BCryptPasswordEncoder passwordEncoder;
@@ -32,21 +30,14 @@ public class AccountService implements UserDetailsService {
     private final VerificationCodeService codeService;
 
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return accountRepository.findByEmail(email).orElseThrow(()
-                -> new UsernameNotFoundException("Email '" + email + "' was not found"));
-    }
-
     public Account findByAccountId(Long accountId) {
         return accountRepository.findById(accountId).orElseThrow(()
                 -> new ResourceNotFoundException("Account id '" + accountId + "' was not found"));
     }
 
     public Account findByEmail(String email) {
-        // throwing UsernameNotFound because of spring security
         return accountRepository.findByEmail(email).orElseThrow(()
-                -> new UsernameNotFoundException("Email '" + email + "' was not found"));
+                -> new ResourceNotFoundException("Email: '" + email + "' was not found"));
     }
 
     @Transactional

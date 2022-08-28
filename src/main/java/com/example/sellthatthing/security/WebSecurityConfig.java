@@ -1,6 +1,6 @@
 package com.example.sellthatthing.security;
 
-import com.example.sellthatthing.services.AccountService;
+import com.example.sellthatthing.services.AccountDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig {
-    private final AccountService accountService;
+    private final AccountDetailsService accountDetailsService;
     private final BCryptPasswordEncoder passwordEncoder;
 
     // links that does not need authentication
@@ -54,7 +54,7 @@ public class WebSecurityConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(accountService); // implements UserDetailsService
+        provider.setUserDetailsService(accountDetailsService); // implements UserDetailsService
         provider.setPasswordEncoder(passwordEncoder);
         return provider;
     }

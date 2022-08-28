@@ -1,15 +1,13 @@
 package com.example.sellthatthing.models;
 
 import com.example.sellthatthing.datatransferobjects.NewAccountRequest;
-import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,7 +15,7 @@ import java.util.Locale;
 @Data // toString, equalsAndHashCode, Getter, Setter, RequiredArgsConstructor
 @RequiredArgsConstructor // for some reason, seed data won't work if I don't add this, again
 @NoArgsConstructor
-public class Account implements UserDetails {
+public class Account {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long accountId;
     @NonNull private String firstName;
     @NonNull private String lastName;
@@ -32,16 +30,6 @@ public class Account implements UserDetails {
 
     @OneToMany(mappedBy = "posterAccount", fetch = FetchType.EAGER)
     private List<Post> posts;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(this.role));
-    }
-
-    @Override
-    public String getUsername() {
-        return this.email;
-    }
 
     public Account(final NewAccountRequest newAccountRequest) {
         firstName = newAccountRequest.getFirstName();

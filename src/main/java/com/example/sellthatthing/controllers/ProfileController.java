@@ -1,6 +1,7 @@
 package com.example.sellthatthing.controllers;
 
 import com.example.sellthatthing.models.Account;
+import com.example.sellthatthing.models.AccountDetails;
 import com.example.sellthatthing.services.AccountService;
 import com.example.sellthatthing.services.PostService;
 import lombok.AllArgsConstructor;
@@ -25,9 +26,9 @@ public class ProfileController {
         model.addAttribute("currentAccount", currentAccount);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) { // user is authenticated
-            Account authAccount = (Account) auth.getPrincipal();
+            AccountDetails authAccount = (AccountDetails) auth.getPrincipal();
             model.addAttribute("authAccount", authAccount);
-            model.addAttribute("isSameUser", authAccount.getAccountId().equals(currentAccount.getAccountId()));
+            model.addAttribute("isSameUser", authAccount.accountId().equals(currentAccount.getAccountId()));
         }
         return "profile";
     }
