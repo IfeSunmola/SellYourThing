@@ -19,13 +19,11 @@
 				<!--Start Code-->
 				<div class="row g-3 align-items-center">
 					<div class="col-auto">
-						<label for="verifyCode" class="col-form-label">Verification Code</label>
+						<label for="enteredVerificationCode" class="col-form-label">Verification Code</label>
 					</div>
 					<div class="col-auto">
-						<input type="text" id="verifyCode" name="enteredVerificationCode" class="form-control" aria-describedby="verifyCode">
-						<input type="hidden" name="verificationCodeId" th:value="${verifyCodeId}">
-						<input type="hidden" name="userEmail", th:value="${userEmail}">
-						<input type="hidden" name="rawPassword" th:value="${rawPassword}">
+						<input type="text" id="enteredVerificationCode" name="enteredVerificationCode" class="form-control"
+							   aria-describedby="verifyCode">
 					</div>
 				</div>
 				<!--End Code-->

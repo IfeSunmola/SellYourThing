@@ -2,20 +2,17 @@ package com.example.sellthatthing.services;
 
 import com.example.sellthatthing.datatransferobjects.NewAccountRequest;
 import com.example.sellthatthing.datatransferobjects.UpdateAccountRequest;
+import com.example.sellthatthing.datatransferobjects.VerificationDto;
 import com.example.sellthatthing.emailsender.EmailSenderService;
 import com.example.sellthatthing.exceptions.ResourceNotFoundException;
 import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.models.VerificationCode;
 import com.example.sellthatthing.repositories.AccountRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +30,7 @@ public class AccountService implements UserDetailsService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final EmailSenderService emailSenderService;
     private final VerificationCodeService codeService;
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -52,12 +50,21 @@ public class AccountService implements UserDetailsService {
     }
 
     @Transactional
-    public Long createAccount(NewAccountRequest newAccountRequest) {
-        Account newAccount = new Account(newAccountRequest, passwordEncoder);
-        accountRepository.save(newAccount);
-        // send verification code
+    public VerificationDto createAccount(NewAccountRequest newAccountRequest) {
+        String rawPassword = newAccountRequest.getPassword();
+        newAccountRequest.setPassword(passwordEncoder.encode(newAccountRequest.getPassword()));
+
+        Account newAccount = new Account(newAccountRequest);
+        Long accountId = accountRepository.save(newAccount).getAccountId();
+        Long codeId = sendVerificationCode(newAccount);
+
+        return new VerificationDto(codeId, accountId, rawPassword);
+    }
+
+    private Long sendVerificationCode(Account newAccount) {
         VerificationCode code = new VerificationCode(newAccount);
-        codeService.save(code);
+        System.out.println(code.getCode());
+        Long codeId = codeService.save(code).getCodeId();
         emailSenderService.sendMail(
                 "SellThatThing: Activate your account",
                 "donnotreply@sellyourthing.com",
@@ -65,8 +72,7 @@ public class AccountService implements UserDetailsService {
                 "donotreply@sellyourthing.com",
                 generateVerifyCodeBody(newAccount.getFirstName(), code.getCode())
         );
-
-        return code.getCodeId();
+        return codeId;
     }
 
     private String generateVerifyCodeBody(String firstName, String verificationCode) {
@@ -75,8 +81,9 @@ public class AccountService implements UserDetailsService {
     }
 
     @Transactional
-    public void confirmVerificationCode(String enteredVerificationCode, String verificationCodeId) {
-        VerificationCode code = codeService.findByCodeId(Long.valueOf(verificationCodeId));
+    public void confirmVerificationCode(String enteredVerificationCode, Long verificationCodeId, Long accountId) {
+        VerificationCode code = codeService.findByCodeId(verificationCodeId);
+        Account account = findByAccountId(accountId);
 
         if (code.getConfirmedAt() != null) {
             throw new IllegalStateException("Account has already been verified");
@@ -87,16 +94,13 @@ public class AccountService implements UserDetailsService {
         if (!code.getCode().equals(enteredVerificationCode)) {
             throw new IllegalStateException("Incorrect Verification Code");
         }
+        if (!account.equals(code.getAccount())) {
+            throw new IllegalStateException("Different Accounts, invalid request");
+        }
         // update the confirmed at time, enable the users account, and delete the code
         codeService.updateConfirmedAtById(code.getCodeId());
         accountRepository.enableAppUserById(code.getAccount().getAccountId());
         codeService.deleteById(code.getCodeId());
-    }
-
-    public void manualAccountLogin(Account account, HttpServletRequest request) {
-        Authentication authentication = new UsernamePasswordAuthenticationToken(account, 23, account.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
     }
 
     public Account update(UpdateAccountRequest updateInfo, Long accountId) {
@@ -114,12 +118,18 @@ public class AccountService implements UserDetailsService {
         accountRepository.deleteById(accountId);
     }
 
-    public void doManualLogin(String userEmail, String rawPassword, HttpServletRequest request) {
-        try {
-            request.login(userEmail, rawPassword);
+    public void doManualLogin(Long accountId, String rawPassword, HttpServletRequest request) {
+        Account account = findByAccountId(accountId);
+        if (passwordEncoder.matches(rawPassword, account.getPassword())) {
+            try {
+                request.login(account.getEmail(), rawPassword);
+            }
+            catch (ServletException e) {
+                System.out.println("Login after account verification failed" + e);
+            }
         }
-        catch (ServletException e) {
-            System.out.println("Login error: " + e);
+        else {
+            System.out.println("Got ya");
         }
     }
 }
