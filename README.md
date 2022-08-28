@@ -11,6 +11,8 @@
 9. Facebook/google login
 10. Admin tools in navbar
 11. Remove request params, find way to show messages without it
+12. .and().requiresChannel().anyRequest().requiresSecure();
+13. Use a content security policy for Spring Boot XSS protection
 
 ---
 
@@ -45,7 +47,17 @@
                return "hehe";
            }
 
-   
+# Java Notes:
+
+1. Records automatically create private final fields, getters, AllArgsConstructor, toString, equals
+   and hashcode
+
+2. Records can have methods, including static methods
+
+3. Static fields are also allowed. Instance variables are not allowed
+
+4. Records can implement interfaces
+
 ---
 
 # Spring boot MVC notes
