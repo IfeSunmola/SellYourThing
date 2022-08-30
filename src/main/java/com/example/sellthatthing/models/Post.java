@@ -23,7 +23,7 @@ public class Post {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cityId", referencedColumnName = "cityId")
     @NonNull
-    private City postCity;
+    private City cityId;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "categoryId", referencedColumnName = "categoryId")
@@ -33,7 +33,7 @@ public class Post {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "accountId", referencedColumnName = "accountId")
     @NonNull
-    private Account posterAccount;
+    private Account accountId;
 
     private LocalDateTime updatedAt;
 
