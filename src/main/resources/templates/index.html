@@ -7,7 +7,7 @@
 	<div class="container" style="height: 99vh">
 		<div th:replace="fragments :: navbarAndHeader"></div>
 
-		<div th:replace="fragments :: sortParameters"></div>
+		<div th:replace="fragments :: sortParameters (cities=${cities})"></div>
 
 		<div th:replace="fragments :: showAllPosts (posts=${posts})"></div>
 	</div>
