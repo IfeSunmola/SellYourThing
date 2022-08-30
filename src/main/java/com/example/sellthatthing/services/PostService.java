@@ -27,7 +27,7 @@ public class PostService {
 
     private final CategoryService categoryService;
     private final AccountService accountService;
-    private final LocationService locationService;
+    private final CityService cityService;
     private final EmailSenderService emailSenderService;
 
     public List<Post> findAll() {
@@ -60,7 +60,7 @@ public class PostService {
                         LocalDateTime.now(),
                         newPostRequest.getPrice(),
                         //newPostRequest.getImageUrl(),
-                        locationService.findByLocationId(newPostRequest.getLocationId()),
+                        cityService.findByCityId(newPostRequest.getCityId()),
                         categoryService.findByCategoryId(newPostRequest.getCategoryId()),
                         accountService.findByAccountId(newPostRequest.getPosterAccountId())
                 )
