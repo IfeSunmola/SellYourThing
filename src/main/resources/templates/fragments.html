@@ -65,9 +65,32 @@
 	<!--End Nav Bar-->
 
 	<!--Start Sort Parameters-->
-	<div th:fragment="sortParameters">
-		<div class="d-flex justify-content-center mb-3 mt-3">
-			<h3>Sorting Parameters Stuff Here</h3>
+	<div th:fragment="sortParameters (cities)">
+		<div class="row mt-5 mb-5">
+			<!--Search By City-->
+			<div class="col">
+				<select class="form-select mb-3" aria-label="Sort Location">
+					<option value="0" selected>All Cities</option>
+					<option value="1" th:each="city: ${cities}" th:value="${city.cityId}"
+							th:text="${city.cityName}"></option>
+				</select>
+			</div>
+
+			<!--Search By Category-->
+			<div class="col">
+				<select class="form-select mb-3" aria-label="Sort Location">
+					<option value="0" selected>All Categories</option>
+					<option value="1" th:each="city: ${cities}" th:value="${city.cityId}"
+							th:text="${city.cityName}"></option>
+				</select>
+			</div>
+
+			<!--Search By text-->
+			<div class="col">
+				<label for="searchText" class="visually-hidden">Search Text</label>
+				<input type="text" class="form-control" id="searchText" placeholder="Enter search text">
+			</div>
+
 		</div>
 	</div>
 	<!--End Sort Parameters-->
@@ -103,7 +126,7 @@
 								<!--Start Location and Date-->
 								<div class="row">
 									<div>
-										<p th:text="${post.postLocation.locationName}" class="text-start mt-2"></p>
+										<p th:text="${post.postCity.cityName}" class="text-start mt-2"></p>
 										<p th:text="${post.getFormattedCreateAtDate}" class="text-start"></p>
 									</div>
 								</div>
