@@ -16,6 +16,6 @@ public class City {
     @NonNull private String cityName;
     private LocalDateTime dateCreated;
 
-    @OneToMany(mappedBy = "cityId")
+    @OneToMany(mappedBy = "postCity")
     private Set<Post> posts;
 }

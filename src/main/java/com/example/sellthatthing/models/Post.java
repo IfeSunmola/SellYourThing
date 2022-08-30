@@ -23,7 +23,7 @@ public class Post {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cityId", referencedColumnName = "cityId")
     @NonNull
-    private City cityId;
+    private City postCity;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "categoryId", referencedColumnName = "categoryId")
