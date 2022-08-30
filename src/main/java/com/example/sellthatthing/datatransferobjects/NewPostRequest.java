@@ -14,6 +14,6 @@ public class NewPostRequest {
     private BigDecimal price;
     private String imageUrl;
     private Long categoryId;
-    private Long locationId;
+    private Long cityId;
     private Long posterAccountId;
 }
