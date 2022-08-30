@@ -11,11 +11,11 @@ import java.util.Set;
 @Getter
 @RequiredArgsConstructor
 @NoArgsConstructor
-public class Location {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long locationId;
-    @NonNull private String locationName;
+public class City {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long cityId;
+    @NonNull private String cityName;
     private LocalDateTime dateCreated;
 
-    @OneToMany(mappedBy = "postLocation")
+    @OneToMany(mappedBy = "postCity")
     private Set<Post> posts;
 }

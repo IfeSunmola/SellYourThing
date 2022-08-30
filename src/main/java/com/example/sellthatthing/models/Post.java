@@ -21,9 +21,9 @@ public class Post {
     private String imageUrl;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "locationId", referencedColumnName = "locationId")
+    @JoinColumn(name = "cityId", referencedColumnName = "cityId")
     @NonNull
-    private Location postLocation;
+    private City postCity;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "categoryId", referencedColumnName = "categoryId")
