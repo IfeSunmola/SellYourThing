@@ -33,7 +33,7 @@ public class Post {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "accountId", referencedColumnName = "accountId")
     @NonNull
-    private Account accountId;
+    private Account posterAccount;
 
     private LocalDateTime updatedAt;
 
