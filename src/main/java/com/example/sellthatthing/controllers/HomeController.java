@@ -1,6 +1,7 @@
 package com.example.sellthatthing.controllers;
 
 import com.example.sellthatthing.services.AccountService;
+import com.example.sellthatthing.services.CityService;
 import com.example.sellthatthing.services.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
     private final PostService postService;
     private final AccountService accountService;
+    private final CityService cityService;
 
     @GetMapping
     public String showIndexPage(final Model model) {
@@ -27,6 +29,7 @@ public class HomeController {
             String profileLink = "/profile/" + accountService.findByEmail(email).getAccountId();
             model.addAttribute("profileLink", profileLink);
         }
+        model.addAttribute("cities", cityService.findAll());
         return "index";
     }
 }
