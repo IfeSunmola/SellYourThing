@@ -1,16 +1,16 @@
 package com.example.sellthatthing.datatransferobjects;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class UpdateAccountRequest {
-    private final String firstName;
-    private final String lastName;
-    private final String email;
+    private String firstName;
+    private String lastName;
+    private String email;
     private LocalDate dateOfBirth;
     // password will be handled with spring security
 }
