@@ -23,7 +23,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                 SELECT p from Post p
                 WHERE p.postCity.cityName LIKE %:cityName%
                 AND p.postCategory.categoryName LIKE %:categoryName%
-                AND upper(p.body)  LIKE :searchText%
+                AND upper(p.body)  LIKE %:searchText%
             """)
     List<Post> findAllWithDate(@Param("cityName") String cityName,
                                @Param("categoryName") String categoryName,
@@ -34,10 +34,39 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                 SELECT p from Post p
                 WHERE p.postCity.cityName LIKE %:cityName%
                 AND p.postCategory.categoryName LIKE %:categoryName%
-                AND upper(p.body)  LIKE :searchText%
+                AND upper(p.body)  LIKE %:searchText%
             """)
     List<Post> findAllWithPrice(@Param("cityName") String cityName,
                                 @Param("categoryName") String categoryName,
                                 @Param("searchText") String searchText,
                                 Sort sort);
+
+    @Query("""
+                SELECT p from Post p
+                WHERE p.postCity.cityName LIKE %:cityName%
+                AND p.postCategory.categoryName LIKE %:categoryName%
+                AND upper(p.body)  LIKE %:searchText%
+                AND p.posterAccount.accountId = :accountId
+            """)
+    List<Post> findAllWithDateAccount(@Param("cityName") String cityName,
+                                      @Param("categoryName") String categoryName,
+                                      @Param("searchText") String searchText,
+                                      @Param("accountId") Long accountId,
+                                      Sort sort);
+
+    @Query("""
+                SELECT p from Post p
+                WHERE p.postCity.cityName LIKE %:cityName%
+                AND p.postCategory.categoryName LIKE %:categoryName%
+                AND upper(p.body)  LIKE %:searchText%
+                AND p.posterAccount.accountId = :accountId
+            """)
+    List<Post> findAllWithPriceAccount(@Param("cityName") String cityName,
+                                       @Param("categoryName") String categoryName,
+                                       @Param("searchText") String searchText,
+                                       @Param("accountId") Long accountId,
+                                       Sort sort);
+//    List<Post> findByPostCityCityNameContainingAndPostCategoryCategoryNameContainingAndBodyContainingIgnoreCase(String cityName,
+//                                                                                                                String categoryName,
+//                                                                                                                String searchText);
 }
