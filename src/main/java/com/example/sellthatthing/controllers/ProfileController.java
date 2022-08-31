@@ -1,8 +1,11 @@
 package com.example.sellthatthing.controllers;
 
+import com.example.sellthatthing.datatransferobjects.PostsSortDto;
 import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.models.AccountDetails;
 import com.example.sellthatthing.services.AccountService;
+import com.example.sellthatthing.services.CategoryService;
+import com.example.sellthatthing.services.CityService;
 import com.example.sellthatthing.services.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 public class ProfileController {
     private final AccountService accountService;
     private final PostService postService;
+    private final CityService cityService;
+    private final CategoryService categoryService;
 
 
     @GetMapping("/{accountId}")
@@ -46,14 +51,22 @@ public class ProfileController {
     }
 
     @GetMapping("/{accountId}/posts")
-    public String getAllUserPosts(@PathVariable Long accountId, Model model) {
-        model.addAttribute("userPosts", postService.findAllAccountPosts(accountId));
+    public String getAllUserPosts(@PathVariable Long accountId, Model model, @ModelAttribute("postsSortDto") PostsSortDto postsSortDto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) { // user is authenticated
             Account authAccount = (Account) auth.getPrincipal();
             model.addAttribute("authAccount", authAccount);
             // model.addAttribute("isSameUser", authAccount.getAccountId().equals(currentAccount.getAccountId()));
         }
+
+        Long cityId = postsSortDto.getCityId();
+        Long categoryId = postsSortDto.getCategoryId();
+        String order = postsSortDto.getOrder();
+        String searchText = postsSortDto.getSearchText();
+
+        model.addAttribute("userPosts", postService.usersPost(accountId, cityId, categoryId, order, searchText));
+        model.addAttribute("cities", cityService.findAll());
+        model.addAttribute("categories", categoryService.findAll());
         return "view-user-posts";
     }
 }
