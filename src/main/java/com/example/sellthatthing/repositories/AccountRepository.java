@@ -18,4 +18,8 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     int enableAppUserById(Long accountId);
 
     Optional<Account> findByEmail(String email);
+
+    boolean existsByEmail(String email);
+
+    void deleteByEmail(String email);
 }
