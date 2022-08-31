@@ -19,9 +19,9 @@
 					<!--End Title-->
 
 					<!--Start Category Select-->
-					<select class="form-select mb-3" aria-label="Select Category" th:field="*{categoryId}">
+					<select class="form-select mb-3" aria-label="Select Category" th:field="*{categoryName}">
 						<option value="0" selected>Choose a Category</option>
-						<option value="1" th:each="category: ${categories}" th:value="${category.categoryId}"
+						<option value="1" th:each="category: ${categories}" th:value="${category.categoryName}"
 								th:text="${category.categoryName}"></option>
 					</select>
 					<!--End Category Select-->

@@ -13,7 +13,7 @@ public class NewPostRequest {
     private String body;
     private BigDecimal price;
     private String imageUrl;
-    private Long categoryId;
+    private String categoryName;
     private String cityName;
     private Long posterAccountId;
 }

@@ -13,7 +13,7 @@ import lombok.ToString;
 // change to string, use final = "
 public class PostsSortDto {
     private String city = "";
-    private Long categoryId;
+    private String category = "";
     private String order;
     private String searchText;
 }

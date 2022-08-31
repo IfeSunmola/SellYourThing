@@ -53,16 +53,11 @@ public class CategoryService {
 //    }
 
     public void delete(String categoryName) {
-        categoryRepository.deleteById(findByCategoryName(categoryName).getCategoryId());
+        categoryRepository.deleteById(findByCategoryName(categoryName).getCategoryName());
     }
 
     public Category findByCategoryName(String categoryName) {
-        return categoryRepository.findByCategoryName(categoryName).orElseThrow(()
+        return categoryRepository.findById(categoryName).orElseThrow(()
                 -> new ResourceNotFoundException("Category '" + categoryName + "' was not found"));
-    }
-
-    public Category findByCategoryId(Long categoryId) {
-        return categoryRepository.findById(categoryId).orElseThrow(()
-                -> new ResourceNotFoundException("Category id: '" + categoryId + "' was not found"));
     }
 }

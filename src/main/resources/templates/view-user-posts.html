@@ -37,9 +37,9 @@
 
 					<!--Search By Category-->
 					<div class="col">
-						<select th:field="*{categoryId}" id="categorySelect" class="form-select mb-3" aria-label="Sort Location">
+						<select th:field="*{category}" id="categorySelect" class="form-select mb-3" aria-label="Sort Location">
 							<option value="0" selected>All Categories</option>
-							<option value="1" th:each="category: ${categories}" th:value="${category.categoryId}"
+							<option value="1" th:each="category: ${categories}" th:value="${category.getCategoryName}"
 									th:text="${category.categoryName}"></option>
 						</select>
 					</div>

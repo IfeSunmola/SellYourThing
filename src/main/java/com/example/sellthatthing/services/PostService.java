@@ -40,13 +40,7 @@ public class PostService {
         return listOfPosts;
     }
 
-    public List<Post> findAllWithSorting(String cityName, Long categoryId, String order, String searchText) {
-        String categoryName = "";
-
-        if (categoryId != null) {
-            categoryName = categoryService.findByCategoryId(categoryId).getCategoryName();
-        }
-
+    public List<Post> findAllWithSorting(String cityName, String categoryName, String order, String searchText) {
         if (searchText == null) {
             searchText = "";
         }
@@ -100,7 +94,7 @@ public class PostService {
                         newPostRequest.getPrice(),
                         //newPostRequest.getImageUrl(),
                         cityService.findByCityName(newPostRequest.getCityName()),
-                        categoryService.findByCategoryId(newPostRequest.getCategoryId()),
+                        categoryService.findByCategoryName(newPostRequest.getCategoryName()),
                         accountService.findByAccountId(newPostRequest.getPosterAccountId())
                 )
         );
@@ -129,13 +123,7 @@ public class PostService {
         return postRepository.findPostsByPosterAccount(account);
     }
 
-    public List<Post> usersPost(Long accountId, String cityName, Long categoryId, String order, String searchText) {
-        String categoryName = "";
-
-        if (categoryId != null) {
-            categoryName = categoryService.findByCategoryId(categoryId).getCategoryName();
-        }
-
+    public List<Post> usersPost(Long accountId, String cityName, String categoryName, String order, String searchText) {
         if (searchText == null) {
             searchText = "";
         }
