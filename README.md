@@ -14,6 +14,7 @@
 12. .and().requiresChannel().anyRequest().requiresSecure();
 13. Use a content security policy for Spring Boot XSS protection
 14. After login, always redirect to previous page
+15. Add location to register page
 
 ---
 
