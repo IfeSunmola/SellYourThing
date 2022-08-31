@@ -12,3 +12,9 @@ function disableEmptyFields() {
     const searchText = document.getElementById("searchText");
     searchText.disabled = searchText.value === "";
 }
+
+function enableDeleteButton(email) {
+    const deleteAccountButton = document.getElementById("deleteAccountButton")
+    const confirmEmail = document.getElementById("confirmEmail");
+    deleteAccountButton.disabled = confirmEmail.value !== email;
+}
