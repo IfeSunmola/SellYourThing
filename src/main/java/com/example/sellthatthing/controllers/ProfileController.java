@@ -54,7 +54,7 @@ public class ProfileController {
     public String getAllUserPosts(@PathVariable Long accountId, Model model, @ModelAttribute("postsSortDto") PostsSortDto postsSortDto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) { // user is authenticated
-            Account authAccount = (Account) auth.getPrincipal();
+            Account authAccount = ((AccountDetails) auth.getPrincipal()).account();
             model.addAttribute("authAccount", authAccount);
             // model.addAttribute("isSameUser", authAccount.getAccountId().equals(currentAccount.getAccountId()));
         }
