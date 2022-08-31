@@ -40,13 +40,9 @@ public class PostService {
         return listOfPosts;
     }
 
-    public List<Post> findAllWithSorting(Long cityId, Long categoryId, String order, String searchText) {
-        String cityName = "";
+    public List<Post> findAllWithSorting(String cityName, Long categoryId, String order, String searchText) {
         String categoryName = "";
 
-        if (cityId != null) {
-            cityName = cityService.findByCityId(cityId).getCityName();
-        }
         if (categoryId != null) {
             categoryName = categoryService.findByCategoryId(categoryId).getCategoryName();
         }
@@ -57,7 +53,9 @@ public class PostService {
         searchText = searchText.toUpperCase(Locale.ROOT).strip();
 
         List<Post> result;
+
         if (order == null) {
+            System.out.println(cityName);
             result = postRepository.findAllWithDate(cityName, categoryName, searchText,
                     Sort.by(Sort.Direction.DESC, "createdAt"));
         }
@@ -101,7 +99,7 @@ public class PostService {
                         LocalDateTime.now(),
                         newPostRequest.getPrice(),
                         //newPostRequest.getImageUrl(),
-                        cityService.findByCityId(newPostRequest.getCityId()),
+                        cityService.findByCityName(newPostRequest.getCityName()),
                         categoryService.findByCategoryId(newPostRequest.getCategoryId()),
                         accountService.findByAccountId(newPostRequest.getPosterAccountId())
                 )
@@ -131,13 +129,9 @@ public class PostService {
         return postRepository.findPostsByPosterAccount(account);
     }
 
-    public List<Post> usersPost(Long accountId, Long cityId, Long categoryId, String order, String searchText) {
-        String cityName = "";
+    public List<Post> usersPost(Long accountId, String cityName, Long categoryId, String order, String searchText) {
         String categoryName = "";
 
-        if (cityId != null) {
-            cityName = cityService.findByCityId(cityId).getCityName();
-        }
         if (categoryId != null) {
             categoryName = categoryService.findByCategoryId(categoryId).getCategoryName();
         }

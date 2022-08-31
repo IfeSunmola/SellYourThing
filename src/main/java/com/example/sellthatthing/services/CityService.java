@@ -22,8 +22,8 @@ public class CityService {
         return listOfCities;
     }
 
-    public City findByCityId(Long cityId) {
-        return cityRepository.findById(cityId).orElseThrow(()
-                -> new ResourceNotFoundException("City id: '" + cityId + "' was not found"));
+    public City findByCityName(String cityName) {
+        return cityRepository.findById(cityName).orElseThrow(()
+                -> new ResourceNotFoundException("City: '" + cityName + "' was not found"));
     }
 }

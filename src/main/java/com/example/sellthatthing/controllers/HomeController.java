@@ -18,12 +18,12 @@ public class HomeController {
 
     @GetMapping
     public String showIndexPage(final Model model, PostsSortDto postsSortDto) {
-        Long cityId = postsSortDto.getCityId();
+        String cityName = postsSortDto.getCity();
         Long categoryId = postsSortDto.getCategoryId();
         String order = postsSortDto.getOrder();
         String searchText = postsSortDto.getSearchText();
 
-        model.addAttribute("posts", postService.findAllWithSorting(cityId, categoryId, order, searchText));
+        model.addAttribute("posts", postService.findAllWithSorting(cityName, categoryId, order, searchText));
         model.addAttribute("cities", cityService.findAll());
         model.addAttribute("categories", categoryService.findAll());
         return "index";

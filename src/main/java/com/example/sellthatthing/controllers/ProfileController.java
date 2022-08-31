@@ -59,12 +59,12 @@ public class ProfileController {
             // model.addAttribute("isSameUser", authAccount.getAccountId().equals(currentAccount.getAccountId()));
         }
 
-        Long cityId = postsSortDto.getCityId();
+        String cityName = postsSortDto.getCity();
         Long categoryId = postsSortDto.getCategoryId();
         String order = postsSortDto.getOrder();
         String searchText = postsSortDto.getSearchText();
 
-        model.addAttribute("userPosts", postService.usersPost(accountId, cityId, categoryId, order, searchText));
+        model.addAttribute("userPosts", postService.usersPost(accountId, cityName, categoryId, order, searchText));
         model.addAttribute("cities", cityService.findAll());
         model.addAttribute("categories", categoryService.findAll());
         return "view-user-posts";
