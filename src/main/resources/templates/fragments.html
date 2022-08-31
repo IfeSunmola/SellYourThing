@@ -66,40 +66,39 @@
 
 	<!--Start Sort Parameters-->
 	<div th:fragment="sortParameters (cities, categories)">
-		<form action="#" th:action="@{/}" th:object="${postSortDto}">
+		<form id="sortForm" action="#" th:action="@{/}" th:object="${postsSortDto}">
 			<div class="row mt-5 mb-2">
 				<!--Search By City-->
 				<div class="col">
-					<select id="citySelect" th:name="cityId" class="form-select mb-3" aria-label="Sort Location">
+					<select th:field="*{cityId}" id="citySelect" class="form-select mb-3" aria-label="Sort Location">
 						<option value="0" selected>All Cities</option>
-						<option value="1" th:selected="${citySelection} == ${city.cityId}" th:each="city: ${cities}" th:value="${city.cityId}"
+						<option value="1" th:each="city: ${cities}" th:value="${city.cityId}"
 								th:text="${city.cityName}"></option>
 					</select>
 				</div>
 
 				<!--Search By Category-->
 				<div class="col">
-					<select id="categorySelect" th:name="categoryId" class="form-select mb-3" aria-label="Sort Location">
+					<select th:field="*{categoryId}" id="categorySelect" class="form-select mb-3" aria-label="Sort Location">
 						<option value="0" selected>All Categories</option>
-						<option value="1" th:selected="${categorySelection} == ${category.categoryId}" th:each="category: ${categories}"
-								th:value="${category.categoryId}"
+						<option value="1" th:each="category: ${categories}" th:value="${category.categoryId}"
 								th:text="${category.categoryName}"></option>
 					</select>
 				</div>
 
 				<!--Sort By-->
 				<div class="col">
-					<select id="sortBy" th:name="sortBy" class="form-select mb-3" aria-label="Sort Location">
-						<option value="1" selected>Newest First</option>
-						<option value="2">Highest Price</option>
-						<option value="3">Lowest Price</option>
+					<select th:field="*{order}" id="order" class="form-select mb-3" aria-label="Sort Location">
+						<option value="new" selected>Newest First</option>
+						<option value="ascPrice">Highest Price</option>
+						<option value="descPrice">Lowest Price</option>
 					</select>
 				</div>
 
 				<!--Search By text-->
 				<div class="col">
 					<label for="searchText" class="visually-hidden">Search Text</label>
-					<input th:value="${searchText}" th:name="searchText" type="text" class="form-control" id="searchText"
+					<input th:field="*{searchText}" type="text" class="form-control" id="searchText"
 						   placeholder="Enter search text">
 				</div>
 			</div>
