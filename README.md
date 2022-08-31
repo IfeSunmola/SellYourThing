@@ -6,15 +6,14 @@
 4. Show custom message for users that have not verified their account
 5. Implement "send a copy of this to my email"
 6. Accept images
-7. Add search parameters
-8. Log in should not be required to reply to a message
-9. Facebook/google login
-10. Admin tools in navbar
-11. Remove request params, find way to show messages without it
-12. .and().requiresChannel().anyRequest().requiresSecure();
-13. Use a content security policy for Spring Boot XSS protection
-14. After login, always redirect to previous page
-15. Add location to register page
+7. Log in should not be required to reply to a message
+8. Facebook/google login
+9. Admin tools in navbar
+10. Remove request params, find way to show messages without it
+11. .and().requiresChannel().anyRequest().requiresSecure();
+12. Use a content security policy for Spring Boot XSS protection
+13. After login, always redirect to previous page
+14. Add location to register page
 
 ---
 
