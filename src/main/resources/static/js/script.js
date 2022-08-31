@@ -1,4 +1,5 @@
 function disableEmptyFields() {
+    // disabling the fields so only the non empty Request Params will be shown in url
     const citySelect = document.getElementById("citySelect");
     citySelect.disabled = citySelect.value === "0";
 
