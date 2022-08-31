@@ -40,8 +40,8 @@
 						<div class="col-12 col-sm-6">
 							<select class="form-select mb-3" aria-label="Location Selector" th:field="*{cityId}">
 								<option value="0" selected>Choose your Location</option>
-								<option value="1" th:each="location: ${locations}" th:value="${location.locationId}"
-										th:text="${location.locationName}"></option>
+								<option value="1" th:each="city: ${cities}" th:value="${city.cityId}"
+										th:text="${city.cityName}"></option>
 							</select>
 						</div>
 						<!--End Location-->

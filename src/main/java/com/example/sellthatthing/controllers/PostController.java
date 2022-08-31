@@ -36,7 +36,7 @@ public class PostController {
         model.addAttribute("newPostDto", new NewPostRequest());
         model.addAttribute("categories", categoryService.findAll());
 
-        model.addAttribute("locations", cityService.findAll());
+        model.addAttribute("cities", cityService.findAll());
         return "create-new-post";
     }
 
