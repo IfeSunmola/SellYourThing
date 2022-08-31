@@ -6,6 +6,7 @@ import com.example.sellthatthing.datatransferobjects.VerificationDto;
 import com.example.sellthatthing.emailsender.EmailSenderService;
 import com.example.sellthatthing.exceptions.ResourceNotFoundException;
 import com.example.sellthatthing.models.Account;
+import com.example.sellthatthing.models.AccountDetails;
 import com.example.sellthatthing.models.VerificationCode;
 import com.example.sellthatthing.repositories.AccountRepository;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
 import static com.example.sellthatthing.emailsender.MailBody.VERIFY_CODE_HTML;
 
@@ -92,14 +94,22 @@ public class AccountService {
         codeService.deleteById(code.getCodeId());
     }
 
-    public Account update(UpdateAccountRequest updateInfo, Long accountId) {
-        Account accountToUpdate = findByAccountId(accountId);
+    public void updateAccount(UpdateAccountRequest updateInfo, HashMap<String, Boolean> message, AccountDetails accountDetails) {
+        if (!accountDetails.email().equals(updateInfo.getEmail())) {
+            // user changed the email in inspect element
+            message.clear();
+            message.put("updateStatus", false);
+            return;
+        }
+        // everything good from here, I hope
+        Account account = accountDetails.account();
+        account.setFirstName(updateInfo.getFirstName());
+        account.setLastName(updateInfo.getLastName());
+        account.setDateOfBirth(updateInfo.getDateOfBirth());
 
-        accountToUpdate.setFirstName(updateInfo.getFirstName());
-        accountToUpdate.setLastName(updateInfo.getLastName());
-        accountToUpdate.setEmail(updateInfo.getEmail());
-
-        return accountRepository.save(accountToUpdate);
+        message.clear();
+        message.put("updateStatus", true);
+        accountRepository.save(account);
     }
 
     public void delete(Long accountId) {
