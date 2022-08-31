@@ -48,6 +48,41 @@
                return "hehe";
            }
 
+8. To show messages in url without Request params, using SessionAttributes:
+    1. In the Controller, create a method to return a HashMap (or anything really) and annotate with `@ModelAttribute("customName")` like:
+
+           @ModelAttribute("customName")
+           public HashMap<String, Boolean> customName() {
+               return new HashMap<>();
+           }
+       The code above allows that instance of HashMap to be used in this model
+
+    2. Annotate the controller class with `@SessionAttribute("customName")`. The annotation tells spring to treat `customName` as a session attribute.
+
+    3. To use in a mapping, add it to the parameters. E.g:
+
+           @PostMapping("/url")
+           public String updateAccount(@ModelAttribute("customName") HashMap<String, Boolean> message) {
+                 // update, delete and do what you want here. 
+           }
+       The value of customName will be stored in `message`.
+
+    4. Anything that is stored in `message`, either in the above Mapping or in any Mapping (that has the parameters) - will be available for use in
+       anywhere that uses this controller
+
+    5. To use in thymeleaf, assuming customName was message and one of the key value pair is in form `<String, Boolean>`:
+
+           <div class="w-50" th:if="${message.get('updateStatus') == true}">
+               <div class="alert alert-success">Account updated successfully</div>
+           </div>
+
+           <div class="w-50" th:if="${message.get('updateStatus') == false}">
+               <div class="alert alert-danger">Update failed, try again</div>
+           </div>
+
+           <th:block th:if="${message.remove('updateStatus')}"></th:block>
+       If the key is not removed, it will show everytime.
+
 # Java Notes:
 
 1. Records automatically create private final fields, getters, AllArgsConstructor, toString, equals
