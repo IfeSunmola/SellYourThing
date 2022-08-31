@@ -60,11 +60,11 @@ public class ProfileController {
         }
 
         String cityName = postsSortDto.getCity();
-        Long categoryId = postsSortDto.getCategoryId();
+        String categoryName = postsSortDto.getCategory();
         String order = postsSortDto.getOrder();
         String searchText = postsSortDto.getSearchText();
 
-        model.addAttribute("userPosts", postService.usersPost(accountId, cityName, categoryId, order, searchText));
+        model.addAttribute("userPosts", postService.usersPost(accountId, cityName, categoryName, order, searchText));
         model.addAttribute("cities", cityService.findAll());
         model.addAttribute("categories", categoryService.findAll());
         return "view-user-posts";
