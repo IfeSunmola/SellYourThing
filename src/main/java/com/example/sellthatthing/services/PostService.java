@@ -2,21 +2,23 @@ package com.example.sellthatthing.services;
 
 import com.example.sellthatthing.datatransferobjects.NewPostRequest;
 import com.example.sellthatthing.datatransferobjects.PostReply;
-import com.example.sellthatthing.emailsender.EmailSenderService;
-import com.example.sellthatthing.models.Post;
 import com.example.sellthatthing.datatransferobjects.UpdatePostRequest;
+import com.example.sellthatthing.emailsender.EmailSenderService;
 import com.example.sellthatthing.exceptions.EmptyResourceException;
 import com.example.sellthatthing.exceptions.ResourceNotFoundException;
 import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.models.Category;
+import com.example.sellthatthing.models.Post;
 import com.example.sellthatthing.repositories.PostRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 import static com.example.sellthatthing.emailsender.MailBody.POST_REPLY_HTML;
 
@@ -36,6 +38,45 @@ public class PostService {
             throw new EmptyResourceException("No posts found");
         }
         return listOfPosts;
+    }
+
+    public List<Post> findAllWithSorting(Long cityId, Long categoryId, String order, String searchText) {
+        String cityName = "";
+        String categoryName = "";
+
+        if (cityId != null) {
+            cityName = cityService.findByCityId(cityId).getCityName();
+        }
+        if (categoryId != null) {
+            categoryName = categoryService.findByCategoryId(categoryId).getCategoryName();
+        }
+
+        if (searchText == null) {
+            searchText = "";
+        }
+        searchText = searchText.toUpperCase(Locale.ROOT).strip();
+
+        List<Post> result;
+        if (order == null) {
+            result = postRepository.findAllWithDate(cityName, categoryName, searchText,
+                    Sort.by(Sort.Direction.DESC, "createdAt"));
+        }
+        else if (order.equals("old")) {
+            result = postRepository.findAllWithDate(cityName, categoryName, searchText,
+                    Sort.by(Sort.Direction.ASC, "createdAt"));
+        }
+        else if (order.equals("ascPrice")) {
+            result = postRepository.findAllWithPrice(cityName, categoryName, searchText,
+                    Sort.by(Sort.Direction.ASC, "price"));
+        }
+        else if (order.equals("descPrice")) {
+            result = postRepository.findAllWithPrice(cityName, categoryName, searchText,
+                    Sort.by(Sort.Direction.DESC, "price"));
+        }
+        else {
+            throw new IllegalStateException("Hehe what are you doing");
+        }
+        return result;
     }
 
     public void savePost(Post post) {
