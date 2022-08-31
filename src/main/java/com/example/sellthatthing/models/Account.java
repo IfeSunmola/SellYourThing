@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ public class Account {
     @NonNull private String firstName;
     @NonNull private String lastName;
     @NonNull private String email;
-    @NonNull private LocalDate dateOfBirth;
+    @NonNull @DateTimeFormat(pattern = "yyyy-MM-dd")private LocalDate dateOfBirth;
     @NonNull private String role;
     @NonNull private String password;
     @NonNull private boolean enabled;
