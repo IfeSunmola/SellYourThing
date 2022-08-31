@@ -90,8 +90,9 @@
 				<div class="col">
 					<select th:field="*{order}" id="order" class="form-select mb-3" aria-label="Sort Location">
 						<option value="new" selected>Newest First</option>
-						<option value="ascPrice">Highest Price</option>
-						<option value="descPrice">Lowest Price</option>
+						<option value="old" selected>Oldest First</option>
+						<option value="descPrice">Highest Price</option>
+						<option value="ascPrice">Lowest Price</option>
 					</select>
 				</div>
 
@@ -105,11 +106,8 @@
 
 			<!--Buttons-->
 			<div class="row smt-2 mb-5">
-				<div class="col text-end">
-					<button type="submit" class="btn btn-primary mb-3" onclick="disableEmptyFields()">Search</button>
-				</div>
-				<div class="col text-start">
-					<button type="reset" class="btn btn-light mb-3">Reset</button>
+				<div class="col text-center">
+					<button type="submit" class="btn btn-primary w-25" onclick="disableEmptyFields()">Search</button>
 				</div>
 			</div>
 		</form>
