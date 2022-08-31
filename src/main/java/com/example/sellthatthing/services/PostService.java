@@ -131,6 +131,49 @@ public class PostService {
         return postRepository.findPostsByPosterAccount(account);
     }
 
+    public List<Post> usersPost(Long accountId, Long cityId, Long categoryId, String order, String searchText) {
+        String cityName = "";
+        String categoryName = "";
+
+        if (cityId != null) {
+            cityName = cityService.findByCityId(cityId).getCityName();
+        }
+        if (categoryId != null) {
+            categoryName = categoryService.findByCategoryId(categoryId).getCategoryName();
+        }
+
+        if (searchText == null) {
+            searchText = "";
+        }
+        searchText = searchText.toUpperCase(Locale.ROOT).strip();
+
+        List<Post> result;
+        if (order == null) {
+            result = postRepository.findAllWithDateAccount(cityName, categoryName, searchText, accountId,
+                    Sort.by(Sort.Direction.DESC, "createdAt"));
+        }
+        else if (order.equals("old")) {
+            result = postRepository.findAllWithDateAccount(cityName, categoryName, searchText, accountId,
+                    Sort.by(Sort.Direction.ASC, "createdAt"));
+        }
+        else if (order.equals("ascPrice")) {
+            result = postRepository.findAllWithPriceAccount(cityName, categoryName, searchText, accountId,
+                    Sort.by(Sort.Direction.ASC, "price"));
+        }
+        else if (order.equals("descPrice")) {
+            result = postRepository.findAllWithPriceAccount(cityName, categoryName, searchText, accountId,
+                    Sort.by(Sort.Direction.DESC, "price"));
+        }
+        else {
+            throw new IllegalStateException("Hehe what are you doing");
+        }
+
+//        if (order == null) {
+//            result = postRepository.findByPostCityCityNameContainingAndPostCategoryCategoryNameContainingAndBodyContainingIgnoreCase(cityName, categoryName, searchText);
+//        }
+        return result;
+    }
+
     public List<Post> findByPostCategory(String categoryName) {
         Category category = categoryService.findByCategoryName(categoryName);
         return postRepository.findByPostCategory(category);
