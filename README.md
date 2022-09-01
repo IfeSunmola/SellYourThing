@@ -19,21 +19,23 @@
 
 # Thymeleaf Notes:
 
-1. Show content to users that are authenticated/logged-in: `sec:authorize="isAuthenticated()"`. Add `!` to reverse
+1. Anything between two square bracket is valid thymeleaf syntax. `[[${userEmail}]]`
 
-2. Show content to users that have the role of `ADMIN`: `sec:authorize="hasRole('ROLE_ADMIN')"`
+2. Show content to users that are authenticated/logged-in: `sec:authorize="isAuthenticated()"`. Add `!` to reverse
 
-3. Use `${#authentication.principal.firstName}` to get the firstName of the currently logged-in user.
+3. Show content to users that have the role of `ADMIN`: `sec:authorize="hasRole('ROLE_ADMIN')"`
+
+4. Use `${#authentication.principal.firstName}` to get the firstName of the currently logged-in user.
    Make sure to use `sec:authorize="isAuthenticated()` to make sure the person seeing it is actually logged. Intellij will complain about `firstName`
    not found
 
-4. To construct texts: `th:text="|Hello, ${#authentication.principal.firstName}|"`
+5. To construct texts: `th:text="|Hello, ${#authentication.principal.firstName}|"`
 
-5. To construct links: `th:href="@{|/profile/${#authentication.principal.accountId}|}"`
+6. To construct links: `th:href="@{|/profile/${#authentication.principal.accountId}|}"`
 
-6. `th:field` overrides `th:id`, `th:name`, and `th:value`
+7. `th:field` overrides `th:id`, `th:name`, and `th:value`
 
-7.
+8.
     1. To pass only string from view to controller. Name attribute is important:
 
            <form th:action="@{/process}"  method="post">
@@ -48,7 +50,7 @@
                return "hehe";
            }
 
-8. To show messages in url without Request params, using SessionAttributes:
+9. To show messages in url without Request params, using SessionAttributes:
     1. In the Controller, create a method to return a HashMap (or anything really) and annotate with `@ModelAttribute("customName")` like:
 
            @ModelAttribute("customName")
@@ -82,6 +84,20 @@
 
            <th:block th:if="${message.remove('updateStatus')}"></th:block>
        If the key is not removed, it will show everytime.
+
+    6. To use the attribute globally, in all models/views, create a ControllerAdvice class like:
+
+           @ControllerAdvice
+           public class GlobalControllerAdvice {
+               @ModelAttribute("message")
+               public HashMap<String, Boolean> message() {
+                   return new HashMap<>(1);
+               }
+           }
+
+       And remove the method that was declared in Step 1
+
+    7. Don't forget to mark the Controller class you want to use it with. Refer to step 2
 
 # Java Notes:
 
