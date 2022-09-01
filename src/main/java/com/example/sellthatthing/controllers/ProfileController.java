@@ -16,7 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 
 @Controller
@@ -29,13 +30,12 @@ public class ProfileController {
     private final CityService cityService;
     private final CategoryService categoryService;
 
-    @ModelAttribute("message")
-    public HashMap<String, Boolean> message() {
-        return new HashMap<>(1);
+    private String redirectToHome() {
+        return "redirect:/";
     }
 
     @GetMapping("/{accountId}")
-    public String loadProfilePage(@PathVariable Long accountId, Model model) {
+    public String loadProfilePage(@PathVariable Long accountId, Model model, @ModelAttribute("message") HashMap<String, Boolean> message) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         boolean isSameUser; // if the user viewing the page is the same as the logged-in user
         Account currentAccount = accountService.findByAccountId(accountId); // user viewing the page
@@ -63,8 +63,8 @@ public class ProfileController {
     }
 
     @GetMapping("/update-account")
-    public String redirectToProfile(){
-        return "redirect:/";
+    public String getUpdateAccount() {
+        return redirectToHome();
     }
 
     @PatchMapping("/update-account")
@@ -79,12 +79,38 @@ public class ProfileController {
         return "redirect:/users/" + accountDetails.accountId();
     }
 
-    @DeleteMapping("/{accountId}/delete")
-    public String deleteAccount(@PathVariable Long accountId) {
-        accountService.delete(accountId);
-        return "redirect:/";
+    @GetMapping("/delete-account")
+    public String getDeleteAccount() {
+        return redirectToHome();
     }
 
+    /*
+     * Flow:
+     * If for some reason the user is not authenticated, redirect to login page
+     * Go to accountService to delete the account, invalidate the session and log the user out
+     * If the account was successfully deleted, redirect to login page.
+     * If not, redirect to users profile page and show error message.
+     * Check README for how the @ModelAttribute is working
+     * */
+    @DeleteMapping("/delete-account")
+    public String deleteAccount(@RequestParam String confirmEmail,
+                                @ModelAttribute("message") HashMap<String, Boolean> message,
+                                HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = (Authentication) request.getUserPrincipal();
+        if ((auth instanceof AnonymousAuthenticationToken)) { // not authenticated
+            return "/login";
+        }
+        AccountDetails accountDetails = (AccountDetails) auth.getPrincipal();
+        boolean deleted = accountService.delete(confirmEmail, accountDetails, request, response);
+
+        message.remove("deleteStatus");
+        if (deleted) {
+            message.put("deleteStatus", true);
+            return "redirect:/";
+        }
+        message.put("deleteStatus", false);
+        return "redirect:/users/" + accountDetails.accountId();
+    }
 
 
     @GetMapping("/{accountId}/posts")

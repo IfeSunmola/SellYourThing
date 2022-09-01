@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
@@ -94,6 +95,7 @@ public class AccountService {
         codeService.deleteById(code.getCodeId());
     }
 
+    @Transactional
     public void updateAccount(UpdateAccountRequest updateInfo, HashMap<String, Boolean> message, AccountDetails accountDetails) {
         if (!accountDetails.email().equals(updateInfo.getEmail())) {
             // user changed the email in inspect element
@@ -112,9 +114,16 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    public void delete(Long accountId) {
-        findByAccountId(accountId);// throws exception if not found
-        accountRepository.deleteById(accountId);
+    @Transactional
+    public boolean delete(String email, AccountDetails accountDetails,
+                          HttpServletRequest request, HttpServletResponse response) {
+        if (!accountDetails.email().equals(email) || !accountRepository.existsByEmail(email)) {
+            // user changed the email in inspect element or the email is not in the database, for some weird reason
+            return false;
+        }
+        accountRepository.deleteByEmail(email);
+        doManualLogout(request, response);
+        return true;
     }
 
     public void doManualLogin(Long accountId, String rawPassword, HttpServletRequest request) {
@@ -129,6 +138,26 @@ public class AccountService {
         }
         else {
             System.out.println("Got ya");
+        }
+    }
+
+    private void doManualLogout(HttpServletRequest request, HttpServletResponse response) {
+        // there is a 100% chance the try below could be reduced to 3 lines
+        try {
+            request.logout();
+//            request.getSession(false);
+//            SecurityContext context = SecurityContextHolder.getContext();
+//            SecurityContextHolder.clearContext();
+//            context.setAuthentication(null);
+//            for (Cookie cookie : request.getCookies()) {
+//                String cookieName = cookie.getName();
+//                Cookie cookieToDelete = new Cookie(cookieName, null);
+//                cookieToDelete.setMaxAge(0);
+//                response.addCookie(cookieToDelete);
+//            }
+        }
+        catch (ServletException e) {
+            System.out.println("Logout after account deletion failed" + e);
         }
     }
 }

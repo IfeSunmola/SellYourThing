@@ -17,7 +17,11 @@
 				<div class="w-50" th:if="${message.get('updateStatus') == false}">
 					<div class="alert alert-danger">Update failed, try again</div>
 				</div>
+				<div class="w-50" th:if="${message.get('deleteStatus') == false}">
+					<div class="alert alert-danger">Failed to delete, try again</div>
+				</div>
 				<th:block th:if="${message.remove('updateStatus')}"></th:block>
+				<th:block th:if="${message.remove('deleteStatus')}"></th:block>
 			</div>
 			<!--End Messages-->
 			<form method="post" action="#" class="w-50 w-cus-50">
@@ -65,19 +69,21 @@
 		<!--Start Buttons, consider fragments-->
 		<div class="row mb-3" th:if="${isSameUser}">
 			<div class="col d-flex justify-content-center">
-				<form class="d-grid w-50 w-cus-50" action="#" th:method="delete" tsh:action="@{'/users/' + ${accountInfo.accountId} + '/delete'}">
+				<div class="d-grid w-50 w-cus-50">
 					<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateAccountModal">
 						Update Account
 					</button>
-				</form>
+				</div>
 			</div>
 		</div>
 
 		<div class="row mb-3" th:if="${isSameUser}">
 			<div class="col d-flex justify-content-center">
-				<form class="d-grid w-50 w-cus-50" action="#" th:method="delete" tsh:action="@{'/users/' + ${accountInfo.accountId} + '/delete'}">
-					<input type="submit" value="Delete Account" class="btn btn-danger">
-				</form>
+				<div class="d-grid w-50 w-cus-50">
+					<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+						Delete Account
+					</button>
+				</div>
 			</div>
 		</div>
 
@@ -97,31 +103,32 @@
 		<div class="modal-dialog modal-dialog-centered text-dark">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Update Account</h5>
+					<h5 class="modal-title" id="updateModalHeader">Update Account</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<form method="post" th:method="patch" th:object="${updateAccountDto}" th:action="@{/users/update-account}">
-						<!--Start First and Last name-->
+						<!--First and Last name-->
 						<div class="row">
 							<div class="col-12 ">
 								<div class="form-floating text-dark text-muted mb-3">
-									<input autofocus id="updateFirstName" class="form-control" type="text" th:field="*{firstName}"/>
+									<input th:autocomplete="${updateAccountDto.firstName}" autofocus id="updateFirstName" class="form-control"
+										   type="text" th:field="*{firstName}"/>
 									<label for="updateFirstName">First Name</label>
 								</div>
 							</div>
 
 							<div class="col-12 ">
 								<div class="form-floating text-dark text-muted mb-3">
-									<input id="updateLastName" class="form-control" type="text" th:field="*{lastName}"
+									<input th:autocomplete="${updateAccountDto.lastName}" id="updateLastName" class="form-control" type="text"
+										   th:field="*{lastName}"
 										   placeholder="Last Name"/>
 									<label for="updateLastName">Last Name</label>
 								</div>
 							</div>
 						</div>
-						<!--End First and Last name-->
 
-						<!--Start Email and DOB-->
+						<!--Email and DOB-->
 						<div class="row">
 							<div class="col-12">
 								<div class="form-floating text-dark text-muted mb-3">
@@ -132,22 +139,61 @@
 
 							<div class="col-12">
 								<div class="form-floating text-dark text-muted">
-									<input id="updateDateOfBirth" class="form-control" type="date" th:field="*{dateOfBirth}"/>
+									<input th:autocomplete="${updateAccountDto.dateOfBirth}" id="updateDateOfBirth" class="form-control" type="date"
+										   th:field="*{dateOfBirth}"/>
 									<label for="updateDateOfBirth">Date of Birth</label></div>
 							</div>
 						</div>
-						<!--End Email and DOB-->
+
+						<!--Buttons-->
 						<div class="modal-footer justify-content-center">
 							<button type="submit" class="btn btn-primary">Update Account</button>
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 						</div>
-
 					</form>
 				</div>
 
 			</div>
 		</div>
 	</div>
+
+	<!-- Delete Account Modal -->
+	<div th:if="${isSameUser}" class="modal fade" id="deleteAccountModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="deleteAccountModal"
+		 aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered text-dark">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deleteModalHeader">Delete your Account? All posts associated with your account will also be
+						deleted
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form autocomplete="off" method="post" th:method="delete" th:action="@{/users/delete-account}">
+						<!--Confirm Email-->
+						<div class="row mb-3">
+							<div class="col-auto">
+								<label for="confirmEmail" class="col-form-label">Confirm your email</label>
+							</div>
+							<div class="col-auto">
+								<input onkeyup="enableDeleteButton()" th:onkeyup="enableDeleteButton([[${authAccount.email()}]])" name="confirmEmail"
+									   type="text"
+									   id="confirmEmail" class="form-control" aria-describedby="confirmEmail">
+							</div>
+						</div>
+
+						<!--Buttons-->
+						<div class="modal-footer justify-content-center">
+							<button disabled id="deleteAccountButton" type="submit" class="btn btn-danger">Delete Account</button>
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="../static/js/script.js" th:src="@{/js/script.js}"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 			th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js}"
 			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
