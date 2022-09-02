@@ -176,7 +176,7 @@
 								<label for="confirmEmail" class="col-form-label">Confirm your email</label>
 							</div>
 							<div class="col-auto">
-								<input onkeyup="enableDeleteButton()" th:onkeyup="enableDeleteButton([[${authAccount.email()}]])" name="confirmEmail"
+								<input onkeyup="enableAccountDeleteButton()" th:onkeyup="enableAccountDeleteButton([[${authAccount.email()}]])" name="confirmEmail"
 									   type="text"
 									   id="confirmEmail" class="form-control" aria-describedby="confirmEmail">
 							</div>
