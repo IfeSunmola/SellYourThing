@@ -10,6 +10,7 @@ import com.example.sellthatthing.models.AccountDetails;
 import com.example.sellthatthing.models.VerificationCode;
 import com.example.sellthatthing.repositories.AccountRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.example.sellthatthing.emailsender.MailBody.VERIFY_CODE_HTML;
 
@@ -91,16 +93,16 @@ public class AccountService {
         }
         // update the confirmed at time, enable the users account, and delete the code
         codeService.updateConfirmedAtById(code.getCodeId());
-        accountRepository.enableAppUserById(code.getAccount().getAccountId());
+        accountRepository.enableAccountById(code.getAccount().getAccountId());
         codeService.deleteById(code.getCodeId());
     }
 
     @Transactional
-    public void updateAccount(UpdateAccountRequest updateInfo, HashMap<String, Boolean> message, AccountDetails accountDetails) {
+    public void updateAccount(UpdateAccountRequest updateInfo, HashMap<String, String> message, AccountDetails accountDetails) {
         if (!accountDetails.email().equals(updateInfo.getEmail())) {
             // user changed the email in inspect element
             message.clear();
-            message.put("updateStatus", false);
+            message.put("updateStatus", "false");
             return;
         }
         // everything good from here, I hope
@@ -110,7 +112,7 @@ public class AccountService {
         account.setDateOfBirth(updateInfo.getDateOfBirth());
 
         message.clear();
-        message.put("updateStatus", true);
+        message.put("updateStatus", "true");
         accountRepository.save(account);
     }
 
@@ -122,7 +124,7 @@ public class AccountService {
             return false;
         }
         accountRepository.deleteByEmail(email);
-        doManualLogout(request, response);
+        doManualLogout(request);
         return true;
     }
 
@@ -141,23 +143,45 @@ public class AccountService {
         }
     }
 
-    private void doManualLogout(HttpServletRequest request, HttpServletResponse response) {
-        // there is a 100% chance the try below could be reduced to 3 lines
+    private void doManualLogout(HttpServletRequest request) {
         try {
             request.logout();
-//            request.getSession(false);
-//            SecurityContext context = SecurityContextHolder.getContext();
-//            SecurityContextHolder.clearContext();
-//            context.setAuthentication(null);
-//            for (Cookie cookie : request.getCookies()) {
-//                String cookieName = cookie.getName();
-//                Cookie cookieToDelete = new Cookie(cookieName, null);
-//                cookieToDelete.setMaxAge(0);
-//                response.addCookie(cookieToDelete);
-//            }
+            request.getSession().invalidate();
+            SecurityContextHolder.getContext().setAuthentication(null);
         }
         catch (ServletException e) {
-            System.out.println("Logout after account deletion failed" + e);
+            System.out.println("Logout failed in: doManualLogout(), Exception: " + e);
         }
+    }
+
+    public List<Account> findAll() {
+        return accountRepository.findAll();
+    }
+
+    @Transactional
+    public void disableById(Long accountId, HashMap<String, String> message) {
+        String email = findByAccountId(accountId).getEmail();
+        accountRepository.disableAccountById(accountId);
+        message.clear();
+        message.put("adminDisableStatus", "true");
+        message.put("adminDisableMessage", "Account id: " + accountId + ", with email: " + email + " <strong>has been disabled</strong>");
+    }
+
+    @Transactional
+    public void enableById(Long accountId, HashMap<String, String> message) {
+        String email = findByAccountId(accountId).getEmail();
+        accountRepository.enableAccountById(accountId);
+        message.clear();
+        message.put("adminEnableStatus", "true");
+        message.put("adminEnableMessage", "Account id: " + accountId + ", with email: " + email + " <strong>has been enabled</strong>");
+    }
+
+    @Transactional
+    public void deleteById(Long accountId, HashMap<String, String> message) {
+        String email = findByAccountId(accountId).getEmail();
+        accountRepository.deleteById(accountId);
+        message.clear();
+        message.put("adminDeleteStatus", "true");
+        message.put("adminDeleteMessage", "Account id: " + accountId + ", with email: " + email + " <strong>has been deleted</strong>");
     }
 }

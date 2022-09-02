@@ -13,33 +13,81 @@ function disableEmptyFields() {
     searchText.disabled = searchText.value === "";
 }
 
-function enableDeleteButton(email) {
-    const deleteAccountButton = document.getElementById("deleteAccountButton")
-    const confirmEmail = document.getElementById("confirmEmail");
+function enableAccountDeleteButton(email) {
+    const deleteAccountButton = document.getElementById('deleteAccountButton')
+    const confirmEmail = document.getElementById('confirmEmail');
     deleteAccountButton.disabled = confirmEmail.value !== email;
 }
 
-function openModalAndPreFill() {
-    $('document').ready(function () {
-        $('.table .temp').on('click', function (event) {
-            event.preventDefault();
+function prefill(account, flag) {
+    if (flag === 'disableEnable') {
+        $('#disableAccountId').val(account.accountId);
+        $('#disableRole').val(account.role);
+        $('#disableFirstName').val(account.firstName);
+        $('#disableLastName').val(account.lastName);
+        $('#disableEmail').val(account.email);
+        $('#disableDateOfBirth').val(account.dateOfBirth);
+        $('#disableActive').val(account.active);
+    }
+    else {
+        $('#deleteAccountId').val(account.accountId);
+        $('#deleteRole').val(account.role);
+        $('#deleteFirstName').val(account.firstName);
+        $('#deleteLastName').val(account.lastName);
+        $('#deleteEmail').val(account.email);
+        $('#deleteDateOfBirth').val(account.dateOfBirth);
+        $('#deleteActive').val(account.active);
+    }
+}
 
+function openDisableModalAndPrefill() {
+    $('document').ready(function () {
+        $('.table .disableEnableAccountBtn').on('click', function (event) {
+            event.preventDefault();
             const href = $(this).attr('href');
             $.get(href, function (account) {
-                //select accountId, change the value to the data gotten from the get request
-                //name input attribute is used to do the mapping. Name attribute must be the same as the name in the result set
-                $('#accountId').val(account.accountId);
-                $('#role').val(account.role);
-                $('#firstName').val(account.firstName);
-                $('#lastName').val(account.lastName);
-                $('#email').val(account.email);
-                $('#dateOfBirth').val(account.dateOfBirth);
-                $('#active').val(account.active);
-
+                if (account.active === 'YES') {// grab id 'disableForm', replace the attribute 'action' with the 2nd param
+                    $('#disableForm').attr('action', '/admin/' + account.accountId + '/disable');
+                    $('#disableEnableFormButton').html('Disable Account')
+                    $('#disableEnableFormHeader').html('Disable this account?')
+                }
+                else {
+                    $('#disableForm').attr('action', '/admin/' + account.accountId + '/enable');
+                    $('#disableEnableFormButton').html('Enable Account')
+                    $('#disableEnableFormHeader').html('Enable this account?')
+                }
+                prefill(account, 'disableEnable');
             });
             $('#disableAccountModal').modal('show')
         })
     })
 }
 
-openModalAndPreFill()
+function openDeleteModalAndPrefill() {
+    $('document').ready(function () {
+        $('.table #deleteAccountBtnId').on('click', function (event) {
+            event.preventDefault();
+            const href = $(this).attr('href');
+            $.get(href, function (account) {
+                $('#deleteForm').attr('action', '/admin/' + account.accountId + '/delete');
+                prefill(account, 'delete');
+            });
+            $('#deleteAccountModal').modal('show')
+        })
+    })
+}
+
+function enableAdminAccountDeleteButton(adminIdFromServer, adminEmailFromServer) {
+    const deleteAccountButton = document.getElementById('deleteFormButton')
+    const idField = document.getElementById('adminAccountId').value;
+    const emailField = document.getElementById('adminEmail').value;
+
+    if (idField === adminIdFromServer && emailField === adminEmailFromServer) {
+        deleteAccountButton.disabled = false;
+        return;
+    }
+    deleteAccountButton.disabled = true;
+}
+
+openDisableModalAndPrefill()
+openDeleteModalAndPrefill();
