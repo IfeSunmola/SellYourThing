@@ -31,7 +31,6 @@
 			<!--Start Nav bar items-->
 			<div class="expand navbar-collapse justify-content-end" id="navbarNavAltMarkup">
 				<div class="navbar-nav">
-					<a class="nav-link me-5 text-center text-white" href="#">View By Category</a>
 					<a class="nav-link me-5 text-center text-white" href="#" sec:authorize="!hasAuthority('ADMIN')" th:href="@{/posts/create-new}">Create
 						New Listing</a>
 
@@ -39,18 +38,34 @@
 					   th:href="@{/register}">Register</a>
 					<a class="nav-link me-5 text-center text-white" sec:authorize="!isAuthenticated()" href="#" th:href="@{/login}">Login</a>
 
-					<a sec:authorize="hasAuthority('ADMIN')" class="nav-link me-5 text-center text-white" href="#" th:href="@{/admin/accounts}">Admin
-						Tools</a>
+					<!--Start Admin tools dropdown-->
+					<li class="nav-item dropdown" sec:authorize="isAuthenticated() and hasAuthority('ADMIN')">
+						<a class="nav-link dropdown-toggle me-5 text-center text-dark btn btn-info" id="adminToolsDropDown" role="button"
+						   data-bs-toggle="dropdown" aria-expanded="false">Admin Tools
+						</a>
+						<!--Start Drop Down Options-->
+						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navDropDown">
+							<li><a class="dropdown-item" href="#" th:href="@{/admin/accounts}">Accounts</a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item" href="#" th:href="@{/admin/posts}">Posts</a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item" href="#" th:href="@{/admin/categories}">Categories</a></li>
+						</ul>
+						<!--End Drop Down Options-->
+					</li>
 
-					<!--Start Drop Down-->
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle me-5 text-center text-white btn btn-primary" id="navDropDown" role="button"
+					<!--Start Your account Down-->
+					<li class="nav-item dropdown" sec:authorize="isAuthenticated() ">
+						<a class="nav-link dropdown-toggle me-5 text-center text-white btn btn-primary" id="yourAccountDropDown" role="button"
 						   data-bs-toggle="dropdown" aria-expanded="false"
-						   sec:authorize="isAuthenticated()"
 						   th:text="|Hello, ${#authentication.principal.firstName}|">
 						</a>
 						<!--Start Drop Down Options-->
-						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navDropDown" sec:authorize="isAuthenticated()">
+						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navDropDown">
 							<li><a class="dropdown-item" href="#" th:href="@{|/users/${#authentication.principal.accountId}|}">Your
 								Account</a></li>
 							<li>
@@ -60,7 +75,6 @@
 						</ul>
 						<!--End Drop Down Options-->
 					</li>
-					<!--Start Drop Down-->
 				</div>
 			</div>
 			<!--End Nav bar items-->
