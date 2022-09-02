@@ -113,7 +113,7 @@
 
            $('document').ready(function () {
                $('.table .btn').on('click', function (event) { // on click of table or/and button
-                   event.preventDefault(); // 
+                   event.preventDefault(); // prevents the link from opening
                    const href = $(this).attr('href');// get the href assosicated with that button
                    $.get(href, function (account) {// make a get request, response will be stored in `account`
                        $('#firstName').val(account.firstName);// store the value of account.firstName in the field with id firstName
