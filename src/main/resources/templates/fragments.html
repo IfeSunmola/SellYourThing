@@ -32,11 +32,15 @@
 			<div class="expand navbar-collapse justify-content-end" id="navbarNavAltMarkup">
 				<div class="navbar-nav">
 					<a class="nav-link me-5 text-center text-white" href="#">View By Category</a>
-					<a class="nav-link me-5 text-center text-white" href="#" th:href="@{/posts/create-new}">Create New Listing</a>
+					<a class="nav-link me-5 text-center text-white" href="#" sec:authorize="!hasAuthority('ADMIN')" th:href="@{/posts/create-new}">Create
+						New Listing</a>
 
 					<a class="nav-link me-5 text-center text-white" sec:authorize="!isAuthenticated()" href="#"
 					   th:href="@{/register}">Register</a>
 					<a class="nav-link me-5 text-center text-white" sec:authorize="!isAuthenticated()" href="#" th:href="@{/login}">Login</a>
+
+					<a sec:authorize="hasAuthority('ADMIN')" class="nav-link me-5 text-center text-white" href="#" th:href="@{/admin/accounts}">Admin
+						Tools</a>
 
 					<!--Start Drop Down-->
 					<li class="nav-item dropdown">
