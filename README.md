@@ -13,6 +13,11 @@
 11. Use a content security policy for Spring Boot XSS protection
 12. After login, always redirect to previous page
 13. Add location to register page
+14. Pagination
+15. Problem: When an admin deletes an account, the user still remains logged in
+    1. Fix: On each request, check if the user exists in the db. If not, force logout the user and invalidate
+       the session https://stackoverflow.com/a/38295610/18902234
+16. Secure end points with @PreAuthorize
 
 ---
 
@@ -139,7 +144,7 @@
     4. They key of the hashmap, the `name` attribute given to the input field and the "key" in `.val(account.firstName);`
        must be the same. E.g. For firstName to be filled properly, following the jquery and GetMapping
         1. The key in accountInfo should be `firstName`.
-        2. The name attribute in the input tag where it would be filled should also be `firstName`
+        2. ~~The name attribute in the input tag where it would be filled should also be `firstName`~~
         3. ID can be anything, I just used firstName because copy and paste is easy
 
 2. Change text of a button: ` $('#buttonId').html('New Text')`
