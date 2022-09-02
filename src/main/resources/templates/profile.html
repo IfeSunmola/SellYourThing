@@ -23,8 +23,12 @@
 				<th:block th:if="${message.clear()}"></th:block>
 			</div>
 			<!--End Messages-->
+			<div class="text-center" th:switch="${currentAccount.role}">
+				<h1 th:case="'USER'">User Account</h1>
+				<h1 th:case="'ADMIN'">Admin Account</h1>
+			</div>
 			<form method="post" action="#" class="w-50 w-cus-50">
-				<!--Start First and Last name-->
+				<!--First and Last name-->
 				<div class="row">
 					<div class="col-12 ">
 						<div class="form-floating text-dark text-muted mb-3">
@@ -42,9 +46,8 @@
 						</div>
 					</div>
 				</div>
-				<!--End First and Last name-->
 
-				<!--Start Email and DOB-->
+				<!--Email and DOB-->
 				<div class="row">
 					<div class="col-12">
 						<div class="form-floating text-dark text-muted mb-3">
@@ -54,13 +57,12 @@
 						</div>
 					</div>
 
-					<div class="col-12">
+					<div class="col-12" th:if="${isSameUser}">
 						<div class="form-floating text-dark text-muted">
 							<input readonly id="dateOfBirth" class="form-control" type="date" th:value="${currentAccount.dateOfBirth}"/>
-							<label for="dateOfBirth">Date of Birth</label></div>
+							<label for="dateOfBirth">Date of Birth (only visible to you)</label></div>
 					</div>
 				</div>
-				<!--End Email and DOB-->
 			</form>
 		</div>
 		<!--End Profile Form-->
@@ -86,7 +88,7 @@
 			</div>
 		</div>
 
-		<div class="row">
+		<div class="row" th:if="${currentAccount.role != 'ADMIN'}">
 			<div class="col d-flex justify-content-center">
 				<div class="d-grid w-50 w-cus-50">
 					<a class="btn btn-light" href="#" th:href="@{|/users/${currentAccount.accountId}/posts|}">View All Posts</a>
