@@ -176,7 +176,8 @@
 								<label for="confirmEmail" class="col-form-label">Confirm your email</label>
 							</div>
 							<div class="col-auto">
-								<input onkeyup="enableAccountDeleteButton()" th:onkeyup="enableAccountDeleteButton([[${authAccount.email()}]])" name="confirmEmail"
+								<input onkeyup="enableAccountDeleteButton()" th:onkeyup="enableAccountDeleteButton([[${authAccount.email()}]])"
+									   name="confirmEmail"
 									   type="text"
 									   id="confirmEmail" class="form-control" aria-describedby="confirmEmail">
 							</div>
@@ -193,6 +194,8 @@
 		</div>
 	</div>
 
+	<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+			crossorigin="anonymous"></script>
 	<script src="../static/js/script.js" th:src="@{/js/script.js}"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 			th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js}"
