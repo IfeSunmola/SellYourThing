@@ -23,7 +23,7 @@ public class HomeController {
 
     @GetMapping
     public String showIndexPage(final Model model, PostsSortDto postsSortDto,
-                                @ModelAttribute("message") HashMap<String, Boolean> message) {
+                                @ModelAttribute("message") HashMap<String, String> message) {
         String cityName = postsSortDto.getCity();
         String categoryName = postsSortDto.getCategory();
         String order = postsSortDto.getOrder();
