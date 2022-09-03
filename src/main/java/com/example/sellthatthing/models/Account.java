@@ -29,7 +29,7 @@ public class Account {
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
 
-    @OneToMany(mappedBy = "posterAccount", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "posterAccount", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Post> posts;
 
     public Account(final NewAccountRequest newAccountRequest) {
