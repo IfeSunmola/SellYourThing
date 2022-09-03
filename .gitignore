@@ -37,3 +37,4 @@ build/
 /SellThatThingDb.sql
 /SellYourThing.trace.db
 /SellYourThing.mv.db
+/app.log
