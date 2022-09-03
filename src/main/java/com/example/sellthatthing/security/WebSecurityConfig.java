@@ -51,7 +51,11 @@ public class WebSecurityConfig {
                 .logout().deleteCookies("JSESSIONID").logoutUrl("/logout").logoutSuccessUrl("/login?logout")
                 .invalidateHttpSession(true).permitAll()
                 .and()
-                .rememberMe().userDetailsService(accountDetailsService);
+                .rememberMe()
+                .userDetailsService(accountDetailsService)
+                .tokenValiditySeconds(2592000) // valid for 30 days
+                .key("Key");// TESTING ONLY
+        //IMPORTANT: remove .key so the user will be required to log in when the server restarts
         return http.build();
     }
 
