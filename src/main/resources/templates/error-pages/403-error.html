@@ -4,7 +4,7 @@
 </head>
 <body style="background-color: #121212" class="text-white">
 	<div class="container" style="height: 99vh">
-		<div th:replace="fragments :: navbarAndHeader"></div>
+		<th:block th:replace="fragments :: navbarAndHeader"></th:block>
 
 		<div style="min-height: 700px" class="text-center d-flex justify-content-center align-items-center">
 			<div class="row">
@@ -22,6 +22,7 @@
 		</div>
 	</div>
 
-	<div th:replace="fragments :: scripts"></div>
+	<!--jquery and bootstrap scripts-->
+	<th:block th:replace="fragments :: scripts"></th:block>
 </body>
 </html>
