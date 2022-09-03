@@ -12,7 +12,12 @@ import java.util.Set;
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class Category {
-    @Id @NonNull private String categoryName;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
+
+    @NonNull
+    @Column(unique = true)
+    private String categoryName;
+
     private LocalDateTime dateCreated;
 
     @OneToMany(mappedBy = "postCategory")

@@ -9,6 +9,10 @@ import java.util.Optional;
 
 @Repository
 @Transactional(readOnly = true)
-public interface CategoryRepository extends JpaRepository<Category, String> {
+public interface CategoryRepository extends JpaRepository<Category, Long> {
     boolean existsByCategoryName(String categoryName);
+
+    void deleteByCategoryName(String categoryName);
+
+    Optional<Category> findByCategoryName(String categoryName);
 }

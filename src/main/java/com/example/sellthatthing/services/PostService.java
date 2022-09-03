@@ -94,7 +94,7 @@ public class PostService {
                         newPostRequest.getPrice(),
                         //newPostRequest.getImageUrl(),
                         cityService.findByCityName(newPostRequest.getCityName()),
-                        categoryService.findByCategoryName(newPostRequest.getCategoryName()),
+                        categoryService.findByName(newPostRequest.getCategoryName()),
                         accountService.findByAccountId(newPostRequest.getPosterAccountId())
                 )
         );
@@ -106,7 +106,7 @@ public class PostService {
 
         postToUpdate.setTitle(updateInfo.getTitle());
         postToUpdate.setBody(updateInfo.getBody());
-        postToUpdate.setPostCategory(categoryService.findByCategoryName(updateInfo.getCategoryName()));
+        postToUpdate.setPostCategory(categoryService.findById(updateInfo.getCategoryId()));
         postToUpdate.setUpdatedAt(LocalDateTime.now());
 
         return postRepository.save(postToUpdate);
@@ -124,6 +124,7 @@ public class PostService {
     }
 
     public List<Post> usersPost(Long accountId, String cityName, String categoryName, String order, String searchText) {
+
         if (searchText == null) {
             searchText = "";
         }
@@ -156,11 +157,6 @@ public class PostService {
         return result;
     }
 
-    public List<Post> findByPostCategory(String categoryName) {
-        Category category = categoryService.findByCategoryName(categoryName);
-        return postRepository.findByPostCategory(category);
-    }
-
     public Post findByPostId(Long postId) {
         return postRepository.findById(postId).orElseThrow(()
                 -> new ResourceNotFoundException("Account id '" + postId + "' was not found"));
@@ -187,7 +183,7 @@ public class PostService {
     }
 
     public void adminDelete(Long postId, HashMap<String, String> message) {
-        if (!postRepository.existsById(postId)){
+        if (!postRepository.existsById(postId)) {
             message.clear();
             message.put("postDeleteStatus", "false");
             message.put("postDeleteMessage", "Error, post ID: <strong>" + postId + "</strong> was not found.");
