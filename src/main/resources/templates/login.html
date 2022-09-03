@@ -4,9 +4,9 @@
 
 <body style="background-color: #121212" class="text-white">
 	<div class="container" style="height: 99vh">
-		<div th:replace="fragments :: navbarAndHeader"></div>
+		<th:block th:replace="fragments :: navbarAndHeader"></th:block>
 
-		<div th:replace="fragments :: messageForLoggedInUsers (pageType='Login')"></div>
+		<th:block th:replace="fragments :: messageForLoggedInUsers (pageType='Login')"></th:block>
 
 		<!--Start Login Form-->
 		<div class="row align-items-center justify-content-center h-50" sec:authorize="isAnonymous()">
@@ -69,9 +69,7 @@
 		<!--End Login Form-->
 	</div>
 
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-			th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js}"
-			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-			crossorigin="anonymous"></script>
+	<!--jquery and bootstrap scripts-->
+	<th:block th:replace="fragments :: scripts"></th:block>
 </body>
 </html>
