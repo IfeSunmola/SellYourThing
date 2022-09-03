@@ -52,13 +52,13 @@
 						</button>
 						<ul class="dropdown-menu">
 							<li>
-								<a th:href="@{|/admin/findAccount/${account.accountId}|}"
+								<a th:href="@{|/admin/accounts/find/${account.accountId}|}"
 								   class="dropdown-item disableEnableAccountBtn"
 								   th:text="${account.isEnabled() ? 'Disable this account': 'Enable this account'}">Dummy</a>
 							</li>
 							<li><a th:href="@{|/users/${account.accountId}|}" class="dropdown-item" href="#">View Account</a></li>
 							<li>
-								<a id="deleteAccountBtnId" th:href="@{|/admin/findAccount/${account.accountId}|}" class="dropdown-item" href="#">
+								<a id="deleteAccountBtnId" th:href="@{|/admin/accounts/find/${account.accountId}|}" class="dropdown-item" href="#">
 									Delete this Account
 								</a>
 							</li>

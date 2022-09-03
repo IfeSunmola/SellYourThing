@@ -47,12 +47,12 @@ function openDisableModalAndPrefill() {
             const href = $(this).attr('href');
             $.get(href, function (account) {
                 if (account.active === 'YES') {// grab id 'disableForm', replace the attribute 'action' with the 2nd param
-                    $('#disableForm').attr('action', '/admin/' + account.accountId + '/disable');
+                    $('#disableForm').attr('action', '/admin/accounts/disable/' + account.accountId);
                     $('#disableEnableFormButton').html('Disable Account')
                     $('#disableEnableFormHeader').html('Disable this account?')
                 }
                 else {
-                    $('#disableForm').attr('action', '/admin/' + account.accountId + '/enable');
+                    $('#disableForm').attr('action', '/admin/accounts/enable/' + account.accountId);
                     $('#disableEnableFormButton').html('Enable Account')
                     $('#disableEnableFormHeader').html('Enable this account?')
                 }
@@ -69,7 +69,7 @@ function openDeleteModalAndPrefill() {
             event.preventDefault();
             const href = $(this).attr('href');
             $.get(href, function (account) {
-                $('#deleteForm').attr('action', '/admin/' + account.accountId + '/delete');
+                $('#deleteForm').attr('action', '/admin/accounts/delete/' + account.accountId);
                 prefill(account, 'delete');
             });
             $('#deleteAccountModal').modal('show')
@@ -94,7 +94,7 @@ function openDeletePostModal() {
         $('.table .deletePostButton').on('click', function (event) {
             event.preventDefault();
             sessionStorage.setItem("postId", $(this).closest("tr").find(".postIdTable").text());
-            $('#deletePostForm').attr('action', '/admin/' + sessionStorage.postId + '/deletePost');
+            $('#deletePostForm').attr('action', '/admin/posts/delete/' + sessionStorage.postId);
             $('#deletePostModal').modal('show')
         })
     })
@@ -102,7 +102,7 @@ function openDeletePostModal() {
 
 function enablePostDeleteButton(adminIdFromServer, adminEmailFromServer) {
     const postId = sessionStorage.postId
-    const postInfoHref = '/admin/findPost/' + postId;
+    const postInfoHref = '/admin/posts/find/' + postId;
 
     const deletePostFormButton = document.getElementById('deletePostFormButton')
 
@@ -120,7 +120,6 @@ function enablePostDeleteButton(adminIdFromServer, adminEmailFromServer) {
             return;
         }
         deletePostFormButton.disabled = true;
-
     });
 }
 
@@ -128,6 +127,6 @@ openDisableModalAndPrefill();
 openDeleteModalAndPrefill();
 openDeletePostModal();
 
-$('#deletePostModal').on('hidden.bs.modal', function (e) { // clear the delete form after it closes
+$('#deletePostModal').on('hidden.bs.modal', function (e) { // clear the 'delete' form after it closes
     $('#deletePostForm').find("input[type=text], textarea").val("");
 })
