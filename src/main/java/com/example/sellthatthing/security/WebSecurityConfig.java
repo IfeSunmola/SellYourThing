@@ -37,9 +37,7 @@ public class WebSecurityConfig {
                 .regexMatchers(REGEX_WHITELIST).permitAll()
                 // roles security
                 .antMatchers("/posts/create-new").hasAuthority("USER") //admins shouldn't be able to make posts with their admin account
-//                .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/admin/**").permitAll() // remove later, only for testing
-
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated() // any other endpoint not specified should require authentication
                 .and()
                 // login
