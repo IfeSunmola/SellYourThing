@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: htmlHead (pageTitle='Access Denied')">
+</head>
+<body style="background-color: #121212" class="text-white">
+	<div class="container" style="height: 99vh">
+		<div th:replace="fragments :: navbarAndHeader"></div>
+
+		<div style="min-height: 700px" class="text-center d-flex justify-content-center align-items-center">
+			<div class="row">
+				<div class="col-12">
+					<h1>Access Denied. Not everything is for your eyes hehe</h1>
+				</div>
+				<div class="col-12">
+					<h5>Tip: To access admin features, when creating an account, add '+admin' before the @ sign. So if I wanted to go on a power trip
+						and delete everybody's posts and account, my email would be sunmolaife+admin@gmail.com</h5>
+				</div>
+				<div class="col-12">
+					<h5 class="text-muted">P.S: Don't do that.</h5>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="fragments :: scripts"></div>
+</body>
+</html>
