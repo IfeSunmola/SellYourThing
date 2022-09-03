@@ -230,7 +230,7 @@
 						<!--Admin Account ID-->
 						<div class="row mb-3">
 							<div class="col-6">
-								<div class="form-floating text-dark text-muted mb-3">
+								<div class="form-floating text-dark mb-3">
 									<input th:onkeyup="enableAdminAccountDeleteButton([[${authAccountId}]], [[${authAccountEmail}]])" autofocus
 										   id="adminAccountId" name="adminAccountId" class="form-control" type="text"/>
 									<label for="adminAccountId">Your account ID</label>
@@ -238,7 +238,7 @@
 							</div>
 
 							<div class="col-6">
-								<div class="form-floating text-dark text-muted mb-3">
+								<div class="form-floating text-dark mb-3">
 									<input th:onkeyup="enableAdminAccountDeleteButton([[${authAccountId}]], [[${authAccountEmail}]])" id="adminEmail"
 										   name="adminEmail" class="form-control" type="text"/>
 									<label for="adminEmail">Your Email</label>
@@ -257,13 +257,6 @@
 		</div>
 	</div>
 
-
-	<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
-			crossorigin="anonymous"></script>
-	<script th:src="@{/js/script.js}"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-			th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js}"
-			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-			crossorigin="anonymous"></script>
+	<th:block th:replace="fragments :: scripts"></th:block>
 </body>
 </html>
