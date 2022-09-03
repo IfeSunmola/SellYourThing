@@ -4,15 +4,14 @@
 
 <body style="background-color: #121212" class="text-white">
 	<div class="container" style="height: 99vh">
-		<div th:replace="fragments :: navbarAndHeader"></div>
+		<th:block th:replace="fragments :: navbarAndHeader"></th:block>
 
-		<!--Start Success Message-->
+		<!--Start Messages-->
 		<div class="d-flex justify-content-center align-items-center" th:if="${param.replySuccess}">
 			<div class="alert alert-success">
 				Your message has been sent.
 			</div>
 		</div>
-		<!--End Success Message-->
 
 		<!--Start Post/Contact form-->
 		<div class="mt-5">
@@ -137,9 +136,6 @@
 		<!--End Post/Contact form-->
 	</div>
 
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-			th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js}"
-			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-			crossorigin="anonymous"></script>
+	<th:block th:replace="fragments :: scripts"></th:block>
 </body>
 </html>
