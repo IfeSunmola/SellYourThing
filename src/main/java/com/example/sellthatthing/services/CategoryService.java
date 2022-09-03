@@ -1,13 +1,15 @@
 package com.example.sellthatthing.services;
 
-import com.example.sellthatthing.models.Category;
-import com.example.sellthatthing.repositories.CategoryRepository;
 import com.example.sellthatthing.exceptions.ResourceAlreadyExistsException;
 import com.example.sellthatthing.exceptions.ResourceNotFoundException;
+import com.example.sellthatthing.models.Category;
+import com.example.sellthatthing.repositories.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 @AllArgsConstructor
@@ -33,31 +35,45 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-//    public Category update(UpdateCategoryRequest updateInfo) {
-//        String oldCategoryName = updateInfo.getOldCategoryName();
-//        String newCategoryName = updateInfo.getNewCategoryName();
-//
-//        // new category name already exists
-//        if (categoryRepository.existsByCategoryName(newCategoryName)) {
-//            throw new ResourceAlreadyExistsException("Category '" + newCategoryName + "' already exists");
-//        }
-//
-//        // old category name was not found
-//        Category categoryToUpdate = categoryRepository.findByCategoryName(oldCategoryName).orElseThrow(()
-//                -> new ResourceNotFoundException("Category: " + oldCategoryName + " was not found"));
-//
-//        // everything is good.
-//        categoryToUpdate.setCategoryName(newCategoryName);
-//        categoryToUpdate.setDateUpdated(LocalDateTime.now());
-//        return categoryRepository.save(categoryToUpdate);
-//    }
-
-    public void delete(String categoryName) {
-        categoryRepository.deleteById(findByCategoryName(categoryName).getCategoryName());
+    @Transactional
+    public void delete(String categoryName, HashMap<String, String> message) {
+        message.clear();
+        if (categoryRepository.existsByCategoryName(categoryName)) {
+            message.put("deleteCategoryStatus", "true");
+            message.put("deleteCategoryMessage", "Category <strong>" + categoryName + "</strong> has been deleted");
+            categoryRepository.deleteByCategoryName(categoryName);
+        }
+        else {
+            message.put("deleteCategoryStatus", "false");
+            message.put("deleteCategoryMessage", "Category <strong>" + categoryName + "</strong> was not found");
+        }
     }
 
-    public Category findByCategoryName(String categoryName) {
-        return categoryRepository.findById(categoryName).orElseThrow(()
-                -> new ResourceNotFoundException("Category '" + categoryName + "' was not found"));
+    public Category findById(Long id) {
+        return categoryRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Category id: '" + id + "' was not found"));
+    }
+
+    @Transactional
+    public void edit(String oldName, String newName, HashMap<String, String> message) {
+        message.clear();
+        if (categoryRepository.existsByCategoryName(newName)) {
+            message.put("editCategoryStatus", "false");
+            message.put("editCategoryMessage", "Category <strong>'" + newName + "'</strong> already exists. Edit failed");
+            return;
+        }
+        if (oldName.equalsIgnoreCase(newName)) {
+            message.put("editCategoryStatus", "false");
+            message.put("editCategoryMessage", "New name must be different from old name. Edit failed");
+            return;
+        }
+        categoryRepository.updateName(oldName, newName);
+        message.put("editCategoryStatus", "true");
+        message.put("editCategoryMessage", "<strong>" + oldName + "</strong> has been updated to <strong>" + newName + "</strong>");
+    }
+
+    public Category findByName(String categoryName) {
+        return categoryRepository.findByCategoryName(categoryName).orElseThrow(()
+                -> new ResourceNotFoundException("Category : '" + categoryName + "' was not found"));
     }
 }
