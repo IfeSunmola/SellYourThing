@@ -41,7 +41,7 @@ public class AdminPostController {
         AccountDetails authAccount = getAuthAccount(request);
         model.addAttribute("authAccountId", authAccount.accountId().toString()); // toString for javascript
         model.addAttribute("authAccountEmail", authAccount.email());
-        return "admin-view-posts";
+        return "admin/admin-view-posts";
     }
 
     /*

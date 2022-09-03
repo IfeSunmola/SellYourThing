@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-<head th:fragment="htmlHead (pageTitle)">
+<!--Head Tag-->
+<th:block th:fragment="htmlHead (pageTitle)">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -16,191 +15,186 @@
 		  rel="stylesheet" type="text/css">
 
 	<title th:text="${pageTitle}">Static Title</title>
-</head>
-<body>
-	<!--Start Nav Bar-->
-	<div th:fragment="navbarAndHeader">
-		<nav class="navbar navbar-dark navbar-expand-lg">
-			<!--Start Logo and Text-->
-			<a class="navbar-brand fs-1 text-center " href="#" th:href="@{/}">
-				<i class="bi bi-shop me-1 text-center" style="font-size: 3rem;"></i>
-				SellThatThing
-			</a>
-			<!--End Logo and Text-->
+</th:block>
 
-			<!--Start Nav bar items-->
-			<div class="expand navbar-collapse justify-content-end" id="navbarNavAltMarkup">
-				<div class="navbar-nav">
-					<a class="nav-link me-5 text-center text-white" href="#" sec:authorize="!hasAuthority('ADMIN')" th:href="@{/posts/create-new}">Create
-						New Listing</a>
+<!--Nav bar and Header-->
+<th:block th:fragment="navbarAndHeader" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	<nav class="navbar navbar-dark navbar-expand-lg">
+		<!--Start Logo and Text-->
+		<a class="navbar-brand fs-1 text-center " href="#" th:href="@{/}">
+			<i class="bi bi-shop me-1 text-center" style="font-size: 3rem;"></i>
+			SellThatThing
+		</a>
+		<!--End Logo and Text-->
 
-					<a class="nav-link me-5 text-center text-white" sec:authorize="!isAuthenticated()" href="#"
-					   th:href="@{/register}">Register</a>
-					<a class="nav-link me-5 text-center text-white" sec:authorize="!isAuthenticated()" href="#" th:href="@{/login}">Login</a>
+		<!--Start Nav bar items-->
+		<div class="expand navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<a class="nav-link me-5 text-center text-white" href="#" sec:authorize="!hasAuthority('ADMIN')" th:href="@{/posts/create-new}">Create
+					New Listing</a>
 
-					<!--Start Admin tools dropdown-->
-					<li class="nav-item dropdown" sec:authorize="isAuthenticated() and hasAuthority('ADMIN')">
-						<a class="nav-link dropdown-toggle me-5 text-center text-dark btn btn-info" id="adminToolsDropDown" role="button"
-						   data-bs-toggle="dropdown" aria-expanded="false">Admin Tools
-						</a>
-						<!--Start Drop Down Options-->
-						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navDropDown">
-							<li><a class="dropdown-item" href="#" th:href="@{/admin/accounts}">Accounts</a></li>
-							<li>
-								<hr class="dropdown-divider">
-							</li>
-							<li><a class="dropdown-item" href="#" th:href="@{/admin/posts}">Posts</a></li>
-							<li>
-								<hr class="dropdown-divider">
-							</li>
-							<li><a class="dropdown-item" href="#" th:href="@{/admin/categories}">Categories</a></li>
-						</ul>
-						<!--End Drop Down Options-->
-					</li>
+				<a class="nav-link me-5 text-center text-white" sec:authorize="!isAuthenticated()" href="#"
+				   th:href="@{/register}">Register</a>
+				<a class="nav-link me-5 text-center text-white" sec:authorize="!isAuthenticated()" href="#" th:href="@{/login}">Login</a>
 
-					<!--Start Your account Down-->
-					<li class="nav-item dropdown" sec:authorize="isAuthenticated() ">
-						<a class="nav-link dropdown-toggle me-5 text-center text-white btn btn-primary" id="yourAccountDropDown" role="button"
-						   data-bs-toggle="dropdown" aria-expanded="false"
-						   th:text="|Hello, ${#authentication.principal.firstName}|">
-						</a>
-						<!--Start Drop Down Options-->
-						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navDropDown">
-							<li><a class="dropdown-item" href="#" th:href="@{|/users/${#authentication.principal.accountId}|}">Your
-								Account</a></li>
-							<li>
-								<hr class="dropdown-divider">
-							</li>
-							<li><a class="dropdown-item" href="#" th:href="@{/logout}">Log out</a></li>
-						</ul>
-						<!--End Drop Down Options-->
-					</li>
-				</div>
+				<!--Start Admin tools dropdown-->
+				<li class="nav-item dropdown" sec:authorize="isAuthenticated() and hasAuthority('ADMIN')">
+					<a class="nav-link dropdown-toggle me-5 text-center text-dark btn btn-info" id="adminToolsDropDown" role="button"
+					   data-bs-toggle="dropdown" aria-expanded="false">Admin Tools
+					</a>
+					<!--Start Drop Down Options-->
+					<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navDropDown">
+						<li><a class="dropdown-item" href="#" th:href="@{/admin/accounts}">Accounts</a></li>
+						<li>
+							<hr class="dropdown-divider">
+						</li>
+						<li><a class="dropdown-item" href="#" th:href="@{/admin/posts}">Posts</a></li>
+						<li>
+							<hr class="dropdown-divider">
+						</li>
+						<li><a class="dropdown-item" href="#" th:href="@{/admin/categories}">Categories</a></li>
+					</ul>
+					<!--End Drop Down Options-->
+				</li>
+
+				<!--Start Your account Down-->
+				<li class="nav-item dropdown" sec:authorize="isAuthenticated() ">
+					<a class="nav-link dropdown-toggle me-5 text-center text-white btn btn-primary" id="yourAccountDropDown" role="button"
+					   data-bs-toggle="dropdown" aria-expanded="false"
+					   th:text="|Hello, ${#authentication.principal.firstName}|">
+					</a>
+					<!--Start Drop Down Options-->
+					<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navDropDown">
+						<li><a class="dropdown-item" href="#" th:href="@{|/users/${#authentication.principal.accountId}|}">Your
+							Account</a></li>
+						<li>
+							<hr class="dropdown-divider">
+						</li>
+						<li><a class="dropdown-item" href="#" th:href="@{/logout}">Log out</a></li>
+					</ul>
+					<!--End Drop Down Options-->
+				</li>
 			</div>
-			<!--End Nav bar items-->
-		</nav>
-	</div>
-	<!--End Nav Bar-->
+		</div>
+		<!--End Nav bar items-->
+	</nav>
+</th:block>
 
-	<!--Start Sort Parameters-->
-	<div th:fragment="sortParameters (cities, categories)">
-		<form id="sortForm" action="#" th:action="@{/}" th:object="${postsSortDto}">
-			<div class="row mt-5 mb-2">
-				<!--Search By City-->
-				<div class="col">
-					<select th:field="*{city}" id="citySelect" class="form-select mb-3" aria-label="Sort Location">
-						<option value="0" selected>All Cities</option>
-						<option value="1" th:each="city: ${cities}" th:value="${city.cityName}"
-								th:text="${city.cityName}"></option>
-					</select>
-				</div>
-
-				<!--Search By Category-->
-				<div class="col">
-					<select th:field="*{category}" id="categorySelect" class="form-select mb-3" aria-label="Sort Location">
-						<option value="0" selected>All Categories</option>
-						<option value="1" th:each="category: ${categories}" th:value="${category.categoryName}"
-								th:text="${category.categoryName}"></option>
-					</select>
-				</div>
-
-				<!--Sort By-->
-				<div class="col">
-					<select th:field="*{order}" id="order" class="form-select mb-3" aria-label="Sort Location">
-						<option value="new" selected>Newest First</option>
-						<option value="old" selected>Oldest First</option>
-						<option value="descPrice">Highest Price</option>
-						<option value="ascPrice">Lowest Price</option>
-					</select>
-				</div>
-
-				<!--Search By text-->
-				<div class="col">
-					<label for="searchText" class="visually-hidden">Search Text</label>
-					<input th:field="*{searchText}" type="text" class="form-control" id="searchText"
-						   placeholder="Enter search text">
-				</div>
+<!--Sort Parameters-->
+<th:block th:fragment="sortParameters (cities, categories)">
+	<!--Form action is the same page it was from-->
+	<form id="sortForm" action="#" th:action="@{${#request.getRequestURI()}}" th:object="${postsSortDto}">
+		<div class="row mt-5 mb-2">
+			<!--Search By City-->
+			<div class="col">
+				<select th:field="*{city}" id="citySelect" class="form-select mb-3" aria-label="Sort Location">
+					<option value="0" selected>All Cities</option>
+					<option value="1" th:each="city: ${cities}" th:value="${city.cityName}"
+							th:text="${city.cityName}"></option>
+				</select>
 			</div>
 
-			<!--Buttons-->
-			<div class="row smt-2 mb-5">
-				<div class="col text-center">
-					<button type="submit" class="btn btn-primary w-25" onclick="disableEmptyFields()">Search</button>
-				</div>
+			<!--Search By Category-->
+			<div class="col">
+				<select th:field="*{category}" id="categorySelect" class="form-select mb-3" aria-label="Sort Location">
+					<option value="0" selected>All Categories</option>
+					<option value="1" th:each="category: ${categories}" th:value="${category.categoryName}"
+							th:text="${category.categoryName}"></option>
+				</select>
 			</div>
-		</form>
-	</div>
-	<!--End Sort Parameters-->
 
-	<!--Start All Posts-->
-	<div th:fragment="showAllPosts (posts)">
-		<div class="col-12" th:each="post: ${posts}">
-			<a href="#" th:href="@{/posts/{postId}(postId=${post.postId})}" class="link-dark">
-				<div class="card bg-dark text-white mb-3">
-					<div class="row g-0">
-						<!--Start Display Image-->
-						<div class="col-md-4">
-							<img src="#" th:src="@{|/${post.imageUrl}|}" class="card-img-top" alt="alt text" th:alt="${post.title} + ' image'"
-								 width="300"
-								 height="300">
-						</div>
-						<!--End Display Image-->
+			<!--Sort By-->
+			<div class="col">
+				<select th:field="*{order}" id="order" class="form-select mb-3" aria-label="Sort Location">
+					<option value="new" selected>Newest First</option>
+					<option value="old" selected>Oldest First</option>
+					<option value="descPrice">Highest Price</option>
+					<option value="ascPrice">Lowest Price</option>
+				</select>
+			</div>
 
-						<!--Start Post Body-->
-						<div class="col-md-8 m-0">
-							<div class="card-body p-0 ms-md-3 mt-sm-3 mt-3">
-								<!--Start Title and Price-->
-								<div class="row">
-									<div class="col-9 ps-2">
-										<p class="card-title fs-1 text-start" th:text="${post.title}"></p>
-									</div>
-									<div class="col-3">
-										<h5 class="card-title text-end" th:text="'$' + ${post.price}"></h5>
-									</div>
+			<!--Search By text-->
+			<div class="col">
+				<label for="searchText" class="visually-hidden">Search Text</label>
+				<input th:field="*{searchText}" type="text" class="form-control" id="searchText"
+					   placeholder="Enter search text">
+			</div>
+		</div>
+
+		<!--Buttons-->
+		<div class="row smt-2 mb-5">
+			<div class="col text-center">
+				<button type="submit" class="btn btn-primary w-25" onclick="disableEmptyFields()">Search</button>
+			</div>
+		</div>
+	</form>
+</th:block>
+
+<!--Show All Posts-->
+<th:block th:fragment="showAllPosts (posts)">
+	<div class="col-12" th:each="post: ${posts}">
+		<a href="#" th:href="@{/posts/{postId}(postId=${post.postId})}" class="link-dark">
+			<div class="card bg-dark text-white mb-3">
+				<div class="row g-0">
+					<!--Start Display Image-->
+					<div class="col-md-4">
+						<img src="#" th:src="@{|/${post.imageUrl}|}" class="card-img-top" alt="alt text" th:alt="${post.title} + ' image'"
+							 width="300"
+							 height="300">
+					</div>
+					<!--End Display Image-->
+
+					<!--Start Post Body-->
+					<div class="col-md-8 m-0">
+						<div class="card-body p-0 ms-md-3 mt-sm-3 mt-3">
+							<!--Start Title and Price-->
+							<div class="row">
+								<div class="col-9 ps-2">
+									<p class="card-title fs-1 text-start" th:text="${post.title}"></p>
 								</div>
-								<!--End Title and Price-->
-
-								<!--Start Location and Date-->
-								<div class="row">
-									<div>
-										<p th:text="${post.postCity.cityName}" class="text-start mt-2"></p>
-										<p th:text="${post.getFormattedCreateAtDate}" class="text-start"></p>
-									</div>
-								</div>
-								<!--End Location and Date-->
-
-								<div class="card-text  mt-3 p-0">
-									<p class="fs-4 text-start" th:text="${post.body.substring(0, 250) + '...'}">Post Body</p>
+								<div class="col-3">
+									<h5 class="card-title text-end" th:text="'$' + ${post.price}"></h5>
 								</div>
 							</div>
+							<!--End Title and Price-->
+
+							<!--Start Location and Date-->
+							<div class="row">
+								<div>
+									<p th:text="${post.postCity.cityName}" class="text-start mt-2"></p>
+									<p th:text="${post.getFormattedCreateAtDate}" class="text-start"></p>
+								</div>
+							</div>
+							<!--End Location and Date-->
+
+							<div class="card-text  mt-3 p-0">
+								<p class="fs-4 text-start" th:text="${post.body.substring(0, 250) + '...'}">Post Body</p>
+							</div>
 						</div>
-						<!--End Post Body-->
 					</div>
+					<!--End Post Body-->
 				</div>
-			</a>
-			<hr>
-		</div>
-	</div>
-	<!--End All Posts-->
-
-	<!--Start Message for Logged-In Users-->
-	<div th:fragment="messageForLoggedInUsers (pageType)">
-		<div class="d-flex justify-content-center align-items-center" style="min-height: 33vh" sec:authorize="isAuthenticated()">
-			<div class="alert alert-success">
-				You are already logged in. <span th:if="${pageType == 'Register'}">Log out first</span>
 			</div>
+		</a>
+		<hr>
+	</div>
+</th:block>
+
+<!--Message for Logged-In Users-->
+<th:block th:fragment="messageForLoggedInUsers (pageType)" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	<div class="d-flex justify-content-center align-items-center" style="min-height: 33vh" sec:authorize="isAuthenticated()">
+		<div class="alert alert-success">
+			You are already logged in. <span th:if="${pageType == 'Register'}">Log out first</span>
 		</div>
 	</div>
-	<!--End Message for Logged-In Users-->
+</th:block>
 
-	<div th:fragment="scripts">
-		<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
-				crossorigin="anonymous"></script>
-		<script src="../static/js/script.js" th:src="@{/js/script.js}"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-				th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js}"
-				integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-				crossorigin="anonymous"></script>
-	</div>
-</body>
-</html>
+<!--Jquery and Bootstrap scripts-->
+<th:block th:fragment="scripts">
+	<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+			crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+			th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js}"
+			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+			crossorigin="anonymous"></script>
+</th:block>

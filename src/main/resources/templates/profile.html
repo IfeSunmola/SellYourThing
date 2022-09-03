@@ -5,7 +5,7 @@
 <body style="background-color: #121212" class="text-white">
 
 	<div class="container" style="height: 99vh">
-		<div th:replace="fragments :: navbarAndHeader"></div>
+		<th:block th:replace="fragments :: navbarAndHeader"></th:block>
 
 		<!--Start Profile Form-->
 		<div class="row align-items-center justify-content-center h-50">
@@ -198,5 +198,6 @@
 	<th:block th:replace="fragments :: scripts"></th:block>
 
 	<script type="text/javascript" th:src="@{/js/profile.js}"></script>
+	<script type="text/javascript" th:src="@{/js/script.js}"></script>
 </body>
 </html>

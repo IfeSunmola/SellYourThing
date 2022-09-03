@@ -43,7 +43,7 @@ public class AdminAccountController {
         AccountDetails authAccount = getAuthAccount(request);
         model.addAttribute("authAccountId", authAccount.accountId().toString()); // toString for javascript
         model.addAttribute("authAccountEmail", authAccount.email());
-        return "admin-view-account";
+        return "admin/admin-view-account";
     }
 
 
