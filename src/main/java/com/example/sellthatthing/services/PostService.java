@@ -50,7 +50,6 @@ public class PostService {
         List<Post> result;
 
         if (order == null) {
-            System.out.println(cityName);
             result = postRepository.findAllWithDate(cityName, categoryName, searchText,
                     Sort.by(Sort.Direction.DESC, "createdAt"));
         }
