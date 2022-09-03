@@ -9,6 +9,6 @@ import java.util.HashMap;
 public class GlobalControllerAdvice {
     @ModelAttribute("message")
     public HashMap<String, String> message() {
-        return new HashMap<>(1);
+        return new HashMap<>(3);
     }
 }
