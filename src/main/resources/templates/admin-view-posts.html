@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: htmlHead (pageTitle='All Posts | Admin')">
+</head>
+<body style="background-color: #121212" class="text-white">
+	<div class="container" style="height: 99vh">
+		<th:block th:replace="fragments :: navbarAndHeader"></th:block>
+
+		<!--Start Messages-->
+		<div class="mt-3 row justify-content-center text-center">
+			<div class="w-50 alert alert-success" th:if="${message.get('postDeleteStatus') == 'true'}"
+				 th:utext="${message.get('postDeleteMessage')}">
+			</div>
+			<div class="w-50 alert alert-danger" th:if="${message.get('postDeleteStatus') == 'false'}"
+				 th:utext="${message.get('postDeleteMessage')}">
+			</div>
+			<div class="w-50 alert alert-success" th:if="${message.get('adminEnableStatus') == 'true'}"
+				 th:utext="${message.get('adminEnableMessage')}">
+			</div>
+			<div class="w-50 alert alert-success" th:if="${message.get('adminDeleteStatus') == 'true'}"
+				 th:utext="${message.get('adminDeleteMessage')}">
+			</div>
+			<th:block th:if="${message.clear()}"></th:block>
+		</div>
+		<!--End Messages-->
+
+		<table id="postsTable" class="table table-primary table-bordered table-striped table-hover">
+			<thead>
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Title</th>
+				<th scope="col">Body</th>
+				<th scope="col">Price</th>
+				<th scope="col">City</th>
+				<th scope="col">Category</th>
+				<th scope="col">Poster Id</th>
+				<th scope="col">Actions</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="post: ${allPosts}">
+				<th scope="row">
+					<a class="link-primary postIdTable" th:text="${post.postId}" th:href="@{|/posts/${post.postId}|}"></a>
+				</th>
+				<td th:text="${post.title}"></td>
+				<td th:text="${post.body.substring(0, 200)} + '...'"></td>
+				<td th:text="'$'+ ${post.price}"></td>
+				<td th:text="${post.postCity.cityName}"></td>
+				<td th:text="${post.postCategory.categoryName}"></td>
+				<td class="text-center">
+					<a class="link-primary" th:text="${post.posterAccount.accountId}" th:href="@{|/users/${post.posterAccount.accountId}|}"></a>
+				</td>
+				<td>
+					<a th:href="${post.postId}" class="block btn btn-danger deletePostButton">Delete this post</a>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<!-- Delete Post modal -->
+	<div class="modal fade" id="deletePostModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="deletePostModal"
+		 aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered text-dark">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deletePostModalHeader">Are you sure you want to delete this post?</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<!--Form action will be set in jquery-->
+					<form id="deletePostForm" th:method="delete">
+						<div class="row mb-3">
+							<!--Admin Account ID-->
+							<div class="col-6">
+								<div class="form-floating text-dark mb-3">
+									<input th:onkeyup="enablePostDeleteButton([[${authAccountId}]], [[${authAccountEmail}]])" autofocus
+										   id="adminAccountId" name="adminAccountId" class="form-control" type="text"/>
+									<label for="adminAccountId">Your account ID</label>
+								</div>
+							</div>
+
+							<!--Admin Email-->
+							<div class="col-6">
+								<div class="form-floating text-dark mb-3">
+									<input th:onkeyup="enablePostDeleteButton([[${authAccountId}]], [[${authAccountEmail}]])" id="adminEmail"
+										   name="adminEmail" class="form-control" type="text"/>
+									<label for="adminEmail">Your Email</label>
+								</div>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<!--Post ID-->
+							<div class="col-6">
+								<div class="form-floating text-dark mb-3">
+									<input th:onkeyup="enablePostDeleteButton([[${authAccountId}]], [[${authAccountEmail}]])" id="postId"
+										   name="postId" class="form-control" type="text"/>
+									<label for="postId">Post ID</label>
+								</div>
+							</div>
+
+							<!--Post price-->
+							<div class="col-6">
+								<div class="form-floating text-dark mb-3">
+									<input th:onkeyup="enablePostDeleteButton([[${authAccountId}]], [[${authAccountEmail}]])" id="postPrice"
+										   name="postPrice" class="form-control" type="text"/>
+									<label for="postPrice">Post Price</label>
+								</div>
+							</div>
+						</div>
+						<!--Buttons-->
+						<div class="modal-footer justify-content-center">
+							<button disabled id="deletePostFormButton" type="submit" class="btn btn-danger">Delete this Post</button>
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<th:block th:replace="fragments :: scripts"></th:block>
+</body>
+</html>

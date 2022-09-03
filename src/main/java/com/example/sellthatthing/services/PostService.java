@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -184,5 +185,18 @@ public class PostService {
                 .replace("$firstName", posterAccount.getFirstName())
                 .replace("$messageFrom", postReply.getReplyEmail())
                 .replace("$messageBody", postReply.getMessage());
+    }
+
+    public void adminDelete(Long postId, HashMap<String, String> message) {
+        if (!postRepository.existsById(postId)){
+            message.clear();
+            message.put("postDeleteStatus", "false");
+            message.put("postDeleteMessage", "Error, post ID: <strong>" + postId + "</strong> was not found.");
+            return;
+        }
+        postRepository.deleteById(postId);
+        message.clear();
+        message.put("postDeleteStatus", "true");
+        message.put("postDeleteMessage", "Post Id: <strong>" + postId + "</strong> has been deleted");
     }
 }
