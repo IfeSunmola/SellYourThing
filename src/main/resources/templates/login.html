@@ -19,7 +19,7 @@
 					<div class="alert alert-danger">Invalid email or password</div>
 				</div>
 
-				<div class="w-50" th:if="${errorMessage == TRUE}" >
+				<div class="w-50" th:if="${errorMessage == TRUE}">
 					<div class="alert alert-danger">Invalid email or password</div>
 				</div>
 			</div>
@@ -45,6 +45,13 @@
 						</div>
 					</div>
 					<!--End Password-->
+
+					<div class="col-12">
+						<div class="form-check form-switch">
+							<input class="form-check-input" type="checkbox" role="switch" name="remember-me" id="remember-me" checked>
+							<label class="form-check-label" for="remember-me">Remember me for on this device for 14 days</label>
+						</div>
+					</div>
 				</div>
 				<!--End Login Form-->
 

@@ -48,8 +48,10 @@ public class WebSecurityConfig {
                 .usernameParameter("email").passwordParameter("password").failureUrl("/login/login-error")
                 .and()
                 // logout
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout")
-                .invalidateHttpSession(true).permitAll();
+                .logout().deleteCookies("JSESSIONID").logoutUrl("/logout").logoutSuccessUrl("/login?logout")
+                .invalidateHttpSession(true).permitAll()
+                .and()
+                .rememberMe().userDetailsService(accountDetailsService);
         return http.build();
     }
 
