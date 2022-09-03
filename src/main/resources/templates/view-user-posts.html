@@ -1,83 +1,19 @@
 <!doctype html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<!--css-->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-		  th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css}"
-		  rel="stylesheet"
-		  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-	<link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet">
-	<!--Icons-->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
-		  th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css}"
-		  rel="stylesheet">
-
-	<title>Homepage</title>
+<head th:replace="fragments :: htmlHead (pageTitle='User Posts')">
 </head>
 
 <body style="background-color: #121212" class="text-white">
 	<div class="container" style="height: 99vh">
 		<div th:replace="fragments :: navbarAndHeader"></div>
 
-		<!--Start Sort Parameters-->
-		<div>
-			<form id="sortForm" action="#" th:action="@{|/users/${accountId}/posts|}" th:object="${postsSortDto}">
-				<div class="row mt-5 mb-2">
-					<!--Search By City-->
-					<div class="col">
-						<select th:field="*{city}" id="citySelect" class="form-select mb-3" aria-label="Sort Location">
-							<option value="0" selected>All Cities</option>
-							<option value="1" th:each="city: ${cities}" th:value="${city.cityName}"
-									th:text="${city.cityName}"></option>
-						</select>
-					</div>
-
-					<!--Search By Category-->
-					<div class="col">
-						<select th:field="*{category}" id="categorySelect" class="form-select mb-3" aria-label="Sort Location">
-							<option value="0" selected>All Categories</option>
-							<option value="1" th:each="category: ${categories}" th:value="${category.getCategoryName}"
-									th:text="${category.categoryName}"></option>
-						</select>
-					</div>
-
-					<!--Sort By-->
-					<div class="col">
-						<select th:field="*{order}" id="order" class="form-select mb-3" aria-label="Sort Location">
-							<option value="new" selected>Newest First</option>
-							<option value="old" selected>Oldest First</option>
-							<option value="descPrice">Highest Price</option>
-							<option value="ascPrice">Lowest Price</option>
-						</select>
-					</div>
-
-					<!--Search By text-->
-					<div class="col">
-						<label for="searchText" class="visually-hidden">Search Text</label>
-						<input th:field="*{searchText}" type="text" class="form-control" id="searchText"
-							   placeholder="Enter search text">
-					</div>
-				</div>
-
-				<!--Buttons-->
-				<div class="row smt-2 mb-5">
-					<div class="col text-center">
-						<button type="submit" class="btn btn-primary w-25" onclick="disableEmptyFields()">Search</button>
-					</div>
-				</div>
-			</form>
-		</div>
-		<!--End Sort Parameters-->
+		<th:block th:replace="fragments :: sortParameters (cities=${cities}, categories=${categories})"></th:block>
 
 		<div th:replace="fragments :: showAllPosts (posts=${userPosts})"></div>
 	</div>
+
+	<th:block th:replace="fragments :: scripts"></th:block>
+
 	<script th:src="@{/js/script.js}"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-			th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js}"
-			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-			crossorigin="anonymous"></script>
 </body>
 </html>
