@@ -2,7 +2,7 @@
 
 1. Compress images before upload
 2. Change from SellThatThing to SellYourThing
-3. Consider firebase
+3. Consider firebase, planet scale
 4. Show custom message for users that have not verified their account
 5. Implement "send a copy of this to my email"
 6. Accept images
@@ -18,6 +18,7 @@
     1. Fix: On each request, check if the user exists in the db. If not, force logout the user and invalidate
        the session https://stackoverflow.com/a/38295610/18902234
 16. Secure end points with @PreAuthorize
+17. Add logging to all Service classes
 
 ---
 
