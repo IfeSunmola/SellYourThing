@@ -143,7 +143,7 @@ public class AccountService {
         }
     }
 
-    private void doManualLogout(HttpServletRequest request) {
+    public void doManualLogout(HttpServletRequest request) {
         try {
             request.logout();
             request.getSession().invalidate();
