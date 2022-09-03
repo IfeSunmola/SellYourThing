@@ -20,6 +20,6 @@ public class Category {
 
     private LocalDateTime dateCreated;
 
-    @OneToMany(mappedBy = "postCategory")
+    @OneToMany(mappedBy = "postCategory", cascade = CascadeType.ALL)
     private Set<Post> posts;
 }
