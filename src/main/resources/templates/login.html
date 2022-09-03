@@ -17,9 +17,6 @@
 			<th:block th:if="${message.clear()}"></th:block>
 		</div>
 
-		<!--Message to show if a user that's already logged in tries to access log in page-->
-		<th:block th:replace="fragments :: messageForLoggedInUsers (pageType='Login')"></th:block>
-
 		<!--Start Login Form-->
 		<div class="row align-items-center justify-content-center h-50" sec:authorize="isAnonymous()">
 			<!--Start Messages-->

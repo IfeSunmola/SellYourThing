@@ -6,9 +6,6 @@
 	<div class="container" style="height: 99vh">
 		<th:block th:replace="fragments :: navbarAndHeader"></th:block>
 
-		<!--Message to show if a user that's already logged in tries to access register page-->
-		<th:block th:replace="fragments :: messageForLoggedInUsers (pageType='Register')"></th:block>
-
 		<!--Start Registration Form-->
 		<div class="d-flex justify-content-center align-items-center" style="min-height: 700px" sec:authorize="isAnonymous()">
 			<form method="post" action="#" th:action="@{/register}" th:object="${registrationDto}">

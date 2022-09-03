@@ -1,6 +1,8 @@
 package com.example.sellthatthing.controllers;
 
+import com.example.sellthatthing.models.AccountDetails;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
@@ -17,8 +19,11 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/login")
 public class LoginController {
     @GetMapping
-    public String loadLoginPage() {
-        return "login";
+    public String loadLoginPage(HttpServletRequest request) {
+        if (request.getUserPrincipal() == null){
+            return "login";
+        }
+        return "redirect:/";
     }
 
     @GetMapping("/login-error")
