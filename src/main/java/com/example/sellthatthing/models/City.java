@@ -14,9 +14,10 @@ import java.util.Set;
 public class City {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
 
-    @NonNull private String cityName;
-    private LocalDateTime dateCreated;
+    @NonNull private String name;
 
-    @OneToMany(mappedBy = "postCity")
+    @NonNull private LocalDateTime dateCreated;
+
+    @OneToMany(mappedBy = "postCity", cascade = CascadeType.ALL)
     private Set<Post> posts;
 }
