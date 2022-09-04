@@ -1,6 +1,5 @@
 package com.example.sellthatthing.services;
 
-import com.example.sellthatthing.controllers.CustomErrorController;
 import com.example.sellthatthing.exceptions.ResourceNotFoundException;
 import com.example.sellthatthing.models.AccountDetails;
 import com.example.sellthatthing.models.Category;
@@ -33,11 +32,11 @@ public class CategoryService {
     @Transactional
     public void delete(String categoryName, HashMap<String, String> message, HttpServletRequest request) {
         message.clear();
-        if (categoryRepository.existsByCategoryNameIgnoreCase(categoryName)) {
+        if (categoryRepository.existsByNameIgnoreCase(categoryName)) {
             message.put("deleteCategoryStatus", "true");
             message.put("deleteCategoryMessage", "Category <strong>" + categoryName + "</strong> has been deleted");
             logger.warn("Category: " + categoryName + " has been deleted by " + getAccountInfo(request));
-            categoryRepository.deleteByCategoryNameIgnoreCase(categoryName);
+            categoryRepository.deleteByNameIgnoreCase(categoryName);
         }
         else {
             message.put("deleteCategoryStatus", "false");
@@ -54,7 +53,7 @@ public class CategoryService {
     public void edit(String oldName, String newName, HashMap<String, String> message, HttpServletRequest request) {
         newName = StringUtils.capitalize(newName.toLowerCase(Locale.ROOT));
         message.clear();
-        if (categoryRepository.existsByCategoryNameIgnoreCase(newName)) {
+        if (categoryRepository.existsByNameIgnoreCase(newName)) {
             message.put("editCategoryStatus", "false");
             message.put("editCategoryMessage", "Category <strong>'" + newName + "'</strong> already exists. Edit failed");
             return;
@@ -71,7 +70,7 @@ public class CategoryService {
     }
 
     public Category findByName(String categoryName) {
-        return categoryRepository.findByCategoryNameIgnoreCase(categoryName).orElseThrow(()
+        return categoryRepository.findByNameIgnoreCase(categoryName).orElseThrow(()
                 -> new ResourceNotFoundException("Category : '" + categoryName + "' was not found"));
     }
 
@@ -79,7 +78,7 @@ public class CategoryService {
     public void save(String newCategoryName, HashMap<String, String> message, HttpServletRequest request) {
         newCategoryName = StringUtils.capitalize(newCategoryName.toLowerCase(Locale.ROOT));
         message.clear();
-        if (categoryRepository.existsByCategoryNameIgnoreCase(newCategoryName)) {
+        if (categoryRepository.existsByNameIgnoreCase(newCategoryName)) {
             message.put("addCategoryStatus", "false");
             message.put("addCategoryMessage", "Category <strong>" + newCategoryName + "</strong> already exists");
             return;
