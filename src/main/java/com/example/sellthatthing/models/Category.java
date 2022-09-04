@@ -16,7 +16,7 @@ public class Category {
 
     @NonNull
     @Column(unique = true)
-    private String categoryName;
+    private String name;
 
     @NonNull private LocalDateTime dateCreated;
 

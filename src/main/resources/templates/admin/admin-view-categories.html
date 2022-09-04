@@ -54,11 +54,11 @@
 			</thead>
 			<tbody>
 			<tr class="text-center" th:each="category: ${allCategories}">
-				<th scope="row" id="categoryName" th:text="${category.categoryName}"></th>
+				<th scope="row" id="categoryName" th:text="${category.name}"></th>
 				<td th:text="${#temporals.format(category.dateCreated, 'MMM dd, yyyy')}"></td>
 				<td class="text-center">
-					<a class="link-primary" th:text="|${category.categoryName} posts|"
-					   th:href="@{|/?category=${category.getCategoryName()}|}">posts</a>
+					<a class="link-primary" th:text="|${category.name} posts|"
+					   th:href="@{|/?category=${category.name}|}">posts</a>
 				</td>
 				<td class="text-center">
 					<button id="actionsButton" class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">

@@ -45,8 +45,8 @@
 				<td th:text="${post.title}"></td>
 				<td th:text="${post.body.substring(0, 200)} + '...'"></td>
 				<td th:text="'$'+ ${post.price}"></td>
-				<td th:text="${post.postCity.cityName}"></td>
-				<td th:text="${post.postCategory.categoryName}"></td>
+				<td th:text="${post.postCity.name}"></td>
+				<td th:text="${post.postCategory.name}"></td>
 				<td class="text-center">
 					<a class="link-primary" th:text="${post.posterAccount.accountId}" th:href="@{|/users/${post.posterAccount.accountId}|}"></a>
 				</td>

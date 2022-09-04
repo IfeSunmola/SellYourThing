@@ -37,15 +37,15 @@ public class SellThatThingApplication implements CommandLineRunner {
 
     private void addSeedData() {
         Category category1 = new Category();
-        category1.setCategoryName("Books");
+        category1.setName("Books");
         category1.setDateCreated(LocalDateTime.of(2021, 11, 24, 12, 55));
 
         Category category2 = new Category();
-        category2.setCategoryName("Vehicles");
+        category2.setName("Vehicles");
         category2.setDateCreated(LocalDateTime.of(2022, 1, 11, 20, 3));
 
         Category category3 = new Category();
-        category3.setCategoryName("Computers");
+        category3.setName("Computers");
         category3.setDateCreated(LocalDateTime.of(2019, 5, 21, 19, 22));
         ///////////////////////////////////////////////////////////////////////////////////////////////
         City city1 = new City();
