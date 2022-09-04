@@ -6,10 +6,12 @@ import com.example.sellthatthing.services.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 @AllArgsConstructor
@@ -19,15 +21,19 @@ public class RegisterController {
 
     @GetMapping
     public String loadRegisterPage(Model model, HttpServletRequest request) {
-        if (request.getUserPrincipal() == null){
-            model.addAttribute("registrationDto", new NewAccountRequest());
+        if (request.getUserPrincipal() == null) {
+            model.addAttribute("newAccountRequest", new NewAccountRequest());
             return "register";
         }
         return "redirect:/";
     }
 
     @PostMapping
-    public String processRegisterForm(@ModelAttribute NewAccountRequest newAccountRequest, HttpSession session) {
+    public String processRegisterForm(@ModelAttribute("newAccountRequest") @Valid NewAccountRequest newAccountRequest,
+                                      Errors errors, HttpSession session) {
+        if (errors.hasErrors()) {
+            return "register";
+        }
         VerificationDto verificationDto = accountService.createAccount(newAccountRequest);
         session.setAttribute("verificationDto", verificationDto);
         return "redirect:/register/verify-account";

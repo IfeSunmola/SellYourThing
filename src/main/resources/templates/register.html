@@ -7,71 +7,87 @@
 		<th:block th:replace="fragments :: navbarAndHeader"></th:block>
 
 		<!--Start Registration Form-->
-		<div class="d-flex justify-content-center align-items-center" style="min-height: 700px" sec:authorize="isAnonymous()">
-			<form method="post" action="#" th:action="@{/register}" th:object="${registrationDto}">
-				<!--Start First and Last name-->
+		<div sec:authorize="isAnonymous()">
+			<form method="post" action="#" th:action="@{/register}" th:object="${newAccountRequest}">
+				<!--First and Last name-->
 				<div class="row">
-					<div class="col-12">
-						<div class="form-floating text-dark text-muted mb-3">
-							<input autofocus id="firstname" class="form-control" type="text" th:field="*{firstName}" placeholder="First Name"/>
-							<label for="firstname">First Name</label>
-						</div>
+					<div class="col-lg-3"></div>
+
+					<!--First name-->
+					<div class="col-lg-3">
+						<label for="firstName" class="form-label">First Name</label>
+						<input type="text" class="form-control" id="firstName" th:field="*{firstName}">
+						<p class="form-label mt-2 text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
 					</div>
 
-					<div class="col-12">
-						<div class="form-floating text-dark text-muted mb-3">
-							<input id="lastname" class="form-control" type="text" th:field="*{lastName}" placeholder="Last Name"/>
-							<label for="lastname">Last Name</label>
-						</div>
+					<!--Last name-->
+					<div class="col-lg-3 mb-3">
+						<label for="lastName" class="form-label">Last Name</label>
+						<input type="text" class="form-control" id="lastName" th:field="*{lastName}">
+						<p class="form-label mt-2 text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
 					</div>
+
+					<div class="col-lg-3"></div>
 				</div>
-				<!--End First and Last name-->
 
-				<!--Start Email and DOB-->
+				<!--Email and DOB-->
 				<div class="row">
-					<div class="col-12">
-						<div class="form-floating text-dark text-muted mb-3">
-							<input id="email" class="form-control" type="text" th:field="*{email}" placeholder="email@address.com"/>
-							<label for="email">Email</label>
-						</div>
+					<div class="col-lg-3"></div>
+
+					<!--Email-->
+					<div class="col-lg-3">
+						<label for="email" class="form-label">Email</label>
+						<input type="text" class="form-control" id="email" th:field="*{email}">
+						<p class="form-label mt-2 text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
 					</div>
 
-					<div class="col-12">
-						<div class="form-floating text-dark text-muted mb-3">
-							<input id="dateOfBirth" class="form-control" type="date" th:field="*{dateOfBirth}" placeholder="email@address.com"/>
-							<label for="dateOfBirth">Date of Birth</label></div>
+					<!--DOB-->
+					<div class="col-lg-3 mb-3">
+						<label for="dateOfBirth" class="form-label">Date of Birth</label>
+						<input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}">
+						<p class="form-label mt-2 text-danger" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></p>
 					</div>
+
+					<div class="col-lg-3"></div>
 				</div>
-				<!--End Email and DOB-->
 
-				<!--Start Password and Confirm Password-->
+				<!--Password and Confirm Password-->
 				<div class="row">
-					<div class="col-12">
-						<div class="form-floating text-dark text-muted mb-3">
-							<input id="password" class="form-control" type="password" th:field="*{password}" placeholder="Password"/>
-							<label for="password" class="form-label">Password</label>
-						</div>
+					<div class="col-lg-3"></div>
+
+					<!--Password-->
+					<div class="col-lg-3">
+						<label for="password" class="form-label">Password</label>
+						<input type="password" class="form-control" id="password" th:field="*{password}">
+						<p class="form-label mt-2 text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
 					</div>
 
-					<div class="col-12">
-						<div class="form-floating text-dark text-muted mb-3">
-							<input id="confirmPassword" class="form-control" type="password" th:field="*{confirmPassword}"
-								   placeholder="Password, again"/>
-							<label for="confirmPassword" class="form-label">Confirm Password</label>
-
-						</div>
+					<!--Confirm Password-->
+					<div class="col-lg-3 mb-3">
+						<label for="confirmPassword" class="form-label">Confirm Password</label>
+						<input type="password" class="form-control" id="confirmPassword" th:field="*{confirmPassword}">
+						<p class="form-label mt-2 text-danger" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></p>
 					</div>
+
+					<div class="col-lg-3"></div>
 				</div>
-				<!--End Password and Confirm Password-->
 
 				<!--Start Register Button-->
-				<div class="row mt-3">
-					<div class="col d-flex justify-content-center">
-						<div class="d-grid w-100 w-cus-50">
-							<button type="submit" class="btn btn-primary">Create Account</button>
-						</div>
+				<div class="row">
+					<div class="col-lg-4"></div>
+					<div class="col-lg-4 text-center">
+						<button type="submit" class="btn btn-primary">Create Account</button>
 					</div>
+					<div class="col-lg-4"></div>
 				</div>
+
+<!--				<div class="row mt-3">-->
+<!--					<div class="col d-flex justify-content-center">-->
+<!--						<div class="d-grid w-100 w-cus-50">-->
+<!--							<button type="submit" class="btn btn-primary">Create Account</button>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--				</div>-->
 				<!--End Register Button-->
 			</form>
 		</div>
