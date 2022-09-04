@@ -12,7 +12,9 @@ import java.util.Set;
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class City {
-    @Id @NonNull private String cityName;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
+
+    @NonNull private String cityName;
     private LocalDateTime dateCreated;
 
     @OneToMany(mappedBy = "postCity")

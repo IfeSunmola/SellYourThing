@@ -23,7 +23,7 @@
 		<!--Start Logo and Text-->
 		<a class="navbar-brand fs-1 text-center " href="#" th:href="@{/}">
 			<i class="bi bi-shop me-1 text-center" style="font-size: 3rem;"></i>
-			SellThatThing
+			SellYourThing
 		</a>
 		<!--End Logo and Text-->
 
@@ -162,7 +162,7 @@
 							<div class="row">
 								<div>
 									<p th:text="${post.postCity.cityName}" class="text-start mt-2"></p>
-									<p th:text="${post.getFormattedCreateAtDate}" class="text-start"></p>
+									<p th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy')}" class="text-start"></p>
 								</div>
 							</div>
 							<!--End Location and Date-->

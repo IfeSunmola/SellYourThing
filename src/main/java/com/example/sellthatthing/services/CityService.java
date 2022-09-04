@@ -23,7 +23,7 @@ public class CityService {
     }
 
     public City findByCityName(String cityName) {
-        return cityRepository.findById(cityName).orElseThrow(()
+        return cityRepository.findByCityName(cityName).orElseThrow(()
                 -> new ResourceNotFoundException("City: '" + cityName + "' was not found"));
     }
 }
