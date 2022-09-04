@@ -49,15 +49,15 @@ public class SellThatThingApplication implements CommandLineRunner {
         category3.setDateCreated(LocalDateTime.of(2019, 5, 21, 19, 22));
         ///////////////////////////////////////////////////////////////////////////////////////////////
         City city1 = new City();
-        city1.setCityName("Winnipeg");
+        city1.setName("Winnipeg");
         city1.setDateCreated(LocalDateTime.of(2021, 11, 24, 12, 55));
 
         City city2 = new City();
-        city2.setCityName("Edmonton");
+        city2.setName("Edmonton");
         city2.setDateCreated(LocalDateTime.of(2022, 1, 11, 20, 3));
 
         City city3 = new City();
-        city3.setCityName("Calgary");
+        city3.setName("Calgary");
         city3.setDateCreated(LocalDateTime.of(2019, 5, 21, 19, 22));
         ///////////////////////////////////////////////////////////////////////////////////////////////
         Account account1 = new Account();
