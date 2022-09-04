@@ -18,7 +18,7 @@ public class Category {
     @Column(unique = true)
     private String categoryName;
 
-    private LocalDateTime dateCreated;
+    @NonNull private LocalDateTime dateCreated;
 
     @OneToMany(mappedBy = "postCategory", cascade = CascadeType.ALL)
     private Set<Post> posts;

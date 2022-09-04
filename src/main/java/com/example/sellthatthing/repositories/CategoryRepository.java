@@ -12,14 +12,14 @@ import java.util.Optional;
 @Repository
 @Transactional(readOnly = true)
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    boolean existsByCategoryName(String categoryName);
+    void deleteByCategoryNameIgnoreCase(String categoryName);
 
-    void deleteByCategoryName(String categoryName);
+    boolean existsByCategoryNameIgnoreCase(String categoryName);
 
-    Optional<Category> findByCategoryName(String categoryName);
+    Optional<Category> findByCategoryNameIgnoreCase(String categoryName);
 
     @Transactional
     @Modifying
     @Query("UPDATE Category c SET c.categoryName = ?2 WHERE c.categoryName = ?1")
-    void updateName(String oldName, String newName);
+    void editName(String oldName, String newName);
 }

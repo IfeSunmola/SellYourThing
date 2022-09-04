@@ -1,6 +1,5 @@
 package com.example.sellthatthing.controllers.Admin;
 
-import com.example.sellthatthing.controllers.CustomErrorController;
 import com.example.sellthatthing.models.AccountDetails;
 import com.example.sellthatthing.services.AccountService;
 import com.example.sellthatthing.services.CategoryService;
@@ -70,8 +69,9 @@ public class AdminCategoryController {
      * Edit a category by its name (id)
      * */
     @PatchMapping("/edit/{oldName}/{newName}")
-    public String edit(@PathVariable String oldName, @PathVariable String newName, @ModelAttribute("message") HashMap<String, String> message) {
-        categoryService.edit(oldName, newName, message);
+    public String edit(@PathVariable String oldName, @PathVariable String newName,
+                       @ModelAttribute("message") HashMap<String, String> message, HttpServletRequest request) {
+        categoryService.edit(oldName, newName, message, request);
         return "redirect:/admin/categories";
     }
 
@@ -86,7 +86,14 @@ public class AdminCategoryController {
             return "/login";
         }
         System.out.println("Deleting: " + categoryName);
-        categoryService.delete(categoryName, message);
+        categoryService.delete(categoryName, message, request);
+        return "redirect:/admin/categories";
+    }
+
+    @PostMapping("/create-new")
+    public String createNew(@RequestParam String newCategoryName, @ModelAttribute("message") HashMap<String, String> message, HttpServletRequest request) {
+        categoryService.save(newCategoryName, message, request);
+        System.out.println("Entered Category name is: " + newCategoryName);
         return "redirect:/admin/categories";
     }
 }
