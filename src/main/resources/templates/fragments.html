@@ -89,8 +89,8 @@
 			<div class="col">
 				<select th:field="*{city}" id="citySelect" class="form-select mb-3" aria-label="Sort Location">
 					<option value="0" selected>All Cities</option>
-					<option value="1" th:each="city: ${cities}" th:value="${city.cityName}"
-							th:text="${city.cityName}"></option>
+					<option value="1" th:each="city: ${cities}" th:value="${city.name}"
+							th:text="${city.name}"></option>
 				</select>
 			</div>
 
@@ -98,8 +98,8 @@
 			<div class="col">
 				<select th:field="*{category}" id="categorySelect" class="form-select mb-3" aria-label="Sort Location">
 					<option value="0" selected>All Categories</option>
-					<option value="1" th:each="category: ${categories}" th:value="${category.categoryName}"
-							th:text="${category.categoryName}"></option>
+					<option value="1" th:each="category: ${categories}" th:value="${category.name}"
+							th:text="${category.name}"></option>
 				</select>
 			</div>
 
@@ -161,7 +161,7 @@
 							<!--Start Location and Date-->
 							<div class="row">
 								<div>
-									<p th:text="${post.postCity.cityName}" class="text-start mt-2"></p>
+									<p th:text="${post.postCity.name}" class="text-start mt-2"></p>
 									<p th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy')}" class="text-start"></p>
 								</div>
 							</div>
