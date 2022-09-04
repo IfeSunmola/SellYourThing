@@ -22,9 +22,9 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query("UPDATE Account a SET a.enabled = FALSE WHERE a.accountId = ?1")
     void disableAccountById(Long accountId);
 
-    Optional<Account> findByEmail(String email);
+    Optional<Account> findByEmailIgnoreCase(String email);
 
-    boolean existsByEmail(String email);
+    boolean existsByEmailIgnoreCase(String email);
 
-    void deleteByEmail(String email);
+    void deleteByEmailIgnoreCase(String email);
 }

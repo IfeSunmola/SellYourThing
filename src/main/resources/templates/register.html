@@ -37,14 +37,14 @@
 					<!--Email-->
 					<div class="col-lg-3">
 						<label for="email" class="form-label">Email</label>
-						<input type="text" class="form-control" id="email" th:field="*{email}">
+						<input type="email" class="form-control" id="email" th:field="*{email}">
 						<p class="form-label mt-2 text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
 					</div>
 
 					<!--DOB-->
 					<div class="col-lg-3 mb-3">
 						<label for="dateOfBirth" class="form-label">Date of Birth</label>
-						<input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}">
+						<input  type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}">
 						<p class="form-label mt-2 text-danger" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></p>
 					</div>
 

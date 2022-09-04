@@ -14,11 +14,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,6 +36,7 @@ public class AccountService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final EmailSenderService emailSenderService;
     private final VerificationCodeService codeService;
+    private static final int MIN_AGE = 16;
 
     public Account findByAccountId(Long accountId) {
         return accountRepository.findById(accountId).orElseThrow(()
@@ -39,13 +44,36 @@ public class AccountService {
     }
 
     public Account findByEmail(String email) {
-        return accountRepository.findByEmail(email).orElseThrow(()
+        return accountRepository.findByEmailIgnoreCase(email).orElseThrow(()
                 -> new ResourceNotFoundException("Email: '" + email + "' was not found"));
+    }
+
+    public void checkForErrors(NewAccountRequest newAccountRequest, BindingResult errors) {
+        String password = newAccountRequest.getPassword();
+        String confirmPassword = newAccountRequest.getConfirmPassword();
+        String email = newAccountRequest.getEmail();
+        LocalDate dateOfBirth = newAccountRequest.getDateOfBirth();
+
+        if (email != null && accountRepository.existsByEmailIgnoreCase(email)) {
+            errors.addError(new FieldError("newAccountRequest", "email", "Email is already registered"));
+            return;
+        }
+        if (dateOfBirth == null) {
+            return;
+        }
+        if (Period.between(dateOfBirth, LocalDate.now()).getYears() < MIN_AGE) {
+            errors.addError(new FieldError("newAccountRequest", "dateOfBirth", "You must be " + MIN_AGE + " years or older"));
+            return;
+        }
+        if (!password.equals(confirmPassword)) {
+            errors.addError(new FieldError("newAccountRequest", "confirmPassword", "Passwords must be the same"));
+        }
     }
 
     @Transactional
     public VerificationDto createAccount(NewAccountRequest newAccountRequest) {
         String rawPassword = newAccountRequest.getPassword();
+
         newAccountRequest.setPassword(passwordEncoder.encode(newAccountRequest.getPassword()));
 
         Account newAccount = new Account(newAccountRequest);
@@ -119,11 +147,11 @@ public class AccountService {
     @Transactional
     public boolean delete(String email, AccountDetails accountDetails,
                           HttpServletRequest request, HttpServletResponse response) {
-        if (!accountDetails.email().equals(email) || !accountRepository.existsByEmail(email)) {
+        if (!accountDetails.email().equals(email) || !accountRepository.existsByEmailIgnoreCase(email)) {
             // user changed the email in inspect element or the email is not in the database, for some weird reason
             return false;
         }
-        accountRepository.deleteByEmail(email);
+        accountRepository.deleteByEmailIgnoreCase(email);
         doManualLogout(request);
         return true;
     }
@@ -184,4 +212,6 @@ public class AccountService {
         message.put("adminDeleteStatus", "true");
         message.put("adminDeleteMessage", "Account id: " + accountId + ", with email: " + email + " <strong>has been deleted</strong>");
     }
+
+
 }

@@ -6,7 +6,9 @@ import com.example.sellthatthing.services.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +32,8 @@ public class RegisterController {
 
     @PostMapping
     public String processRegisterForm(@ModelAttribute("newAccountRequest") @Valid NewAccountRequest newAccountRequest,
-                                      Errors errors, HttpSession session) {
+                                      BindingResult errors, HttpSession session) {
+        accountService.checkForErrors(newAccountRequest, errors);
         if (errors.hasErrors()) {
             return "register";
         }
