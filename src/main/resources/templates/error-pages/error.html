@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: htmlHead (pageTitle='Error')">
+</head>
+<body style="background-color: #121212" class="text-white">
+	<div class="container" style="height: 99vh">
+		<div th:replace="fragments :: navbarAndHeader"></div>
+
+		<div style="min-height: 700px" class="text-center d-flex justify-content-center align-items-center">
+			<div class="row">
+				<div class="col-12">
+					<h1>An error occurred</h1>
+				</div>
+				<div class="col-12">
+					<h5>You're probably seeing this because I got lazy and forgot to handle something<span>😭</span></h5>
+				</div>
+				<div class="col-12">
+					<h5 class="text-muted">If your name is not Ife, don't read this: Check your log</h5>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--jquery and bootstrap scripts-->
+	<th:block th:replace="fragments :: scripts"></th:block>
+</body>
+</html>

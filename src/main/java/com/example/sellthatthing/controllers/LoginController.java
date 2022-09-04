@@ -17,8 +17,11 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/login")
 public class LoginController {
     @GetMapping
-    public String loadLoginPage() {
-        return "login";
+    public String loadLoginPage(HttpServletRequest request) {
+        if (request.getUserPrincipal() == null) {
+            return "login";
+        }
+        return "redirect:/";
     }
 
     @GetMapping("/login-error")

@@ -14,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @AllArgsConstructor
 @Configuration
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
     private final AccountDetailsService accountDetailsService;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -36,9 +36,9 @@ public class WebSecurityConfig {
                 .antMatchers(RESOURCES_WHITELIST).permitAll()
                 .regexMatchers(REGEX_WHITELIST).permitAll()
                 // roles security
-                .antMatchers("/admin/**").hasRole("Admin")
-                // any other endpoint not specified should require authentication
-                .anyRequest().authenticated()
+                .antMatchers("/posts/create-new").hasAuthority("USER") //admins shouldn't be able to make posts with their admin account
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .anyRequest().authenticated() // any other endpoint not specified should require authentication
                 .and()
                 // login
                 .formLogin().loginPage("/login").permitAll()
@@ -46,8 +46,14 @@ public class WebSecurityConfig {
                 .usernameParameter("email").passwordParameter("password").failureUrl("/login/login-error")
                 .and()
                 // logout
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout")
-                .invalidateHttpSession(true).permitAll();
+                .logout().deleteCookies("JSESSIONID").logoutUrl("/logout").logoutSuccessUrl("/login?logout")
+                .invalidateHttpSession(true).permitAll()
+                .and()
+                .rememberMe()
+                .userDetailsService(accountDetailsService)
+                .tokenValiditySeconds(2592000) // valid for 30 days
+                .key("Key");// TESTING ONLY
+        //IMPORTANT: remove .key so the user will be required to log in when the server restarts
         return http.build();
     }
 

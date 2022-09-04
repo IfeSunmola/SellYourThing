@@ -12,9 +12,12 @@ import java.util.Set;
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class City {
-    @Id @NonNull private String cityName;
-    private LocalDateTime dateCreated;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
 
-    @OneToMany(mappedBy = "postCity")
+    @NonNull private String name;
+
+    @NonNull private LocalDateTime dateCreated;
+
+    @OneToMany(mappedBy = "postCity", cascade = CascadeType.ALL)
     private Set<Post> posts;
 }

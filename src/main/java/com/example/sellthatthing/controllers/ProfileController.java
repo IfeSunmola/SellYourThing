@@ -35,7 +35,7 @@ public class ProfileController {
     }
 
     @GetMapping("/{accountId}")
-    public String loadProfilePage(@PathVariable Long accountId, Model model, @ModelAttribute("message") HashMap<String, Boolean> message) {
+    public String loadProfilePage(@PathVariable Long accountId, Model model, @ModelAttribute("message") HashMap<String, String> message) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         boolean isSameUser; // if the user viewing the page is the same as the logged-in user
         Account currentAccount = accountService.findByAccountId(accountId); // user viewing the page
@@ -69,7 +69,7 @@ public class ProfileController {
 
     @PatchMapping("/update-account")
     public String updateAccount(@ModelAttribute UpdateAccountRequest updateInfo,
-                                @ModelAttribute("message") HashMap<String, Boolean> message) {
+                                @ModelAttribute("message") HashMap<String, String> message) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if ((auth instanceof AnonymousAuthenticationToken)) { // not authenticated
             return "/login";
@@ -94,7 +94,7 @@ public class ProfileController {
      * */
     @DeleteMapping("/delete-account")
     public String deleteAccount(@RequestParam String confirmEmail,
-                                @ModelAttribute("message") HashMap<String, Boolean> message,
+                                @ModelAttribute("message") HashMap<String, String> message,
                                 HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = (Authentication) request.getUserPrincipal();
         if ((auth instanceof AnonymousAuthenticationToken)) { // not authenticated
@@ -105,10 +105,10 @@ public class ProfileController {
 
         message.remove("deleteStatus");
         if (deleted) {
-            message.put("deleteStatus", true);
+            message.put("deleteStatus", "true");
             return "redirect:/";
         }
-        message.put("deleteStatus", false);
+        message.put("deleteStatus", "false");
         return "redirect:/users/" + accountDetails.accountId();
     }
 

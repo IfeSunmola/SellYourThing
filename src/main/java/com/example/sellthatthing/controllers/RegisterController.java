@@ -18,9 +18,12 @@ public class RegisterController {
     private final AccountService accountService;
 
     @GetMapping
-    public String loadRegisterPage(Model model) {
-        model.addAttribute("registrationDto", new NewAccountRequest());
-        return "register";
+    public String loadRegisterPage(Model model, HttpServletRequest request) {
+        if (request.getUserPrincipal() == null){
+            model.addAttribute("registrationDto", new NewAccountRequest());
+            return "register";
+        }
+        return "redirect:/";
     }
 
     @PostMapping

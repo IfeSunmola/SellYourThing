@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -49,7 +50,6 @@ public class PostService {
         List<Post> result;
 
         if (order == null) {
-            System.out.println(cityName);
             result = postRepository.findAllWithDate(cityName, categoryName, searchText,
                     Sort.by(Sort.Direction.DESC, "createdAt"));
         }
@@ -94,7 +94,7 @@ public class PostService {
                         newPostRequest.getPrice(),
                         //newPostRequest.getImageUrl(),
                         cityService.findByCityName(newPostRequest.getCityName()),
-                        categoryService.findByCategoryName(newPostRequest.getCategoryName()),
+                        categoryService.findByName(newPostRequest.getCategoryName()),
                         accountService.findByAccountId(newPostRequest.getPosterAccountId())
                 )
         );
@@ -106,7 +106,7 @@ public class PostService {
 
         postToUpdate.setTitle(updateInfo.getTitle());
         postToUpdate.setBody(updateInfo.getBody());
-        postToUpdate.setPostCategory(categoryService.findByCategoryName(updateInfo.getCategoryName()));
+        postToUpdate.setPostCategory(categoryService.findById(updateInfo.getCategoryId()));
         postToUpdate.setUpdatedAt(LocalDateTime.now());
 
         return postRepository.save(postToUpdate);
@@ -124,6 +124,7 @@ public class PostService {
     }
 
     public List<Post> usersPost(Long accountId, String cityName, String categoryName, String order, String searchText) {
+
         if (searchText == null) {
             searchText = "";
         }
@@ -156,11 +157,6 @@ public class PostService {
         return result;
     }
 
-    public List<Post> findByPostCategory(String categoryName) {
-        Category category = categoryService.findByCategoryName(categoryName);
-        return postRepository.findByPostCategory(category);
-    }
-
     public Post findByPostId(Long postId) {
         return postRepository.findById(postId).orElseThrow(()
                 -> new ResourceNotFoundException("Account id '" + postId + "' was not found"));
@@ -184,5 +180,18 @@ public class PostService {
                 .replace("$firstName", posterAccount.getFirstName())
                 .replace("$messageFrom", postReply.getReplyEmail())
                 .replace("$messageBody", postReply.getMessage());
+    }
+
+    public void adminDelete(Long postId, HashMap<String, String> message) {
+        if (!postRepository.existsById(postId)) {
+            message.clear();
+            message.put("postDeleteStatus", "false");
+            message.put("postDeleteMessage", "Error, post ID: <strong>" + postId + "</strong> was not found.");
+            return;
+        }
+        postRepository.deleteById(postId);
+        message.clear();
+        message.put("postDeleteStatus", "true");
+        message.put("postDeleteMessage", "Post Id: <strong>" + postId + "</strong> has been deleted");
     }
 }

@@ -8,7 +8,7 @@ import java.util.HashMap;
 @ControllerAdvice
 public class GlobalControllerAdvice {
     @ModelAttribute("message")
-    public HashMap<String, Boolean> message() {
-        return new HashMap<>(1);
+    public HashMap<String, String> message() {
+        return new HashMap<>(3);
     }
 }

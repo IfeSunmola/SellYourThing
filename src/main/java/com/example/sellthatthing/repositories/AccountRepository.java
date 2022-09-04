@@ -15,7 +15,12 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Transactional
     @Modifying
     @Query("UPDATE Account a  SET a.enabled = TRUE WHERE a.accountId = ?1")
-    int enableAppUserById(Long accountId);
+    void enableAccountById(Long accountId);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Account a SET a.enabled = FALSE WHERE a.accountId = ?1")
+    void disableAccountById(Long accountId);
 
     Optional<Account> findByEmail(String email);
 

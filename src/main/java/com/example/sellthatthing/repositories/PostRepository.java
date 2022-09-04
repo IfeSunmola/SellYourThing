@@ -21,8 +21,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("""
                 SELECT p from Post p
-                WHERE p.postCity.cityName LIKE %:cityName%
-                AND p.postCategory.categoryName LIKE %:categoryName%
+                WHERE p.postCity.name LIKE %:cityName%
+                AND p.postCategory.name LIKE %:categoryName%
                 AND upper(p.body)  LIKE %:searchText%
             """)
     List<Post> findAllWithDate(@Param("cityName") String cityName,
@@ -32,8 +32,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("""
                 SELECT p from Post p
-                WHERE p.postCity.cityName LIKE %:cityName%
-                AND p.postCategory.categoryName LIKE %:categoryName%
+                WHERE p.postCity.name LIKE %:cityName%
+                AND p.postCategory.name LIKE %:categoryName%
                 AND upper(p.body)  LIKE %:searchText%
             """)
     List<Post> findAllWithPrice(@Param("cityName") String cityName,
@@ -43,8 +43,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("""
                 SELECT p from Post p
-                WHERE p.postCity.cityName LIKE %:cityName%
-                AND p.postCategory.categoryName LIKE %:categoryName%
+                WHERE p.postCity.name LIKE %:cityName%
+                AND p.postCategory.name LIKE %:categoryName%
                 AND upper(p.body)  LIKE %:searchText%
                 AND p.posterAccount.accountId = :accountId
             """)
@@ -56,8 +56,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("""
                 SELECT p from Post p
-                WHERE p.postCity.cityName LIKE %:cityName%
-                AND p.postCategory.categoryName LIKE %:categoryName%
+                WHERE p.postCity.name LIKE %:cityName%
+                AND p.postCategory.name LIKE %:categoryName%
                 AND upper(p.body)  LIKE %:searchText%
                 AND p.posterAccount.accountId = :accountId
             """)
@@ -66,7 +66,4 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                                        @Param("searchText") String searchText,
                                        @Param("accountId") Long accountId,
                                        Sort sort);
-//    List<Post> findByPostCityCityNameContainingAndPostCategoryCategoryNameContainingAndBodyContainingIgnoreCase(String cityName,
-//                                                                                                                String categoryName,
-//                                                                                                                String searchText);
 }

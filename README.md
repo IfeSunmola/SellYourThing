@@ -2,18 +2,23 @@
 
 1. Compress images before upload
 2. Change from SellThatThing to SellYourThing
-3. Consider firebase
+3. Consider firebase, planet scale
 4. Show custom message for users that have not verified their account
 5. Implement "send a copy of this to my email"
 6. Accept images
 7. Log in should not be required to reply to a message
 8. Facebook/google login
-9. Admin tools in navbar
-10. Remove request params, find way to show messages without it
-11. .and().requiresChannel().anyRequest().requiresSecure();
-12. Use a content security policy for Spring Boot XSS protection
-13. After login, always redirect to previous page
-14. Add location to register page
+9. Remove request params, find way to show messages without it
+10. .and().requiresChannel().anyRequest().requiresSecure();
+11. Use a content security policy for Spring Boot XSS protection
+12. After login, always redirect to previous page
+13. Add location to register page
+14. Pagination
+15. Problem: When an admin deletes an account, the user still remains logged in
+    1. Fix: On each request, check if the user exists in the db. If not, force logout the user and invalidate
+       the session https://stackoverflow.com/a/38295610/18902234
+16. Secure end points with @PreAuthorize
+17. Add logging to all Service classes
 
 ---
 
@@ -98,6 +103,54 @@
        And remove the method that was declared in Step 1
 
     7. Don't forget to mark the Controller class you want to use it with. Refer to step 2
+
+# Thymeleaf + Jquery
+
+1. When there's a table, and inside the table, there's a button. The button triggers a modal to be opened.
+   To send data from button click to modal, use jquery, like in `admin-view-account.html` and `script.js`
+
+    1. Add your modal normally. Give it and id, e.g `modalId`. Disable the default bootstrap modal opener by removing the
+       bootstrap attributes from the `<a>` or `<button>` tag. Give the tag the link to fetch the data from:
+
+           <a th:href="@{|/admin/findId/${account.accountId}|}" class="btn btn-primary">A hehe button</a>
+
+       The href will be used to make a get request in jquery. The result of the get request will be sent to the modal
+    2. In script file, using jquery, assuming id of the modal is `modalId`:
+
+           $('document').ready(function () {
+               $('.table .btn').on('click', function (event) { // on click of table or/and button
+                   event.preventDefault(); // prevents the link from opening
+                   const href = $(this).attr('href');// get the href assosicated with that button
+                   $.get(href, function (account) {// make a get request, response will be stored in `account`
+                       $('#firstName').val(account.firstName);// store the value of account.firstName in the field with id firstName
+                       $('#lastName').val(account.lastName);// same as above
+                   });
+                   $('#modalId').modal('show') // show the modal
+              })
+           })
+
+    3. And in `AdminController`:
+
+           @GetMapping("/findId/{id}")
+           @ResponseBody
+           public HashMap<String, String> getById(@PathVariable Long id) {
+               Account account = accountService.findByAccountId(id);
+               HashMap<String, String> accountInfo = new HashMap<>(2);
+               accountInfo.put("firstName", account.getFirstName());
+               accountInfo.put("lastName", account.getLastName());
+               return accountInfo;
+           }
+       `@ResponseBody` is used so `accountInfo` can be serialized back into Mr JSON.
+
+    4. They key of the hashmap, the `name` attribute given to the input field and the "key" in `.val(account.firstName);`
+       must be the same. E.g. For firstName to be filled properly, following the jquery and GetMapping
+        1. The key in accountInfo should be `firstName`.
+        2. ~~The name attribute in the input tag where it would be filled should also be `firstName`~~
+        3. ID can be anything, I just used firstName because copy and paste is easy
+
+2. Change text of a button: ` $('#buttonId').html('New Text')`
+
+3. Change form action:  ` $('#formId').attr('action', 'NewActionUrl');`
 
 # Java Notes:
 
