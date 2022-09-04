@@ -16,7 +16,7 @@ public class AccountDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return new AccountDetails(
-                accountRepository.findByEmail(email).orElseThrow(()
+                accountRepository.findByEmailIgnoreCase(email).orElseThrow(()
                         -> new UsernameNotFoundException("Email '" + email + "' was not found")));
     }
 }
