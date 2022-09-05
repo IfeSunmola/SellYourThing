@@ -11,10 +11,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * @author Ife Sunmola
+ * Security Configuration class
+ */
 @EnableWebSecurity
 @AllArgsConstructor
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true) // enable @PreAuthorize, PostAuthorize in controller class
 public class WebSecurityConfig {
     private final AccountDetailsService accountDetailsService;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -41,14 +45,17 @@ public class WebSecurityConfig {
                 .anyRequest().authenticated() // any other endpoint not specified should require authentication
                 .and()
                 // login
-                .formLogin().loginPage("/login").permitAll()
-                .loginProcessingUrl("/login").defaultSuccessUrl("/", true)
-                .usernameParameter("email").passwordParameter("password").failureUrl("/login/login-error")
+                .formLogin()
+                .loginPage("/login").permitAll()
+                .loginProcessingUrl("/login").defaultSuccessUrl("/", false)
+                .usernameParameter("email").passwordParameter("password")
+                .failureUrl("/login/login-error")
                 .and()
                 // logout
                 .logout().deleteCookies("JSESSIONID").logoutUrl("/logout").logoutSuccessUrl("/login/logout")
                 .invalidateHttpSession(true).permitAll()
                 .and()
+                // remember me
                 .rememberMe()
                 .userDetailsService(accountDetailsService)
                 .tokenValiditySeconds(2592000) // valid for 30 days
