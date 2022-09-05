@@ -90,7 +90,7 @@
 	<form id="sortForm" action="#" th:action="@{${#request.getRequestURI()}}" th:object="${postsSortDto}">
 		<div class="row mt-5 mb-2">
 			<!--Search By City-->
-			<div class="col">
+			<div class="col-md-6">
 				<select th:field="*{city}" id="citySelect" class="form-select mb-3" aria-label="Sort Location">
 					<option value="0" selected>All Cities</option>
 					<option value="1" th:each="city: ${cities}" th:value="${city.name}"
@@ -99,7 +99,7 @@
 			</div>
 
 			<!--Search By Category-->
-			<div class="col">
+			<div class="col-md-6">
 				<select th:field="*{category}" id="categorySelect" class="form-select mb-3" aria-label="Sort Location">
 					<option value="0" selected>All Categories</option>
 					<option value="1" th:each="category: ${categories}" th:value="${category.name}"
@@ -108,7 +108,7 @@
 			</div>
 
 			<!--Sort By-->
-			<div class="col">
+			<div class="col-md-6">
 				<select th:field="*{order}" id="order" class="form-select mb-3" aria-label="Sort Location">
 					<option value="new" selected>Newest First</option>
 					<option value="old" selected>Oldest First</option>
@@ -118,7 +118,7 @@
 			</div>
 
 			<!--Search By text-->
-			<div class="col">
+			<div class="col-md-6">
 				<label for="searchText" class="visually-hidden">Search Text</label>
 				<input th:field="*{searchText}" type="text" class="form-control" id="searchText"
 					   placeholder="Enter search text">
