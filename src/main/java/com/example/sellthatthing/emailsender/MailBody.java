@@ -444,7 +444,7 @@ public class MailBody {
                                																	<p class="text-gray-700 text-center"
                                																	   style="line-height: 24px; font-size: 16px; color: #4a5568; width: 100%; margin: 0;"
                                																	   align="center">
-                               																		This code expires in 30 minutes
+                               																		This code expires in 24 hours
                                																	</p>
                                																</div>
                                															</td>
