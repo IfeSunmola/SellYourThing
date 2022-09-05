@@ -24,47 +24,10 @@
 					<div>
 						<p class="fs-3 text-center" th:text="'$' + ${currentPost.price}"></p>
 					</div>
-					<!--Start Carousel-->
-					<div id="postImageCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-						<!--Start Indicators-->
-						<div class="carousel-indicators">
-							<button aria-current="true" aria-label="Edit Later 1" class="active" data-bs-slide-to="0"
-									data-bs-target="#postImageCarousel"
-									type="button"></button>
-							<button aria-label="Edit Later 2" data-bs-slide-to="1" data-bs-target="#postImageCarousel" type="button"></button>
-							<button aria-label="Edit Later 3" data-bs-slide-to="2" data-bs-target="#postImageCarousel" type="button"></button>
-						</div>
-						<!--End Indicators-->
-
-						<!--Start slide show-->
-						<div class="carousel-inner">
-							<div class="carousel-item active d-flex justify-content-center" data-bs-interval="9999999">
-								<img th:alt="${currentPost.title} + ' image'" class="d-block w-50 img-fluid" src="/images/frog/green-frog.jpg"
-									 th:src=" @{'../' + ${currentPost.imageUrl}}">
-							</div>
-							<div class="carousel-item d-flex justify-content-center" data-bs-interval="9999999">
-								<img alt="..." class="d-block w-50" src="/images/london/london.jpg" th:src=" @{'../' + ${currentPost.imageUrl}}">
-							</div>
-							<div class="carousel-item d-flex justify-content-center" data-bs-interval="9999999">
-								<img alt="..." class="d-block w-50" src="/images/frog/green-frog.jpg" th:src=" @{'../' + ${currentPost.imageUrl}}">
-							</div>
-						</div>
-						<!--End slide show-->
-
-						<!-- Start Previous and Next Arrow-->
-						<button class="carousel-control-prev" data-bs-slide="prev" data-bs-target="#postImageCarousel"
-								type="button">
-							<span aria-hidden="true" class="carousel-control-prev-icon"></span>
-							<span class="visually-hidden">Previous</span>
-						</button>
-						<button class="carousel-control-next" data-bs-slide="next" data-bs-target="#postImageCarousel"
-								type="button">
-							<span aria-hidden="true" class="carousel-control-next-icon"></span>
-							<span class="visually-hidden">Next</span>
-						</button>
-						<!-- End Previous and Next Arrow-->
+					<!--Image-->
+					<div>
+						<img class="img-fluid" th:src=" @{'../' + ${currentPost.imageUrl}}" th:alt="${currentPost.title} + ' image'">
 					</div>
-					<!--End Carousel-->
 
 					<!--Start Description and Body-->
 					<div>
