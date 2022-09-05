@@ -159,7 +159,7 @@ public class PostService {
 
     public Post findByPostId(Long postId) {
         return postRepository.findById(postId).orElseThrow(()
-                -> new ResourceNotFoundException("Account id '" + postId + "' was not found"));
+                -> new ResourceNotFoundException("Post id '" + postId + "' was not found"));
     }
 
     public void sendPostReply(PostReply postReply) {
