@@ -10,6 +10,8 @@ import com.example.sellthatthing.models.AccountDetails;
 import com.example.sellthatthing.models.VerificationCode;
 import com.example.sellthatthing.repositories.AccountRepository;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,6 @@ import org.springframework.validation.FieldError;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -28,26 +29,54 @@ import java.util.List;
 
 import static com.example.sellthatthing.emailsender.MailBody.VERIFY_CODE_HTML;
 
+/**
+ * @author Ife Sunmola
+ *
+ * <p>Account Service class</p>
+ * <p>Handles business logic for everything relating to users account</p>
+ */
 @Service
 @AllArgsConstructor
 public class AccountService {
     private final AccountRepository accountRepository;
-
     private final BCryptPasswordEncoder passwordEncoder;
     private final EmailSenderService emailSenderService;
     private final VerificationCodeService codeService;
-    private static final int MIN_AGE = 16;
+    private static final int MIN_AGE = 16; // minimum required age to register
+    private final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
+
+    /**
+     * Finds an account by its id
+     *
+     * @param accountId The account id to find
+     * @return The account object.
+     * @throws ResourceNotFoundException if the account id was not found
+     */
     public Account findByAccountId(Long accountId) {
         return accountRepository.findById(accountId).orElseThrow(()
-                -> new ResourceNotFoundException("Account id '" + accountId + "' was not found"));
+                -> new ResourceNotFoundException("Account id: '" + accountId + "' was not found"));
     }
 
+    /**
+     * Finds an account by the users' email
+     *
+     * @param email The email to find
+     * @return The account object.
+     * @throws ResourceNotFoundException if the email was not found
+     */
     public Account findByEmail(String email) {
         return accountRepository.findByEmailIgnoreCase(email).orElseThrow(()
                 -> new ResourceNotFoundException("Email: '" + email + "' was not found"));
     }
 
+    /**
+     * This method checks if the Registration form has any errors. All the errors will be added to the binding result. They will be caught in the
+     * RegistrationController class
+     *
+     * @param newAccountRequest an object containing the data from the registration form
+     * @param errors            BindingResult used to store the errors gotten so thymeleaf can show it
+     */
     public void checkForErrors(NewAccountRequest newAccountRequest, BindingResult errors) {
         String password = newAccountRequest.getPassword();
         String confirmPassword = newAccountRequest.getConfirmPassword();
@@ -70,61 +99,77 @@ public class AccountService {
         }
     }
 
+    /**
+     * This method is called by the RegistrationController to create a users account. A verification code is also sent to the users' email
+     *
+     * @param newAccountRequest An object containing the new users' information
+     * @return VerificationDto an object containing the verification code id, the account id, and the users' password
+     */
     @Transactional
     public VerificationDto createAccount(NewAccountRequest newAccountRequest) {
         String rawPassword = newAccountRequest.getPassword();
 
         newAccountRequest.setPassword(passwordEncoder.encode(newAccountRequest.getPassword()));
 
-        Account newAccount = new Account(newAccountRequest);
-        Long accountId = accountRepository.save(newAccount).getAccountId();
-        Long codeId = sendVerificationCode(newAccount);
+        Account newAccount = new Account(newAccountRequest); // create new account
+        Long accountId = accountRepository.save(newAccount).getAccountId(); //save account to db and get the users id
 
-        return new VerificationDto(codeId, accountId, rawPassword);
-    }
+        // send verification code
+        VerificationCode code = new VerificationCode(newAccount); // create verification code
+        Long codeId = codeService.save(code).getCodeId(); // save to db and get the code id
+        String emailBody = VERIFY_CODE_HTML.replace("$firstName", newAccount.getFirstName())
+                .replace("$verificationCode", code.getCode()); // replace with the users' first name and verification code
 
-    private Long sendVerificationCode(Account newAccount) {
-        VerificationCode code = new VerificationCode(newAccount);
-        System.out.println(code.getCode());
-        Long codeId = codeService.save(code).getCodeId();
+        // send the mail
         emailSenderService.sendMail(
-                "SellThatThing: Activate your account",
+                "SellYourThing: Activate your account",
                 "donnotreply@sellyourthing.com",
                 newAccount.getEmail(),
                 "donotreply@sellyourthing.com",
-                generateVerifyCodeBody(newAccount.getFirstName(), code.getCode())
+                emailBody
         );
-        return codeId;
+        logger.info("Verification code sent to: " + accountId + " is: " + code.getCode());
+        return new VerificationDto(codeId, accountId, rawPassword);
     }
 
-    private String generateVerifyCodeBody(String firstName, String verificationCode) {
-        return VERIFY_CODE_HTML.replace("$firstName", firstName)
-                .replace("$verificationCode", verificationCode);
-    }
-
+    /**
+     * This method confirms the verification code and enables the users' account if the code is valid.
+     * <p>If the code isn't valid, different pages will be returned along with error messages.</p>
+     *
+     * @param enteredVerificationCode the verification code that the user entered
+     * @param accountId               the account id
+     * @param message                 ModelAttribute used to send error/success messages to the view
+     */
     @Transactional
-    public void confirmVerificationCode(String enteredVerificationCode, Long verificationCodeId, Long accountId) {
+    public String confirmVerificationCode(String enteredVerificationCode, Long verificationCodeId, Long accountId, HashMap<String, String> message) {
         VerificationCode code = codeService.findByCodeId(verificationCodeId);
-        Account account = findByAccountId(accountId);
 
-        if (code.getConfirmedAt() != null) {
-            throw new IllegalStateException("Account has already been verified");
+        if (code.getExpiresAt().isBefore(LocalDateTime.now())) {// expired code. Delete the code and users' account. User is redirected to login page.
+            message.put("expiredCode", "Verification code has expired. Register again.");
+            codeService.deleteById(verificationCodeId);
+            accountRepository.deleteById(accountId);
+            return "redirect:/register";
         }
-        if (code.getExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("Verification code has expired");
+
+        if (!code.getCode().equals(enteredVerificationCode)) { // incorrect code
+            message.put("incorrectCode", "Incorrect Verification Code.");
+            return "verify-account";
         }
-        if (!code.getCode().equals(enteredVerificationCode)) {
-            throw new IllegalStateException("Incorrect Verification Code");
-        }
-        if (!account.equals(code.getAccount())) {
-            throw new IllegalStateException("Different Accounts, invalid request");
-        }
-        // update the confirmed at time, enable the users account, and delete the code
-        codeService.updateConfirmedAtById(code.getCodeId());
+
+        // Valid code, update the confirmed at time, enable the users account, delete the code
+        codeService.updateConfirmedAtById(code.getCodeId());// a bit redundant since the code will be deleted
         accountRepository.enableAccountById(code.getAccount().getAccountId());
         codeService.deleteById(code.getCodeId());
+        return "success"; // will be used to auto login the user
     }
 
+    /**
+     * method to update the users account
+     *
+     * @param updateInfo     an object containing the account's new info
+     * @param message        ModelAttribute used to send error/success messages to the view
+     * @param accountDetails used for minor verifications
+     */
     @Transactional
     public void updateAccount(UpdateAccountRequest updateInfo, HashMap<String, String> message, AccountDetails accountDetails) {
         if (!accountDetails.email().equals(updateInfo.getEmail())) {
@@ -144,9 +189,16 @@ public class AccountService {
         accountRepository.save(account);
     }
 
+    /**
+     * method to delete the users account
+     *
+     * @param email          the user's email to delete
+     * @param accountDetails used for verification
+     * @param request        used to log out the user after account deletion
+     * @return true if the account was deleted and false if not
+     */
     @Transactional
-    public boolean delete(String email, AccountDetails accountDetails,
-                          HttpServletRequest request, HttpServletResponse response) {
+    public boolean delete(String email, AccountDetails accountDetails, HttpServletRequest request) {
         if (!accountDetails.email().equals(email) || !accountRepository.existsByEmailIgnoreCase(email)) {
             // user changed the email in inspect element or the email is not in the database, for some weird reason
             return false;
@@ -156,21 +208,33 @@ public class AccountService {
         return true;
     }
 
+    /**
+     * method to manually log the user in
+     *
+     * @param accountId   the account to log in
+     * @param rawPassword the user's password
+     * @param request     used to log the user in
+     */
     public void doManualLogin(Long accountId, String rawPassword, HttpServletRequest request) {
-        Account account = findByAccountId(accountId);
-        if (passwordEncoder.matches(rawPassword, account.getPassword())) {
+        Account account = findByAccountId(accountId); // find the account
+        if (passwordEncoder.matches(rawPassword, account.getPassword())) {// confirm that the raw password has not been tampered with
             try {
-                request.login(account.getEmail(), rawPassword);
+                request.login(account.getEmail(), rawPassword);// do the login
             }
-            catch (ServletException e) {
-                System.out.println("Login after account verification failed" + e);
+            catch (ServletException e) {// some weird shit happened
+                logger.warn("Login after verification failed. Exception given was: " + e);
             }
         }
         else {
-            System.out.println("Got ya");
+            logger.warn("Account Id: " + account + " tried doing some magical voodoo and changed the HttpSession parameters.");
         }
     }
 
+    /**
+     * method to manually log the user out
+     *
+     * @param request used to log the user in
+     */
     public void doManualLogout(HttpServletRequest request) {
         try {
             request.logout();
@@ -178,23 +242,38 @@ public class AccountService {
             SecurityContextHolder.getContext().setAuthentication(null);
         }
         catch (ServletException e) {
-            System.out.println("Logout failed in: doManualLogout(), Exception: " + e);
+            logger.warn("Log out failed. Exception given was: " + e);
         }
     }
 
+    /**
+     * @return A list of all the accounts
+     */
     public List<Account> findAll() {
         return accountRepository.findAll();
     }
 
+    /**
+     * disables a users account by id
+     *
+     * @param accountId the account id to disable
+     * @param message   ModelAttribute used to send error/success messages to the view
+     */
     @Transactional
     public void disableById(Long accountId, HashMap<String, String> message) {
-        String email = findByAccountId(accountId).getEmail();
+        String email = findByAccountId(accountId).getEmail(); // to show success message
         accountRepository.disableAccountById(accountId);
         message.clear();
         message.put("adminDisableStatus", "true");
         message.put("adminDisableMessage", "Account id: " + accountId + ", with email: " + email + " <strong>has been disabled</strong>");
     }
 
+    /**
+     * enables a users account by id
+     *
+     * @param accountId the account id to enable
+     * @param message   ModelAttribute used to send error/success messages to the view
+     */
     @Transactional
     public void enableById(Long accountId, HashMap<String, String> message) {
         String email = findByAccountId(accountId).getEmail();
@@ -204,6 +283,12 @@ public class AccountService {
         message.put("adminEnableMessage", "Account id: " + accountId + ", with email: " + email + " <strong>has been enabled</strong>");
     }
 
+    /**
+     * deletes a users account by id
+     *
+     * @param accountId the account id to delete
+     * @param message   ModelAttribute used to send error/success messages to the view
+     */
     @Transactional
     public void deleteById(Long accountId, HashMap<String, String> message) {
         String email = findByAccountId(accountId).getEmail();
@@ -212,6 +297,5 @@ public class AccountService {
         message.put("adminDeleteStatus", "true");
         message.put("adminDeleteMessage", "Account id: " + accountId + ", with email: " + email + " <strong>has been deleted</strong>");
     }
-
 
 }
