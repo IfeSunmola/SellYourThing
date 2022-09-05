@@ -40,7 +40,7 @@ public class AdminCategoryController {
      * Method to check if the admin id that was passed from client is the same as the admin id that is logged in.
      * Returns true if it's the same, and false if not.
      * */
-    private boolean hasValidAccess(Long authId, HashMap<String, String> message, HttpServletRequest request) {
+    private boolean hasValidAccess(Long authId, @ModelAttribute("message") HashMap<String, String> message, HttpServletRequest request) {
         Long currentAccountId = getAuthAccount(request).accountId();
         message.clear();
         if (!authId.equals(currentAccountId)) {
