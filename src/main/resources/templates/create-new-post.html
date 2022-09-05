@@ -21,8 +21,8 @@
 					<!--Start Category Select-->
 					<select class="form-select mb-3" aria-label="Select Category" th:field="*{categoryName}">
 						<option value="0" selected>Choose a Category</option>
-						<option value="1" th:each="category: ${categories}" th:value="${category.categoryName}"
-								th:text="${category.categoryName}"></option>
+						<option value="1" th:each="category: ${categories}" th:value="${category.name}"
+								th:text="${category.name}"></option>
 					</select>
 					<!--End Category Select-->
 
@@ -40,8 +40,8 @@
 						<div class="col-12 col-sm-6">
 							<select class="form-select mb-3" aria-label="Location Selector" th:field="*{cityName}">
 								<option value="0" selected>Choose your Location</option>
-								<option value="1" th:each="city: ${cities}" th:value="${city.cityName}"
-										th:text="${city.cityName}"></option>
+								<option value="1" th:each="city: ${cities}" th:value="${city.name}"
+										th:text="${city.name}"></option>
 							</select>
 						</div>
 						<!--End Location-->
