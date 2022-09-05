@@ -46,7 +46,7 @@ public class WebSecurityConfig {
                 .usernameParameter("email").passwordParameter("password").failureUrl("/login/login-error")
                 .and()
                 // logout
-                .logout().deleteCookies("JSESSIONID").logoutUrl("/logout").logoutSuccessUrl("/login?logout")
+                .logout().deleteCookies("JSESSIONID").logoutUrl("/logout").logoutSuccessUrl("/login/logout")
                 .invalidateHttpSession(true).permitAll()
                 .and()
                 .rememberMe()
