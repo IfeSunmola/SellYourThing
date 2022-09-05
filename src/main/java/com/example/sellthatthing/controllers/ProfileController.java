@@ -17,11 +17,16 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 
+/**
+ * @author Ife Sunmola
+ * Profile controller for everything relating to a users profile
+ */
 @Controller
 @AllArgsConstructor
 @RequestMapping("/users")
@@ -45,14 +50,14 @@ public class ProfileController {
         boolean isAuthenticated = !(auth instanceof AnonymousAuthenticationToken);
 
         model.addAttribute("currentAccount", currentAccount);
-        if (isAuthenticated) {
+        if (isAuthenticated) {// person viewing the page is authenticated
             authAccount = (AccountDetails) auth.getPrincipal();
-            isSameUser = authAccount.accountId().equals(currentAccount.getAccountId());
+            isSameUser = authAccount.accountId().equals(currentAccount.getAccountId());// is the person viewing the page the owner of the page?
 
             model.addAttribute("authAccount", authAccount);
             model.addAttribute("isSameUser", isSameUser);
 
-            if (isSameUser) {//
+            if (isSameUser) {// used to show the update account modal
                 UpdateAccountRequest updateInfo = new UpdateAccountRequest();
                 updateInfo.setFirstName(authAccount.firstName());
                 updateInfo.setLastName(authAccount.lastName());
@@ -77,12 +82,11 @@ public class ProfileController {
         if ((auth instanceof AnonymousAuthenticationToken)) { // not authenticated
             return "/login";
         }
-
+        message.clear();
         AccountDetails accountDetails = (AccountDetails) auth.getPrincipal();
-        accountService.checkForErrors(updateInfo, errors);
-        if (errors.hasErrors()) {
+        accountService.checkForErrors(updateInfo, errors, accountDetails);
+        if (errors.hasErrors()) {// there were errors in the form
             StringBuilder errorMessage = new StringBuilder("<strong>Update Failed</strong>:");
-            message.clear();
 
             for (ObjectError error : errors.getAllErrors()) {
                 errorMessage.append("<li>").append(error.getDefaultMessage()).append("</li>");
@@ -90,7 +94,8 @@ public class ProfileController {
             message.put("updateFailed", errorMessage.toString());
             return "redirect:/users/" + accountDetails.accountId();
         }
-        accountService.updateAccount(updateInfo, message, accountDetails);
+        accountService.updateAccount(updateInfo, accountDetails);
+        message.put("updateSuccess", "Your account has been updated");
         return "redirect:/users/" + accountDetails.accountId();
     }
 
@@ -99,32 +104,16 @@ public class ProfileController {
         return redirectToHome();
     }
 
-    /*
-     * Flow:
-     * If for some reason the user is not authenticated, redirect to login page
-     * Go to accountService to delete the account, invalidate the session and log the user out
-     * If the account was successfully deleted, redirect to login page.
-     * If not, redirect to users profile page and show error message.
-     * Check README for how the @ModelAttribute is working
-     * */
     @DeleteMapping("/delete-account")
-    public String deleteAccount(@RequestParam String confirmEmail,
-                                @ModelAttribute("message") HashMap<String, String> message,
-                                HttpServletRequest request) {
+    public RedirectView deleteAccount(@RequestParam String confirmEmail, @ModelAttribute("message") HashMap<String, String> message,
+                                      HttpServletRequest request) {
         Authentication auth = (Authentication) request.getUserPrincipal();
         if ((auth instanceof AnonymousAuthenticationToken)) { // not authenticated
-            return "/login";
+            return new RedirectView("/login");
         }
         AccountDetails accountDetails = (AccountDetails) auth.getPrincipal();
-        boolean deleted = accountService.delete(confirmEmail, accountDetails, request);
 
-        message.remove("deleteStatus");
-        if (deleted) {
-            message.put("deleteStatus", "true");
-            return "redirect:/";
-        }
-        message.put("deleteStatus", "false");
-        return "redirect:/users/" + accountDetails.accountId();
+        return accountService.delete(confirmEmail, accountDetails, request, message);
     }
 
 

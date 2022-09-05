@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -106,14 +107,18 @@ public class AccountService {
      * @param updateInfo an object containing the data from the update form
      * @param errors     BindingResult used to store the errors gotten so thymeleaf can show it
      */
-    public void checkForErrors(UpdateAccountRequest updateInfo, BindingResult errors) {
-
+    public void checkForErrors(UpdateAccountRequest updateInfo, BindingResult errors, AccountDetails accountDetails) {
         LocalDate dateOfBirth = updateInfo.getDateOfBirth();
         if (dateOfBirth == null) {
             return;
         }
         if (Period.between(dateOfBirth, LocalDate.now()).getYears() < MIN_AGE) {
             errors.addError(new FieldError("updateAccountDto", "dateOfBirth", "You must be " + MIN_AGE + " years or older"));
+            return;
+        }
+        if (!accountDetails.email().equals(updateInfo.getEmail())) {
+            // user changed the email in inspect element
+            errors.addError(new FieldError("updateAccountDto", "email", "Try that again."));
         }
     }
 
@@ -185,25 +190,14 @@ public class AccountService {
      * method to update the users account
      *
      * @param updateInfo     an object containing the account's new info
-     * @param message        ModelAttribute used to send error/success messages to the view
      * @param accountDetails used for minor verifications
      */
     @Transactional
-    public void updateAccount(UpdateAccountRequest updateInfo, HashMap<String, String> message, AccountDetails accountDetails) {
-        if (!accountDetails.email().equals(updateInfo.getEmail())) {
-            // user changed the email in inspect element
-            message.clear();
-            message.put("updateStatus", "false");
-            return;
-        }
-        // everything good from here, I hope
+    public void updateAccount(UpdateAccountRequest updateInfo, AccountDetails accountDetails) {
         Account account = accountDetails.account();
         account.setFirstName(updateInfo.getFirstName());
         account.setLastName(updateInfo.getLastName());
         account.setDateOfBirth(updateInfo.getDateOfBirth());
-
-        message.clear();
-        message.put("updateStatus", "true");
         accountRepository.save(account);
     }
 
@@ -213,17 +207,28 @@ public class AccountService {
      * @param email          the user's email to delete
      * @param accountDetails used for verification
      * @param request        used to log out the user after account deletion
-     * @return true if the account was deleted and false if not
+     * @param message        ModelAttribute used to send error/success messages to the view
+     * @return RedirectView to the users profile if there was an error. Login page if something fishy happened. Or also, to the user's profile if
+     * deleting was successful
      */
     @Transactional
-    public boolean delete(String email, AccountDetails accountDetails, HttpServletRequest request) {
-        if (!accountDetails.email().equals(email) || !accountRepository.existsByEmailIgnoreCase(email)) {
-            // user changed the email in inspect element or the email is not in the database, for some weird reason
-            return false;
+    public RedirectView delete(String email, AccountDetails accountDetails, HttpServletRequest request, HashMap<String, String> message) {
+        if (!email.equals(accountDetails.email())) {
+            // email entered on client side isn't the same as the email of the currently authenticated user. Should only happen when inspect element
+            // is used
+            message.put("deleteFailed", "Incorrect confirmation email");
+            return new RedirectView("/users/" + accountDetails.accountId());
+        }
+        if (!accountRepository.existsByEmailIgnoreCase(email)) {// email is not in the database, for some weird reason. Shouldn't even reach here
+            message.put("forcedLogout", "Invalid request. You have been logged out.");
+            logger.warn("User Details: " + accountDetails + " tried deleting an account that wasn't in the database. They have magic");
+            doManualLogout(request);
+            return new RedirectView("/login");
         }
         accountRepository.deleteByEmailIgnoreCase(email);
         doManualLogout(request);
-        return true;
+        message.put("deleteSuccess", "Your account has been deleted.");
+        return new RedirectView("/");
     }
 
     /**
