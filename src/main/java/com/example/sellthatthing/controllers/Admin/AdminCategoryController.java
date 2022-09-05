@@ -46,8 +46,7 @@ public class AdminCategoryController {
         if (!authId.equals(currentAccountId)) {
             accountService.doManualLogout(request);
             logger.error("Account id: " + currentAccountId + " sent a request as account id: " + authId);
-            message.put("forcedLogout", "false");
-            message.put("forcedLogoutMessage", "An error occurred, you have been logged out");
+            message.put("forcedLogout", "An error occurred, you have been logged out");
             return false;
         }
         return true;
