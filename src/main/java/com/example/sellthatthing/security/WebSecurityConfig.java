@@ -47,7 +47,7 @@ public class WebSecurityConfig {
                 // login
                 .formLogin()
                 .loginPage("/login").permitAll()
-                .loginProcessingUrl("/login").defaultSuccessUrl("/", false)
+                .loginProcessingUrl("/login").defaultSuccessUrl("/", true)
                 .usernameParameter("email").passwordParameter("password")
                 .failureUrl("/login/login-error")
                 .and()
