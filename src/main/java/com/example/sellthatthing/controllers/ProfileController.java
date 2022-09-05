@@ -14,9 +14,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.HashMap;
 
 @Controller
@@ -67,13 +70,26 @@ public class ProfileController {
     }
 
     @PatchMapping("/update-account")
-    public String updateAccount(@ModelAttribute UpdateAccountRequest updateInfo,
+    public String updateAccount(@ModelAttribute("updateAccountDto") @Valid UpdateAccountRequest updateInfo, BindingResult errors,
                                 @ModelAttribute("message") HashMap<String, String> message) {
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if ((auth instanceof AnonymousAuthenticationToken)) { // not authenticated
             return "/login";
         }
+
         AccountDetails accountDetails = (AccountDetails) auth.getPrincipal();
+        accountService.checkForErrors(updateInfo, errors);
+        if (errors.hasErrors()) {
+            StringBuilder errorMessage = new StringBuilder("<strong>Update Failed</strong>:");
+            message.clear();
+
+            for (ObjectError error : errors.getAllErrors()) {
+                errorMessage.append("<li>").append(error.getDefaultMessage()).append("</li>");
+            }
+            message.put("updateFailed", errorMessage.toString());
+            return "redirect:/users/" + accountDetails.accountId();
+        }
         accountService.updateAccount(updateInfo, message, accountDetails);
         return "redirect:/users/" + accountDetails.accountId();
     }

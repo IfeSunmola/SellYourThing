@@ -100,6 +100,24 @@ public class AccountService {
     }
 
     /**
+     * This method checks if the Update account form has any errors. All the errors will be added to the binding result. They will be caught in the
+     * RegistrationController class
+     *
+     * @param updateInfo an object containing the data from the update form
+     * @param errors     BindingResult used to store the errors gotten so thymeleaf can show it
+     */
+    public void checkForErrors(UpdateAccountRequest updateInfo, BindingResult errors) {
+
+        LocalDate dateOfBirth = updateInfo.getDateOfBirth();
+        if (dateOfBirth == null) {
+            return;
+        }
+        if (Period.between(dateOfBirth, LocalDate.now()).getYears() < MIN_AGE) {
+            errors.addError(new FieldError("updateAccountDto", "dateOfBirth", "You must be " + MIN_AGE + " years or older"));
+        }
+    }
+
+    /**
      * This method is called by the RegistrationController to create a users account. A verification code is also sent to the users' email
      *
      * @param newAccountRequest An object containing the new users' information
