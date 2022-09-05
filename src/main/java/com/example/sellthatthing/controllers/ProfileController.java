@@ -17,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 
 @Controller
@@ -39,7 +38,7 @@ public class ProfileController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         boolean isSameUser; // if the user viewing the page is the same as the logged-in user
         Account currentAccount = accountService.findByAccountId(accountId); // user viewing the page
-        AccountDetails authAccount = null; // logged in user
+        AccountDetails authAccount; // logged in user
         boolean isAuthenticated = !(auth instanceof AnonymousAuthenticationToken);
 
         model.addAttribute("currentAccount", currentAccount);
@@ -95,13 +94,13 @@ public class ProfileController {
     @DeleteMapping("/delete-account")
     public String deleteAccount(@RequestParam String confirmEmail,
                                 @ModelAttribute("message") HashMap<String, String> message,
-                                HttpServletRequest request, HttpServletResponse response) {
+                                HttpServletRequest request) {
         Authentication auth = (Authentication) request.getUserPrincipal();
         if ((auth instanceof AnonymousAuthenticationToken)) { // not authenticated
             return "/login";
         }
         AccountDetails accountDetails = (AccountDetails) auth.getPrincipal();
-        boolean deleted = accountService.delete(confirmEmail, accountDetails, request, response);
+        boolean deleted = accountService.delete(confirmEmail, accountDetails, request);
 
         message.remove("deleteStatus");
         if (deleted) {
