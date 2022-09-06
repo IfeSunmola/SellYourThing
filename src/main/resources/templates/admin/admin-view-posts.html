@@ -23,41 +23,54 @@
 			<th:block th:if="${message.clear()}"></th:block>
 		</div>
 		<!--End Messages-->
-
-		<table id="postsTable" class="table table-primary table-bordered table-striped table-hover">
-			<thead>
-			<tr>
-				<th scope="col">ID</th>
-				<th scope="col">Title</th>
-				<th scope="col">Body</th>
-				<th scope="col">Price</th>
-				<th scope="col">Date posted</th>
-				<th scope="col">City</th>
-				<th scope="col">Category</th>
-				<th scope="col">Poster Id</th>
-				<th scope="col">Actions</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr th:each="post: ${allPosts}">
-				<th scope="row">
-					<a class="link-primary postIdTable" th:text="${post.postId}" th:href="@{|/posts/${post.postId}|}"></a>
-				</th>
-				<td th:text="${post.title}"></td>
-				<td th:text="${post.body.substring(0, 200)} + '...'"></td>
-				<td th:text="'$'+ ${post.price}"></td>
-				<td th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy')}"></td>
-				<td th:text="${post.postCity.name}"></td>
-				<td th:text="${post.postCategory.name}"></td>
-				<td class="text-center">
-					<a class="link-primary" th:text="${post.posterAccount.accountId}" th:href="@{|/users/${post.posterAccount.accountId}|}"></a>
-				</td>
-				<td>
-					<a th:href="${post.postId}" class="block btn btn-danger deletePostButton">Delete this post</a>
-				</td>
-			</tr>
-			</tbody>
-		</table>
+		<th:block th:with="posts=${allPosts}">
+			<table id="postsTable" class="table table-primary table-bordered table-striped table-hover">
+				<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Title</th>
+					<th scope="col">Body</th>
+					<th scope="col">Price</th>
+					<th scope="col">Date posted</th>
+					<th scope="col">City</th>
+					<th scope="col">Category</th>
+					<th scope="col">Poster Id</th>
+					<th scope="col">Actions</th>
+				</tr>
+				</thead>
+				<tbody>
+				<th:block th:if="${!posts.isEmpty()}">
+					<tr th:each="post: ${posts}">
+						<th scope="row">
+							<a class="link-primary postIdTable" th:text="${post.postId}" th:href="@{|/posts/${post.postId}|}"></a>
+						</th>
+						<td th:text="${post.title}"></td>
+						<td th:text="${#strings.substring(post.body, 0, 100)} + '...'"></td>
+						<td th:text="'$'+ ${post.price}"></td>
+						<td th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy')}"></td>
+						<td th:text="${post.postCity.name}"></td>
+						<td th:text="${post.postCategory.name}"></td>
+						<td class="text-center">
+							<a class="link-primary" th:text="${post.posterAccount.accountId}"
+							   th:href="@{|/users/${post.posterAccount.accountId}|}"></a>
+						</td>
+						<td>
+							<a th:href="${post.postId}" class="block btn btn-danger deletePostButton">Delete this post</a>
+						</td>
+					</tr>
+				</th:block>
+				</tbody>
+			</table>
+			<th:block th:if="${posts.isEmpty()}">
+				<div style="min-height: 700px" class="text-center d-flex justify-content-center align-items-center">
+					<div class="row">
+						<div class="col-12">
+							<h1>Wow, there's nothing here</h1>
+						</div>
+					</div>
+				</div>
+			</th:block>
+		</th:block>
 	</div>
 
 	<!-- Delete Post modal -->
