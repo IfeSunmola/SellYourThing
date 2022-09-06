@@ -93,7 +93,7 @@ public class PostService {
 
         postToUpdate.setTitle(updateInfo.getTitle());
         postToUpdate.setBody(updateInfo.getBody());
-        postToUpdate.setPostCategory(categoryService.findById(updateInfo.getCategoryId()));
+        postToUpdate.setPostCategory(categoryService.findByName(updateInfo.getCategoryName()));
         postToUpdate.setUpdatedAt(LocalDateTime.now());
 
         return postRepository.save(postToUpdate);
