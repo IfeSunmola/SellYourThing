@@ -26,7 +26,7 @@
 					</div>
 					<!--Image-->
 					<div>
-						<img class="img-fluid" th:src=" @{'../' + ${currentPost.imageUrl}}" th:alt="${currentPost.title} + ' image'">
+						<img class="img-fluid" onerror="javascript:this.src='/images/spinner-aang-hehe.jpg'" th:src=" @{'../' + ${currentPost.imageUrl}}" th:alt="${currentPost.title} + ' image'">
 					</div>
 
 					<!--Start Description and Body-->
