@@ -26,11 +26,7 @@ public class SellThatThingApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        try {
-            postService.findAll();
-        }
-        catch (EmptyResourceException e) {
-            // no posts , add temporary data
+        if (postService.findAll().isEmpty()) {
             addSeedData();
         }
     }
