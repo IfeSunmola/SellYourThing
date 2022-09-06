@@ -51,11 +51,7 @@ public class PostService {
 
 
     public List<Post> findAll() {
-        List<Post> listOfPosts = postRepository.findAll();
-        if (listOfPosts.isEmpty()) {
-            throw new EmptyResourceException("No posts found");
-        }
-        return listOfPosts;
+        return postRepository.findAll();
     }
 
     public List<Post> findAllWithSorting(String cityName, String categoryName, String order, String searchText) {
@@ -203,6 +199,11 @@ public class PostService {
         String fileType = originalFileName.substring(originalFileName.indexOf('.'));
         if (!fileType.equals(".png") && !fileType.equals(".jpg") && !fileType.equals(".jpeg")) {
             errors.addError(new FieldError("newPostRequest", "image", fileType + " is not a valid format"));
+            return;
+        }
+        long imageSize = image.getSize() / 1000;// convert to KB
+        if (imageSize > 1000) {
+            errors.addError(new FieldError("newPostRequest", "image",  "Image is too large. Stop playing with my js code\uD83D\uDC7A"));
         }
     }
 
