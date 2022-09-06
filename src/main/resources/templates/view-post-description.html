@@ -26,7 +26,8 @@
 					</div>
 					<!--Image-->
 					<div>
-						<img class="img-fluid" onerror="javascript:this.src='/images/spinner-aang-hehe.jpg'" th:src=" @{'../' + ${currentPost.imageUrl}}" th:alt="${currentPost.title} + ' image'">
+						<img class="img-fluid" onerror="javascript:this.src='/images/spinner-aang-hehe.jpg'"
+							 th:src=" @{'../' + ${currentPost.imageUrl}}" th:alt="${currentPost.title} + ' image'">
 					</div>
 
 					<!--Start Description and Body-->
@@ -39,7 +40,7 @@
 				<!--End Post Info-->
 
 				<!--Start Contact Account Info-->
-				<div class="col-lg-3 col-12 mt-lg-4">
+				<div sec:authorize="!hasAuthority('ADMIN')" class="col-lg-3 col-12 mt-lg-4">
 					<!--Start Card-->
 					<div class="card text-white bg-dark sticky-lg-top">
 						<!--Start Card Header-->
