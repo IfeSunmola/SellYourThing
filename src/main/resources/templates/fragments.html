@@ -173,7 +173,7 @@
 
 							<div class="card-text  mt-3 p-0">
 								<!--									<p th:text="${#strings.substring(post.body, 0, 100)}"></p>-->
-								<p class="fs-4 text-start" th:text="${#strings.substring(post.body, 0, 100)}">Post Body</p>
+								<p class="fs-4 text-start" th:text="${#strings.substring(post.body, 0, 100)} + '...'">Post Body</p>
 							</div>
 						</div>
 					</div>
