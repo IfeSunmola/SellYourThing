@@ -104,6 +104,7 @@ public class SellThatThingApplication implements CommandLineRunner {
         post1.setPrice(new BigDecimal("69.12"));
         post1.setImageUrl("images/frog/green-frog.jpg");
         post1.setPostCity(city1);
+        post1.setCreatedAt(LocalDateTime.now().minusWeeks(450));
         ///////////////////////////////////////////////////////////////////////////////////////////////
         Post post2 = new Post();
         post2.setTitle("Vehicle London building for sale");
@@ -121,6 +122,7 @@ public class SellThatThingApplication implements CommandLineRunner {
         post2.setPrice(new BigDecimal("4200.21"));
         post2.setImageUrl("images/london/london.jpg");
         post2.setPostCity(city2);
+        post2.setCreatedAt(LocalDateTime.now().minusMonths(21));
         ///////////////////////////////////////////////////////////////////////////////////////////////
         Post post3 = new Post();
         post3.setTitle("Computer Unused strawberry for sale");
@@ -137,6 +139,7 @@ public class SellThatThingApplication implements CommandLineRunner {
         post3.setPrice(new BigDecimal("30.21"));
         post3.setImageUrl("images/strawberry/strawberries.jpg");
         post3.setPostCity(city3);
+        post3.setCreatedAt(LocalDateTime.now().minusMonths(1));
         ///////////////////////////////////////////////////////////////////////////////////////////////
 //        Post post4 = new Post();
 //        post4.setTitle("Book Big cat for sale");
