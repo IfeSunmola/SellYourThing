@@ -91,13 +91,21 @@
 							</form>
 						</div>
 						<!--End Card Body-->
+
+						<div class="row mt-5">
+							<div class="btn-group-vertical" style="background-color: #121212" role="group" aria-label="Vertical button group">
+								<a th:href="@{|/posts/${currentPost.postId}/${currentPost.posterAccount.accountId}/update|}" type="button" class="mt-5 mb-5 btn btn-warning">Update Post</a>
+								<a type="button" class="mb-5 btn btn-danger">Delete Post</a>
+							</div>
+						</div>
 					</div>
-					<!--End Card-->
 				</div>
-				<!--End Contact Account Info-->
+				<!--End Card-->
 			</div>
+			<!--End Contact Account Info-->
 		</div>
-		<!--End Post/Contact form-->
+	</div>
+	<!--End Post/Contact form-->
 	</div>
 
 	<th:block th:replace="fragments :: scripts"></th:block>

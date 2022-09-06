@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: htmlHead (pageTitle='Updating post')">
+</head>
+<body style="background-color: #121212" class="text-white">
+	<div class="container" style="height: 99vh">
+		<div th:replace="fragments :: navbarAndHeader"></div>
+
+		<h1 class="text-center">Updating Post</h1>
+		<!--Start Form-->
+		<div class="row justify-content-center mt-5">
+			<div class="col-lg-8 mx-auto mbr-form">
+				<form action="#" method="post" enctype="multipart/form-data" class="mx-auto" th:action="@{/posts/create-new}"
+					  th:object="${updatePostRequest}">
+					<!--Start Title-->
+					<div class="mb-3">
+						<label for="title" class="form-label fs-6">New Title</label>
+						<input type="text" th:field="*{title}" class="form-control" id="title">
+						<p class="form-label mt-2 text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+					</div>
+					<!--End Title-->
+
+					<!--Start Category Select-->
+					<select class="form-select mb-3" aria-label="Select Category" th:field="*{categoryName}">
+						<option value="0" selected>Choose a Category</option>
+						<option value="1" th:each="category: ${categories}" th:value="${category.name}"
+								th:text="${category.name}"></option>
+					</select>
+					<p class="form-label mt-2 text-danger" th:if="${#fields.hasErrors('categoryName')}" th:errors="*{categoryName}"></p>
+					<!--End Category Select-->
+
+					<!--Start Description-->
+					<div class="mb-3">
+						<label for="message" class="form-label fs-6">New Description</label>
+						<textarea class="form-control" id="message"
+								  rows="5" placeholder="A detailed description of the item" th:field="*{body}"></textarea>
+						<p class="form-label mt-2 text-danger" th:if="${#fields.hasErrors('body')}" th:errors="*{body}"></p>
+					</div>
+					<!--End Description-->
+
+					<!--Start Location and Price-->
+					<div class="row">
+						<!--Start Location-->
+						<div class="col-12 col-sm-6">
+							<select class="form-select mb-3" aria-label="Location Selector" th:field="*{cityName}">
+								<option value="0" selected>Choose your Location</option>
+								<option value="1" th:each="city: ${cities}" th:value="${city.name}"
+										th:text="${city.name}"></option>
+							</select>
+							<p class="form-label mt-2 text-danger" th:if="${#fields.hasErrors('cityName')}" th:errors="*{cityName}"></p>
+						</div>
+						<!--End Location-->
+
+						<!--Start Price-->
+						<div class="col-12 col-sm-6">
+							<div class="input-group mb-3">
+								<span class="input-group-text">$</span>
+								<input th:field="*{price}" type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
+									   placeholder="20.00">
+							</div>
+							<p class="form-label mt-2 text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
+						</div>
+						<!--End Price-->
+					</div>
+					<!--End Location and Price-->
+
+					<!--File Upload-->
+					<div class="mb-3">
+						<label for="imageUpload" class="form-label">New Media (only jpg and png)</label>
+						<input th:field="*{image}" class="form-control" accept="image/jpeg, image/png" type="file" id="imageUpload">
+						<p class="form-label mt-2 text-danger" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></p>
+						<p id="imageErrorP" class="form-label mt-2 text-danger"></p>
+					</div>
+
+					<!--Submit Button-->
+					<div class="mt-5 d-flex justify-content-center">
+						<button class="btn btn-primary" type="submit">Create new post</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!--End Form-->
+	</div>
+
+	<!--jquery and bootstrap scripts-->
+	<th:block th:replace="fragments :: scripts"></th:block>
+
+	<script th:src="@{/js/create-new-post.js}"></script>
+</body>
+</html>
