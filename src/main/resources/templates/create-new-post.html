@@ -65,9 +65,10 @@
 
 					<!--File Upload-->
 					<div class="mb-3">
-						<label for="formFileMultiple" class="form-label">Media (only jpg and png)</label>
-						<input th:field="*{image}" class="form-control" accept="image/jpeg, image/png" type="file" id="formFileMultiple">
+						<label for="imageUpload" class="form-label">Media (only jpg and png)</label>
+						<input th:field="*{image}" class="form-control" accept="image/jpeg, image/png" type="file" id="imageUpload">
 						<p class="form-label mt-2 text-danger" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></p>
+						<p id="imageErrorP" class="form-label mt-2 text-danger"></p>
 					</div>
 
 					<!--Submit Button-->
@@ -80,8 +81,9 @@
 		<!--End Form-->
 	</div>
 
-
 	<!--jquery and bootstrap scripts-->
 	<th:block th:replace="fragments :: scripts"></th:block>
+
+	<script th:src="@{/js/create-new-post.js}"></script>
 </body>
 </html>
