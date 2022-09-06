@@ -7,19 +7,33 @@ import com.example.sellthatthing.emailsender.EmailSenderService;
 import com.example.sellthatthing.exceptions.EmptyResourceException;
 import com.example.sellthatthing.exceptions.ResourceNotFoundException;
 import com.example.sellthatthing.models.Account;
-import com.example.sellthatthing.models.Category;
+import com.example.sellthatthing.models.AccountDetails;
 import com.example.sellthatthing.models.Post;
 import com.example.sellthatthing.repositories.PostRepository;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import static com.example.sellthatthing.emailsender.MailBody.POST_REPLY_HTML;
 
@@ -32,6 +46,9 @@ public class PostService {
     private final AccountService accountService;
     private final CityService cityService;
     private final EmailSenderService emailSenderService;
+
+    private final Logger logger = LoggerFactory.getLogger(PostService.class);
+
 
     public List<Post> findAll() {
         List<Post> listOfPosts = postRepository.findAll();
@@ -79,25 +96,6 @@ public class PostService {
         int randomMinute = (int) Math.floor(Math.random() * (59 - 1 + 1) + 1);
         post.setCreatedAt(LocalDateTime.of(randomYear, randomMonth, randomDay, randomHour, randomMinute));
         postRepository.save(post);
-    }
-
-    @Transactional
-    public void createNewPost(NewPostRequest newPostRequest, Authentication auth) {
-        Account account = accountService.findByEmail(auth.getName());
-        newPostRequest.setPosterAccountId(account.getAccountId());
-
-        postRepository.save(
-                new Post(
-                        newPostRequest.getTitle(),
-                        newPostRequest.getBody(),
-                        LocalDateTime.now(),
-                        newPostRequest.getPrice(),
-                        //newPostRequest.getImageUrl(),
-                        cityService.findByCityName(newPostRequest.getCityName()),
-                        categoryService.findByName(newPostRequest.getCategoryName()),
-                        accountService.findByAccountId(newPostRequest.getPosterAccountId())
-                )
-        );
     }
 
     public Post update(UpdatePostRequest updateInfo, Long postId) {
@@ -194,4 +192,74 @@ public class PostService {
         message.put("postDeleteStatus", "true");
         message.put("postDeleteMessage", "Post Id: <strong>" + postId + "</strong> has been deleted");
     }
+
+    public void checkForErrors(NewPostRequest newPostRequest, BindingResult errors) {
+        if (newPostRequest.getCategoryName().equals("0")) {
+            errors.addError(new FieldError("newPostRequest", "categoryName", "Category is required"));
+        }
+        if (newPostRequest.getCityName().equals("0")) {
+            errors.addError(new FieldError("newPostRequest", "cityName", "City is required"));
+        }
+        MultipartFile image = newPostRequest.getImage();
+        if (image.isEmpty()) {
+            errors.addError(new FieldError("newPostRequest", "image", "Image is required"));
+            return;
+        }
+        String originalFileName = StringUtils.cleanPath(Objects.requireNonNull(newPostRequest.getImage().getOriginalFilename()));
+        String fileType = originalFileName.substring(originalFileName.indexOf('.'));
+        if (!fileType.equals(".png") && !fileType.equals(".jpg") && !fileType.equals(".jpeg")) {
+            errors.addError(new FieldError("newPostRequest", "image", fileType + " is not a valid format"));
+        }
+    }
+
+    @Transactional
+    public void createNewPost(NewPostRequest newPostRequest, Authentication auth) {
+        Account account = accountService.findByEmail(auth.getName());
+        newPostRequest.setPosterAccountId(account.getAccountId());
+
+        String imageUrl = saveImage(newPostRequest.getTitle(), newPostRequest.getImage(), auth);
+        if (imageUrl.equals("")) {
+            logger.error("File could not be saved");
+            return;
+        }
+
+        postRepository.save(
+                new Post(
+                        newPostRequest.getTitle(),
+                        newPostRequest.getBody(),
+                        LocalDateTime.now(),
+                        newPostRequest.getPrice(),
+                        imageUrl,
+                        cityService.findByCityName(newPostRequest.getCityName()),
+                        categoryService.findByName(newPostRequest.getCategoryName()),
+                        accountService.findByAccountId(newPostRequest.getPosterAccountId())
+                )
+        );
+    }
+
+    private String saveImage(String title, MultipartFile image, Authentication auth) {
+        // get file extension
+        String contentType = Objects.requireNonNull(image.getContentType()); // in form: image/jpeg or image/png
+        String fileType = "." + contentType.substring(6);// gets the string after image/ and adds a . to it
+
+        // generate the new file name
+        String currentTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd:hhmmss"));
+        String newFileName = title.replaceAll("\\s", "").substring(0, 10) + "-" + currentTime + fileType;
+        // image url to save in the db
+        String imageUrl = "images/user-" + ((AccountDetails) auth.getPrincipal()).accountId() + "/" + newFileName;
+        String uploadDir = "src/main/resources/static/" + imageUrl;
+
+        Path path = Paths.get(uploadDir);
+        try {
+            if (!Files.exists(path)) {
+                Files.createDirectories(path);
+            }
+            Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        }
+        catch (IOException e) {
+            imageUrl = "";
+        }
+        return imageUrl;
+    }
+
 }

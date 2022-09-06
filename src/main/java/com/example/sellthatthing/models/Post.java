@@ -18,7 +18,7 @@ public class Post {
     @NonNull @Column(length = 3000) private String body;
     @NonNull private LocalDateTime createdAt;
     @NonNull private BigDecimal price;
-    private String imageUrl;
+    @NonNull private String imageUrl;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cityName", referencedColumnName = "id")
@@ -37,7 +37,15 @@ public class Post {
 
     private LocalDateTime updatedAt;
 
-    public String getFormattedCreateAtDate() {
-        return DateTimeFormatter.ofPattern("dd/MM/yyyy").format(createdAt);
+
+    // delete later, only used for test data
+    public Post(@NonNull String title, @NonNull String body, @NonNull LocalDateTime createdAt, @NonNull BigDecimal price, @NonNull City postCity, @NonNull Category postCategory, @NonNull Account posterAccount) {
+        this.title = title;
+        this.body = body;
+        this.createdAt = createdAt;
+        this.price = price;
+        this.postCity = postCity;
+        this.postCategory = postCategory;
+        this.posterAccount = posterAccount;
     }
 }
