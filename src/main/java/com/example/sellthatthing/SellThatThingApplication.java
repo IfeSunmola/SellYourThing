@@ -1,6 +1,5 @@
 package com.example.sellthatthing;
 
-import com.example.sellthatthing.exceptions.EmptyResourceException;
 import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.models.Category;
 import com.example.sellthatthing.models.City;

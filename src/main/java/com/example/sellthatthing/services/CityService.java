@@ -1,6 +1,5 @@
 package com.example.sellthatthing.services;
 
-import com.example.sellthatthing.exceptions.EmptyResourceException;
 import com.example.sellthatthing.exceptions.ResourceNotFoundException;
 import com.example.sellthatthing.models.AccountDetails;
 import com.example.sellthatthing.models.City;
@@ -27,11 +26,7 @@ public class CityService {
     private final Logger logger = LoggerFactory.getLogger(CityService.class);
 
     public List<City> findAll() {
-        List<City> listOfCities = cityRepository.findAll();
-        if (listOfCities.isEmpty()) {
-            throw new EmptyResourceException("No cities found");
-        }
-        return listOfCities;
+        return cityRepository.findAll();
     }
 
     public City findByCityName(String cityName) {

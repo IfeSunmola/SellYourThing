@@ -142,7 +142,8 @@
 				<div class="row g-0">
 					<!--Start Display Image-->
 					<div class="col-md-4">
-						<img src="#" onerror="javascript:this.src='/images/spinner-aang-hehe.jpg'" th:src="@{|/${post.imageUrl}|}" class="card-img-top" alt="alt text" th:alt="${post.title} + ' image'"
+						<img src="#" onerror="javascript:this.src='/images/spinner-aang-hehe.jpg'" th:src="@{|/${post.imageUrl}|}"
+							 class="card-img-top" alt="alt text" th:alt="${post.title} + ' image'"
 							 width="300"
 							 height="300">
 					</div>
@@ -190,6 +191,16 @@
 	<div class="d-flex justify-content-center align-items-center" style="min-height: 33vh" sec:authorize="isAuthenticated()">
 		<div class="alert alert-success">
 			You are already logged in. <span th:if="${pageType == 'Register'}">Log out first</span>
+		</div>
+	</div>
+</th:block>
+
+<th:block th:fragment="emptyResource (resource)">
+	<div th:if="${resource.isEmpty()}" style="min-height: 700px" class="text-center d-flex justify-content-center align-items-center">
+		<div class="row">
+			<div class="col-12">
+				<h1>Wow, there's nothing here</h1>
+			</div>
 		</div>
 	</div>
 </th:block>

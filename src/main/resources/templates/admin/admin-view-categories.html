@@ -43,39 +43,43 @@
 		</div>
 
 		<!--Start Table-->
-		<table id="categoryTable" class="table table-primary table-striped table-hover">
-			<thead>
-			<tr class="text-center">
-				<th scope="col">Name</th>
-				<th scope="col">Date Created</th>
-				<th scope="col">View Posts</th>
-				<th scope="col">Actions</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr class="text-center" th:each="category: ${allCategories}">
-				<th scope="row" id="categoryName" th:text="${category.name}"></th>
-				<td th:text="${#temporals.format(category.dateCreated, 'MMM dd, yyyy')}"></td>
-				<td class="text-center">
-					<a class="link-primary" th:text="|${category.name} posts|"
-					   th:href="@{|/?category=${category.name}|}">posts</a>
-				</td>
-				<td class="text-center">
-					<button id="actionsButton" class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-						Actions
-					</button>
-					<ul class="dropdown-menu">
-						<li>
-							<a class="dropdown-item editButton">Edit</a>
-						</li>
-						<li>
-							<a class="dropdown-item deleteButton" href="#">Delete</a>
-						</li>
-					</ul>
-				</td>
-			</tr>
-			</tbody>
-		</table>
+		<th:block th:with="categories=${allCategories}">
+			<table id="categoryTable" class="table table-primary table-striped table-hover">
+				<thead>
+				<tr class="text-center">
+					<th scope="col">Name</th>
+					<th scope="col">Date Created</th>
+					<th scope="col">View Posts</th>
+					<th scope="col">Actions</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr th:if="${!categories.isEmpty()}" class="text-center" th:each="category: ${categories}">
+					<th scope="row" id="categoryName" th:text="${category.name}"></th>
+					<td th:text="${#temporals.format(category.dateCreated, 'MMM dd, yyyy')}"></td>
+					<td class="text-center">
+						<a class="link-primary" th:text="|${category.name} posts|"
+						   th:href="@{|/?category=${category.name}|}">posts</a>
+					</td>
+					<td class="text-center">
+						<button id="actionsButton" class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+								aria-expanded="false">
+							Actions
+						</button>
+						<ul class="dropdown-menu">
+							<li>
+								<a class="dropdown-item editButton">Edit</a>
+							</li>
+							<li>
+								<a class="dropdown-item deleteButton" href="#">Delete</a>
+							</li>
+						</ul>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+			<th:block th:replace="fragments :: emptyResource (${categories})"></th:block>
+		</th:block>
 	</div>
 
 	<!-- Add category modal -->

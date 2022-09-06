@@ -22,52 +22,56 @@
 		</div>
 
 		<!--Start Table-->
-		<table id="accountsTable" class="table table-primary table-striped table-hover">
-			<thead>
-			<tr>
-				<th scope="col">ID</th>
-				<th scope="col">First Name</th>
-				<th scope="col">Last Name</th>
-				<th scope="col">Email</th>
-				<th scope="col">Date of Birth</th>
-				<th scope="col">Role</th>
-				<th scope="col">Status</th>
-				<th scope="col">Actions</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr th:each="account: ${allAccounts}">
-				<th scope="row" th:text="${account.accountId}"></th>
-				<td th:text="${account.firstName}"></td>
-				<td th:text="${account.lastName}"></td>
-				<td th:text="${account.email}"></td>
-				<td th:text="${account.dateOfBirth}"></td>
-				<td th:text="${account.role}"></td>
-				<td style="text-transform: uppercase" th:text="${account.isEnabled() ? 'ENABLED' : 'DISABLED'}"></td>
-				<td>
-					<th:block th:if="${account.role == 'USER'}">
-						<button id="actionsButton" class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-								aria-expanded="false">
-							Actions
-						</button>
-						<ul class="dropdown-menu">
-							<li>
-								<a th:href="@{|/admin/accounts/find/${account.accountId}|}"
-								   class="dropdown-item disableEnableAccountBtn"
-								   th:text="${account.isEnabled() ? 'Disable this account': 'Enable this account'}">Dummy</a>
-							</li>
-							<li><a th:href="@{|/users/${account.accountId}|}" class="dropdown-item" href="#">View Account</a></li>
-							<li>
-								<a id="deleteAccountBtnId" th:href="@{|/admin/accounts/find/${account.accountId}|}" class="dropdown-item" href="#">
-									Delete this Account
-								</a>
-							</li>
-						</ul>
-					</th:block>
-				</td>
-			</tr>
-			</tbody>
-		</table>
+		<th:block th:with="accounts=${allAccounts}">
+			<table id="accountsTable" class="table table-primary table-striped table-hover">
+				<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">First Name</th>
+					<th scope="col">Last Name</th>
+					<th scope="col">Email</th>
+					<th scope="col">Date of Birth</th>
+					<th scope="col">Role</th>
+					<th scope="col">Status</th>
+					<th scope="col">Actions</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr th:if="${!accounts.isEmpty()}" th:each="account: ${accounts}">
+					<th scope="row" th:text="${account.accountId}"></th>
+					<td th:text="${account.firstName}"></td>
+					<td th:text="${account.lastName}"></td>
+					<td th:text="${account.email}"></td>
+					<td th:text="${account.dateOfBirth}"></td>
+					<td th:text="${account.role}"></td>
+					<td style="text-transform: uppercase" th:text="${account.isEnabled() ? 'ENABLED' : 'DISABLED'}"></td>
+					<td>
+						<th:block th:if="${account.role == 'USER'}">
+							<button id="actionsButton" class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+									aria-expanded="false">
+								Actions
+							</button>
+							<ul class="dropdown-menu">
+								<li>
+									<a th:href="@{|/admin/accounts/find/${account.accountId}|}"
+									   class="dropdown-item disableEnableAccountBtn"
+									   th:text="${account.isEnabled() ? 'Disable this account': 'Enable this account'}">Dummy</a>
+								</li>
+								<li><a th:href="@{|/users/${account.accountId}|}" class="dropdown-item" href="#">View Account</a></li>
+								<li>
+									<a id="deleteAccountBtnId" th:href="@{|/admin/accounts/find/${account.accountId}|}" class="dropdown-item"
+									   href="#">
+										Delete this Account
+									</a>
+								</li>
+							</ul>
+						</th:block>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+			<th:block th:replace="fragments :: emptyResource (${accounts})"></th:block>
+		</th:block>
 	</div>
 
 	<!-- Disable Account Modal -->

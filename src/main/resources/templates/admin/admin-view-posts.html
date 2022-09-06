@@ -39,37 +39,27 @@
 				</tr>
 				</thead>
 				<tbody>
-				<th:block th:if="${!posts.isEmpty()}">
-					<tr th:each="post: ${posts}">
-						<th scope="row">
-							<a class="link-primary postIdTable" th:text="${post.postId}" th:href="@{|/posts/${post.postId}|}"></a>
-						</th>
-						<td th:text="${post.title}"></td>
-						<td th:text="${#strings.substring(post.body, 0, 100)} + '...'"></td>
-						<td th:text="'$'+ ${post.price}"></td>
-						<td th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy')}"></td>
-						<td th:text="${post.postCity.name}"></td>
-						<td th:text="${post.postCategory.name}"></td>
-						<td class="text-center">
-							<a class="link-primary" th:text="${post.posterAccount.accountId}"
-							   th:href="@{|/users/${post.posterAccount.accountId}|}"></a>
-						</td>
-						<td>
-							<a th:href="${post.postId}" class="block btn btn-danger deletePostButton">Delete this post</a>
-						</td>
-					</tr>
-				</th:block>
+				<tr th:if="${!posts.isEmpty()}" th:each="post: ${posts}">
+					<th scope="row">
+						<a class="link-primary postIdTable" th:text="${post.postId}" th:href="@{|/posts/${post.postId}|}"></a>
+					</th>
+					<td th:text="${post.title}"></td>
+					<td th:text="${#strings.substring(post.body, 0, 100)} + '...'"></td>
+					<td th:text="'$'+ ${post.price}"></td>
+					<td th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy')}"></td>
+					<td th:text="${post.postCity.name}"></td>
+					<td th:text="${post.postCategory.name}"></td>
+					<td class="text-center">
+						<a class="link-primary" th:text="${post.posterAccount.accountId}"
+						   th:href="@{|/users/${post.posterAccount.accountId}|}"></a>
+					</td>
+					<td>
+						<a th:href="${post.postId}" class="block btn btn-danger deletePostButton">Delete this post</a>
+					</td>
+				</tr>
 				</tbody>
 			</table>
-			<th:block th:if="${posts.isEmpty()}">
-				<div style="min-height: 700px" class="text-center d-flex justify-content-center align-items-center">
-					<div class="row">
-						<div class="col-12">
-							<h1>Wow, there's nothing here</h1>
-						</div>
-					</div>
-				</div>
-			</th:block>
+			<th:block th:replace="fragments :: emptyResource (${posts})"></th:block>
 		</th:block>
 	</div>
 

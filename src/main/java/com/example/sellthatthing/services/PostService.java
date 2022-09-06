@@ -4,7 +4,6 @@ import com.example.sellthatthing.datatransferobjects.NewPostRequest;
 import com.example.sellthatthing.datatransferobjects.PostReply;
 import com.example.sellthatthing.datatransferobjects.UpdatePostRequest;
 import com.example.sellthatthing.emailsender.EmailSenderService;
-import com.example.sellthatthing.exceptions.EmptyResourceException;
 import com.example.sellthatthing.exceptions.ResourceNotFoundException;
 import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.models.AccountDetails;
