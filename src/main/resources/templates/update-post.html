@@ -10,7 +10,7 @@
 		<!--Start Form-->
 		<div class="row justify-content-center mt-5">
 			<div class="col-lg-8 mx-auto mbr-form">
-				<form action="#" method="post" enctype="multipart/form-data" class="mx-auto" th:action="@{/posts/create-new}"
+				<form action="#" method="post" enctype="multipart/form-data" class="mx-auto" th:action="@{/posts/update}"
 					  th:object="${updatePostRequest}">
 					<!--Start Title-->
 					<div class="mb-3">
@@ -64,17 +64,9 @@
 					</div>
 					<!--End Location and Price-->
 
-					<!--File Upload-->
-					<div class="mb-3">
-						<label for="imageUpload" class="form-label">New Media (only jpg and png)</label>
-						<input th:field="*{image}" class="form-control" accept="image/jpeg, image/png" type="file" id="imageUpload">
-						<p class="form-label mt-2 text-danger" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></p>
-						<p id="imageErrorP" class="form-label mt-2 text-danger"></p>
-					</div>
-
 					<!--Submit Button-->
 					<div class="mt-5 d-flex justify-content-center">
-						<button class="btn btn-primary" type="submit">Create new post</button>
+						<button class="btn btn-primary" type="submit">Save Changes</button>
 					</div>
 				</form>
 			</div>

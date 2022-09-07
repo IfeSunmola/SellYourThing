@@ -21,18 +21,21 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.HashMap;
 
 @Controller
 @AllArgsConstructor
 @RequestMapping("/posts")
+@SessionAttributes("message")
 public class PostController {
     private final PostService postService;
     private final CategoryService categoryService;
     private final CityService cityService;
 
     @GetMapping("/{postId}")
-    public String loadPostPageById(@PathVariable Long postId, Model model) {
+    public String loadPostPageById(@PathVariable Long postId, Model model, @ModelAttribute("message") HashMap<String, String> message) {
         Post currentPost = postService.findByPostId(postId);
         model.addAttribute("currentPost", currentPost);
         model.addAttribute("account", currentPost.getPosterAccount());
@@ -41,6 +44,7 @@ public class PostController {
     }
 
     @GetMapping("/create-new")
+    @PreAuthorize("hasAuthority('USER')")
     public String loadNewPostPage(Model model) {
         model.addAttribute("newPostRequest", new NewPostRequest());
         model.addAttribute("categories", categoryService.findAll());
@@ -49,6 +53,7 @@ public class PostController {
     }
 
     @PostMapping("/create-new")
+    @PreAuthorize("hasAuthority('USER')")
     public String processNewPostForm(@ModelAttribute("newPostRequest") @Valid NewPostRequest newPostRequest,
                                      BindingResult errors, Model model) {
 
@@ -68,9 +73,11 @@ public class PostController {
     }
 
     @PostMapping("/reply")
-    public String replyToPost(@ModelAttribute PostReply postReply) {
+    public String replyToPost(@ModelAttribute PostReply postReply, @ModelAttribute("message") HashMap<String, String> message) {
         postService.sendPostReply(postReply);
-        return "redirect:/posts/" + postReply.getPostId() + "?replySuccess";
+        message.clear();
+        message.put("postReplySuccess", "Your message has been sent");
+        return "redirect:/posts/" + postReply.getPostId();
     }
 
     @PostAuthorize("returnObject.equals()")
@@ -83,7 +90,8 @@ public class PostController {
 
     @GetMapping("/{postId}/{accountId}/update")
     @PreAuthorize("hasAuthority('USER') and authentication.principal.accountId == #accountId")
-    public String loadUpdatePostPage(@PathVariable Long postId, @PathVariable Long accountId, Model model) {
+    public String loadUpdatePostPage(@PathVariable Long postId, @PathVariable Long accountId, Model model,
+                                     @ModelAttribute("message") HashMap<String, String> message) {
         Post postToUpdate = postService.findByPostId(postId);
 
         UpdatePostRequest updatePostRequest = new UpdatePostRequest();
@@ -97,6 +105,24 @@ public class PostController {
         model.addAttribute("updatePostRequest", updatePostRequest);
         model.addAttribute("categories", categoryService.findAll());
         model.addAttribute("cities", cityService.findAll());
+        message.clear();
+        message.put("postId", String.valueOf(postId));
         return "update-post";
+    }
+
+    @PostMapping("/update")
+    public String processUpdatePost(@ModelAttribute("updatePostRequest") @Valid UpdatePostRequest updatePostRequest,
+                                    BindingResult errors, Model model, @ModelAttribute("message") HashMap<String, String> message) {
+        if (errors.hasErrors()) {
+            //adding the categories and cities again because they will be gone after the page is reloaded again
+            model.addAttribute("categories", categoryService.findAll());
+            model.addAttribute("cities", cityService.findAll());
+            return "update-post";
+        }
+        Long postId = Long.valueOf(message.get("postId"));
+        message.clear();
+        postService.update(updatePostRequest, postId);
+        message.put("postUpdateSuccessful", "Your post has been updated");
+        return "redirect:/posts/" + postId;
     }
 }
