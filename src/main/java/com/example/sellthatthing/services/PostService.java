@@ -182,30 +182,6 @@ public class PostService {
         message.put("postDeleteMessage", "Post Id: <strong>" + postId + "</strong> has been deleted");
     }
 
-    public void checkForErrors(NewPostRequest newPostRequest, BindingResult errors) {
-        if (newPostRequest.getCategoryName().equals("0")) {
-            errors.addError(new FieldError("newPostRequest", "categoryName", "Category is required"));
-        }
-        if (newPostRequest.getCityName().equals("0")) {
-            errors.addError(new FieldError("newPostRequest", "cityName", "City is required"));
-        }
-        MultipartFile image = newPostRequest.getImage();
-        if (image.isEmpty()) {
-            errors.addError(new FieldError("newPostRequest", "image", "Image is required"));
-            return;
-        }
-        String originalFileName = StringUtils.cleanPath(Objects.requireNonNull(newPostRequest.getImage().getOriginalFilename()));
-        String fileType = originalFileName.substring(originalFileName.indexOf('.'));
-        if (!fileType.equals(".png") && !fileType.equals(".jpg") && !fileType.equals(".jpeg")) {
-            errors.addError(new FieldError("newPostRequest", "image", fileType + " is not a valid format"));
-            return;
-        }
-        long imageSize = image.getSize() / 1000;// convert to KB
-        if (imageSize > 1000) {
-            errors.addError(new FieldError("newPostRequest", "image",  "Image is too large. Stop playing with my js code\uD83D\uDC7A"));
-        }
-    }
-
     @Transactional
     public void createNewPost(NewPostRequest newPostRequest, Authentication auth) {
         Account account = accountService.findByEmail(auth.getName());

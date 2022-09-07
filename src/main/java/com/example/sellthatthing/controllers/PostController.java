@@ -57,7 +57,6 @@ public class PostController {
             // user is not authenticated, shouldn't happen since only authenticated users can view the page
             return "/login";
         }
-        postService.checkForErrors(newPostRequest, errors);
         if (errors.hasErrors()) {
             //adding the categories and cities again because they will be gone after the page is reloaded again
             model.addAttribute("categories", categoryService.findAll());

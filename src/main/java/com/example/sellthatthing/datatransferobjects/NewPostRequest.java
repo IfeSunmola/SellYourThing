@@ -1,5 +1,7 @@
 package com.example.sellthatthing.datatransferobjects;
 
+import com.example.sellthatthing.custom_annotations.ValidImageFile;
+import com.example.sellthatthing.custom_annotations.ValidSelectOption;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,12 +32,15 @@ public class NewPostRequest {
     @DecimalMin(value = "1.0", message = "Enter a valid price")
     private BigDecimal price;
 
+    @ValidImageFile
     private MultipartFile image;
 
     @NotNull(message = "Select a category")
+    @ValidSelectOption(message = "Category is required")
     private String categoryName;
 
     @NotNull(message = "Select a city")
+    @ValidSelectOption(message = "City is required")
     private String cityName;
 
     private Long posterAccountId;
