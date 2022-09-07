@@ -24,7 +24,7 @@ public class WebSecurityConfig {
     private final BCryptPasswordEncoder passwordEncoder;
 
     // links that does not need authentication
-    private static final String[] ANT_WHITELIST = {"/", "/index", "/register/**", "/users/**", "/posts/sort"};
+    private static final String[] ANT_WHITELIST = {"/", "/index", "/register/**", "/users/**", "/posts/reply"};
     private static final String[] REGEX_WHITELIST = {"/posts/(\\d+)"}; // for posts/postId
     private static final String[] RESOURCES_WHITELIST = {"/css/**", "/images/**", "/js/**", "/h2-console/**"};
 
