@@ -67,7 +67,7 @@ public class AdminPostController {
     @DeleteMapping("/delete/{postId}")
     public String deletePost(@PathVariable Long postId, @ModelAttribute("message") HashMap<String, String> message) {
         System.out.println("Deleting post: " + postId);
-        postService.adminDelete(postId, message);
+        postService.delete(postId, message);
         return "redirect:/admin/posts";
     }
 }
