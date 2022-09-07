@@ -135,41 +135,10 @@ public class SellYourThingApplication implements CommandLineRunner {
         post3.setImageUrl("images/strawberry/strawberries.jpg");
         post3.setPostCity(city3);
         post3.setCreatedAt(LocalDateTime.now().minusMonths(1));
-        ///////////////////////////////////////////////////////////////////////////////////////////////
-//        Post post4 = new Post();
-//        post4.setTitle("Book Big cat for sale");
-//        post4.setBody("I got this cat when I was 1/2 years old. I'm much older now and I don't really need it. Anyone intrested? Let me know. " +
-//                "I got this cat when I was 1/2 years old. I'm much older now and I don't really need it. Anyone intrested? Let me know. " +
-//                "I got this cat when I was 1/2 years old. I'm much older now and I don't really need it. Anyone intrested? Let me know. " +
-//                "I got this cat when I was 1/2 years old. I'm much older now and I don't really need it. Anyone intrested? " +
-//                "Let me know. I got this cat when I was 1/2 years old. I'm much older now and I don't really need it. Anyone intrested? " +
-//                "Let me know. I got this cat when I was 1/2 years old. I'm much older now and I don't really need it. Anyone intrested? " +
-//                "Let me know. ");
-//        post4.setPostCategory(category1);
-//        post4.setPosterAccount(account1);
-//        post4.setPrice(new BigDecimal("121.21"));
-//        post4.setImageUrl("images/cat.jpg");
-//        post4.setPostCity(city1);
-//
-//        Post post5 = new Post();
-//        post5.setTitle("Vehicle for sale");
-//        post5.setBody("Barely used, selling so I can raise funds for the avatar to fight the fire lord. Please buy from me and support water tribe. " +
-//                "Barely used, selling so I can raise funds for the avatar to fight the fire lord. Please buy from me and support water tribe. " +
-//                "Barely used, selling so I can raise funds for the avatar to fight the fire lord. Please buy from me and support water tribe. " +
-//                "Barely used, selling so I can raise funds for the avatar to fight the fire lord. Please buy from me and support water tribe. " +
-//                "Barely used, selling so I can raise funds for the avatar to fight the fire lord. Please buy from me and support water tribe. " +
-//                "Barely used, selling so I can raise funds for the avatar to fight the fire lord. Please buy from me and support water tribe.");
-//        post5.setPostCategory(category2);
-//        post5.setPosterAccount(account2);
-//        post5.setPrice(new BigDecimal("491.21"));
-//        post5.setImageUrl("images/vehicle.jpg");
-//        post5.setPostCity(city2);
 
 
         postService.savePost(post1);
         postService.savePost(post2);
         postService.savePost(post3);
-//        postService.savePost(post4);
-//        postService.savePost(post5);
     }
 }

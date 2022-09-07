@@ -34,7 +34,7 @@ build/
 
 ### Personal ###
 /src/Todo-Notes.md
-/SellThatThingDb.sql
+/SellYourThingDb.sql
 /SellYourThing.trace.db
 /SellYourThing.mv.db
 /app.log

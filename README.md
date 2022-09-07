@@ -1,24 +1,17 @@
 # Todo:
 
 1. Compress images before upload
-2. Change from SellThatThing to SellYourThing
-3. Consider firebase, planet scale
-4. Show custom message for users that have not verified their account
-5. Implement "send a copy of this to my email"
-6. Accept images
-7. Log in should not be required to reply to a message
-8. Facebook/google login
-9. Remove request params, find way to show messages without it
-10. .and().requiresChannel().anyRequest().requiresSecure();
-11. Use a content security policy for Spring Boot XSS protection
-12. After login, always redirect to previous page
-13. Add location to register page
-14. Pagination
-15. Problem: When an admin deletes an account, the user still remains logged in
+2. Implement "send a copy of this to my email"
+3. Facebook/google login
+4. .and().requiresChannel().anyRequest().requiresSecure();
+5. Use a content security policy for Spring Boot XSS protection
+6. After login, always redirect to previous page
+7. Pagination
+8. Problem: When an admin deletes an account, the user still remains logged in
     1. Fix: On each request, check if the user exists in the db. If not, force logout the user and invalidate
        the session https://stackoverflow.com/a/38295610/18902234
-16. Secure end points with @PreAuthorize
-17. Add logging to all Service classes
+9. Secure end points with @PreAuthorize
+10. Add logging to all Service classes
 
 ---
 

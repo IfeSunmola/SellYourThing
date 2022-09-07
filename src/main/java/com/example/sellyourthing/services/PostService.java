@@ -150,8 +150,8 @@ public class PostService {
     public void sendPostReply(PostReply postReply) {
         Account posterAccount = findByPostId(postReply.getPostId()).getPosterAccount();
         emailSenderService.sendMail(
-                "SellThatThing: Someone is interested in your listing",
-                "donotreply@sellthatthing.com",
+                "SellYourThing: Someone is interested in your listing",
+                "sellyourthing.sender+donotreply@gmail.com\n",
                 posterAccount.getEmail(),
                 postReply.getReplyEmail(),
                 generatePostReplyBody(postReply)
