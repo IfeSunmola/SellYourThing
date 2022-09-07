@@ -9,6 +9,8 @@
 
 		<th:block th:replace="fragments :: sortParameters (cities=${cities}, categories=${categories})"></th:block>
 
+		<h1 class="text-center mb-5" th:text="'All posts by ' +  ${userPosts.get(0).posterAccount.firstName}"></h1>
+
 		<th:block th:with="postsHolder=${userPosts}">
 			<th:block th:if="${!postsHolder.isEmpty()}" th:replace="fragments :: showAllPosts (posts=${postsHolder})"></th:block>
 			<th:block th:replace="fragments :: emptyResource (${postsHolder})"></th:block>

@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -99,10 +100,12 @@ public class PostService {
         return postRepository.save(postToUpdate);
     }
 
+    public boolean existsById(Long postId) {
+        return postRepository.existsById(postId);
+    }
+
     public void delete(Long postId) {
-        Post postToDelete = postRepository.findById(postId).orElseThrow(()
-                -> new ResourceNotFoundException("Post id '" + postId + "' was not found"));
-        postRepository.delete(postToDelete);
+        postRepository.deleteById(postId);
     }
 
     public List<Post> findAllAccountPosts(Long accountId) {

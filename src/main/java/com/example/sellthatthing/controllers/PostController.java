@@ -6,10 +6,13 @@ import com.example.sellthatthing.datatransferobjects.UpdatePostRequest;
 import com.example.sellthatthing.models.Account;
 import com.example.sellthatthing.models.AccountDetails;
 import com.example.sellthatthing.models.Post;
+import com.example.sellthatthing.services.AccountService;
 import com.example.sellthatthing.services.CategoryService;
 import com.example.sellthatthing.services.CityService;
 import com.example.sellthatthing.services.PostService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -21,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -32,14 +36,25 @@ import java.util.HashMap;
 public class PostController {
     private final PostService postService;
     private final CategoryService categoryService;
+    private final AccountService accountService;
     private final CityService cityService;
+    private final Logger logger = LoggerFactory.getLogger(PostController.class);
+
 
     @GetMapping("/{postId}")
-    public String loadPostPageById(@PathVariable Long postId, Model model, @ModelAttribute("message") HashMap<String, String> message) {
+    public String loadPostPageById(@PathVariable Long postId, Model model, @ModelAttribute("message") HashMap<String, String> message,
+                                   HttpServletRequest request) {
         Post currentPost = postService.findByPostId(postId);
         model.addAttribute("currentPost", currentPost);
         model.addAttribute("account", currentPost.getPosterAccount());
         model.addAttribute("replyToPostDto", new PostReply());
+        model.addAttribute("currentPostId", currentPost.getPosterAccount().getAccountId());
+        ////////////////
+        Account postOwner = currentPost.getPosterAccount();
+        Authentication auth = (Authentication) request.getUserPrincipal();
+        // authAccount = logged-in user. Might be different from owner of the post. In thymeleaf, the div is only shown to USER roles, this can't be null
+        AccountDetails authAccount = (AccountDetails) auth.getPrincipal();
+        model.addAttribute("isSameUser", postOwner.getAccountId().equals(authAccount.accountId()));
         return "view-post-description";
     }
 
@@ -124,5 +139,29 @@ public class PostController {
         postService.update(updatePostRequest, postId);
         message.put("postUpdateSuccessful", "Your post has been updated");
         return "redirect:/posts/" + postId;
+    }
+
+    @DeleteMapping("/delete/{postId}")
+    public String deletePost(@PathVariable Long postId, @RequestParam String confirmTitle,
+                             @ModelAttribute("message") HashMap<String, String> message,
+                             HttpServletRequest request) {
+        Authentication auth = (Authentication) request.getUserPrincipal();
+        Long authAccountId = ((AccountDetails) auth.getPrincipal()).accountId();
+        Post post = postService.findByPostId(postId);
+        message.clear();
+        if (!authAccountId.equals(postId) || !authAccountId.equals(post.getPostId()) || !postService.existsById(postId)) {
+            message.put("forcedLogout", "An error occurred. You have been logged out");
+            logger.info("Account id: " + post.getPosterAccount().getAccountId() + " did some funky business with post id " + postId);
+            accountService.doManualLogout(request);
+            return "redirect:/login";
+        }
+        if (!post.getTitle().equals(confirmTitle)) {
+            logger.info("Account id: " + post.getPosterAccount().getAccountId() + " tried to delete post id " + postId + " with after changing inspect element");
+            message.put("postDeleteFailed", "Delete Failed. Don't do that");
+            return "redirect:/posts/" + postId;
+        }
+        postService.delete(postId);
+        message.put("deleteSuccess", "Post deleted Successfully");
+        return "redirect:/users/" + authAccountId;
     }
 }

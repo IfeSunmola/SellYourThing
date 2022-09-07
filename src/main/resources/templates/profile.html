@@ -23,6 +23,10 @@
 					<div class="alert alert-danger" th:utext="${message.get('updateFailed')}"></div>
 				</div>
 
+				<div class="w-50" th:if="${message.getOrDefault('deleteSuccess', null) != null}">
+					<div class="alert alert-success" th:utext="${message.get('deleteSuccess')}"></div>
+				</div>
+
 				<th:block th:if="${message.clear()}"></th:block>
 			</div>
 			<!--End Messages-->
