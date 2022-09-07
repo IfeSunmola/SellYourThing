@@ -16,11 +16,11 @@ import java.time.LocalDateTime;
 
 @SpringBootApplication
 @AllArgsConstructor
-public class SellThatThingApplication implements CommandLineRunner {
+public class SellYourThingApplication implements CommandLineRunner {
     private final PostService postService;
 
     public static void main(String[] args) {
-        SpringApplication.run(SellThatThingApplication.class, args);
+        SpringApplication.run(SellYourThingApplication.class, args);
     }
 
     @Override
